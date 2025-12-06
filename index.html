@@ -1,0 +1,1554 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
+<title id="pageTitle">Qazanc AZ</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<script src="//libtl.com/sdk.js" data-zone="10024800" data-sdk="show_10024800"></script>
+<style>
+/* --- RƏNG DƏYİŞƏNLƏRİ (VARS) --- */
+:root {
+  /* LIGHT TEMA (Ağ/Qırmızı) - Default */
+  --bg-start: #ffffff; 
+  --bg-end: #f0f0f0;   
+  --card-bg: rgba(255, 255, 255, 0.85); 
+  --card-border: rgba(0, 0, 0, 0.1);
+  --text-light: #ffffff;
+  --text-dark: #1B1B1B;
+  --accent: #FF0000; 
+  --menu-bg: rgba(255, 255, 255, 0.15);
+  --progress-bg: rgba(0, 0, 0, 0.08);
+  --input-text: #1B1B1B; /* Input mətni üçün */
+
+  /* Qırmızı Gradientlər */
+  --btn-gradient-start: #FF416C; 
+  --btn-gradient-end: #FF4B2B;   
+  --btn-shadow: rgba(255, 65, 108, 0.4); 
+  --secondary-btn-gradient-start: #ffc371; 
+  --secondary-btn-gradient-end: #ff5f6d; 
+  
+  /* YENİ: Bildiriş rəngləri */
+  --notification-bg: #2ecc71; /* Yaşıl */
+  --notification-text: #ffffff; 
+}
+
+/* DARK TEMA (Qara/Qırmızı) */
+body.dark-theme {
+  --bg-start: #1b1b1b; 
+  --bg-end: #252525;   
+  --card-bg: rgba(45, 45, 45, 0.95); 
+  --card-border: rgba(255, 255, 255, 0.1);
+  --text-light: #ffffff;
+  --text-dark: #f0f0f0;
+  --accent: #FF4B2B; 
+  --menu-bg: rgba(0, 0, 0, 0.3);
+  --progress-bg: rgba(255, 255, 255, 0.15);
+  --input-text: #ffffff; /* Qaranlıq temada input mətni ağ olsun */
+  --notification-bg: #27ae60; /* Bir az tünd yaşıl */
+}
+
+/* --- ÜMUMİ STİLLƏR --- */
+*{box-sizing:border-box;margin:0;padding:0;}
+body{
+  font-family:'Inter',sans-serif;
+  background:linear-gradient(135deg,var(--bg-start),var(--bg-end));
+  background-size:400% 400%;
+  animation:bgMove 12s ease infinite;
+  color:var(--text-dark);
+  min-height:100vh;
+  user-select:none;
+  -webkit-user-select:none;
+  -webkit-tap-highlight-color:transparent;
+  transition: background-color 0.5s, color 0.5s; 
+}
+@keyframes bgMove{
+  0%{background-position:0% 50;}
+  50%{background-position:100% 50;}
+  100%{background-position:0% 50;}
+}
+
+/* Yuxarı boşluğu azaltmaq */
+.container{max-width:480px;margin:auto;padding:20px;padding-top:20px;} 
+
+/* DİL VƏ TEMA SEÇİMİ (YENİ DÜZƏNLƏMƏ) */
+.top-controls {
+    display: flex;
+    justify-content: space-between; /* Sol və Sağ tərəfi ayırır */
+    align-items: center;
+    margin-bottom: 20px;
+}
+.lang-switcher-container {
+    position: relative;
+}
+.lang-current-btn, .theme-toggle-btn {
+    padding: 6px 10px;
+    border: 1px solid var(--card-border);
+    background: var(--card-bg);
+    color: var(--text-dark);
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.3s;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    display: flex;
+    align-items: center;
+    height: 40px; 
+}
+.lang-current-btn span {
+    margin-right: 5px; 
+}
+.lang-current-btn:hover, .theme-toggle-btn:hover {
+    box-shadow: 0 4px 15px rgba(255,0,0,0.2);
+}
+
+/* Tema keçid simvolu üçün xüsusi stil */
+.theme-icon {
+    font-size: 20px;
+}
+
+.lang-dropdown {
+    position: absolute;
+    top: 100%; 
+    right: 0;
+    margin-top: 5px;
+    background: var(--card-bg);
+    border-radius: 10px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+    overflow: hidden;
+    z-index: 10;
+    min-width: 60px;
+    display: none;
+    backdrop-filter: blur(8px);
+    border: 1px solid var(--card-border);
+}
+.lang-dropdown.show {
+    display: block;
+}
+.lang-dropdown button {
+    width: 100%;
+    padding: 8px 15px;
+    border: none;
+    background: none;
+    color: var(--text-dark);
+    font-weight: 600;
+    text-align: center; 
+    cursor: pointer;
+    transition: background 0.2s;
+    display: block; 
+}
+
+.lang-dropdown button:hover, .lang-dropdown button.active {
+    background: var(--accent);
+    color: var(--text-light);
+}
+
+.page{display:none;animation:fadeIn .4s ease;}
+.page.active{display:block;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+
+/* Balans və Kart Dizaynı */
+.balance-card, .ad-card, .task-card, .referral-card{
+  background:var(--card-bg);
+  border-radius:25px;
+  padding:20px 18px;
+  margin-bottom:20px;
+  box-shadow:0 12px 40px rgba(0,0,0,0.25);
+  backdrop-filter:blur(14px);
+  text-align:center;
+  border:1px solid var(--card-border);
+  transition: background-color 0.5s, box-shadow 0.5s;
+}
+.balance-card h3{font-size:16px;color:var(--accent);margin-bottom:8px;letter-spacing:0.5px;}
+.balance-card .amount{font-size:32px;font-weight:700;margin-top:5px;color:var(--text-dark);text-shadow:0 2px 5px rgba(0,0,0,0.1);}
+.balance-card .usd{font-size:14px;color:var(--text-dark);opacity:0.7;margin-top:4px;}
+
+/* Metod Siyahısı */
+.method-list{display:flex;flex-wrap:wrap;gap:10px;margin:12px 0;justify-content:space-between;}
+.method{
+    flex:1 1 calc(50% - 10px);
+    padding:14px;
+    border-radius:14px;
+    background:linear-gradient(90deg,var(--btn-gradient-start),var(--btn-gradient-end)); 
+    color:var(--text-light);
+    text-align:center;
+    font-weight:700;
+    cursor:pointer;
+    transition:0.3s;
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100px;
+    position: relative;
+}
+.method:hover{transform:scale(1.03);box-shadow:0 0 10px rgba(0,0,0,0.2);}
+.method-logo{
+    width: 50px;       
+    height: 50px;      
+    margin-bottom: 6px;
+    border-radius: 8px; 
+    object-fit: contain; 
+    background-color: #fff;
+    padding: 4px; 
+}
+.method-logo.bank-logo {
+    border-radius: 6px; 
+    padding: 2px;
+}
+.method-text {
+    font-size: 14px;
+}
+.min-withdraw-label {
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    font-size: 10px;
+    font-weight: 600;
+    color: #fff;
+    background: rgba(0, 0, 0, 0.4);
+    padding: 1px 4px;
+    border-radius: 4px;
+}
+.ad-card{margin-bottom:12px;}
+.ad-card h2{font-size:18px;color:var(--text-dark);margin-bottom:6px;}
+.ad-card p{margin:4px 0;color:var(--text-dark);font-size:13px;}
+.task-card{margin-bottom:10px;}
+.task-card h2{font-size:16px;color:var(--text-dark);margin-bottom:4px;}
+.task-card p{margin:2px 0;color:var(--text-dark);font-size:12px;}
+.task-card button{width:100%;margin-top:8px;padding:10px;font-size:13px;font-weight:700;border:none;border-radius:12px;background:linear-gradient(90deg,var(--secondary-btn-gradient-start),var(--secondary-btn-gradient-end)); 
+    color:var(--text-light);cursor:pointer;transition:0.3s;}
+.task-card button:hover{transform:scale(1.03);box-shadow:0 0 20px rgba(255,95,109,0.6);}
+/* Düzəliş: Tamamlanmış düymənin CSS-i */
+.task-card button.completed{background:gray !important;box-shadow:none !important;cursor:not-allowed !important;pointer-events:none !important;opacity:0.55;}
+/* Gözləmə CSS-i */
+.task-card button.waiting {
+    background: orange !important;
+    cursor: wait !important;
+    opacity: 0.8;
+}
+
+.stats{display:flex;justify-content:space-around;margin-top:12px;}
+.stat{background:var(--progress-bg);border-radius:10px;padding:10px 16px;}
+.stat span{display:block;font-size:16px;font-weight:700;color:var(--text-dark);}
+.stat label{font-size:11px;color:var(--text-dark);opacity:0.7;}
+.progress{height:10px;background:var(--progress-bg);border-radius:6px;overflow:hidden;margin-top:12px;}
+.progress-fill{height:100%;background:var(--accent);width:0%;transition:width .4s;} 
+.ad-btn{width:100%;margin-top:12px;padding:12px;font-size:14px;font-weight:700;border:none;border-radius:14px;color:var(--text-light);cursor:pointer;transition:0.3s;background:linear-gradient(90deg,var(--btn-gradient-start),var(--btn-gradient-end));box-shadow:0 0 16px var(--btn-shadow);}
+.ad-btn:hover:not(.waiting){transform:scale(1.03);box-shadow:0 0 20px var(--btn-shadow);}
+
+/* NAVİQASİYA PANELİ DÜZƏLİŞLƏRİ */
+.menu{
+    position:fixed;
+    bottom:15px;
+    left:50%;
+    transform:translateX(-50%);
+    width:92%;
+    max-width:450px; /* Maksimum genişlik əlavə etdik */
+    display:flex;
+    justify-content:space-around;
+    background:var(--menu-bg);
+    padding:8px 6px; /* Paddingi azaltdıq */
+    border-radius:22px;
+    box-shadow:0 6px 20px rgba(0,0,0,.3);
+    backdrop-filter:blur(8px);
+}
+.menu button{
+    flex:1 1 23%; /* Hər düyməyə bərabər yer ayırır */
+    margin:0 4px; /* Margin-i azaltdıq */
+    padding:10px 4px; /* Paddingi azaltdıq */
+    border:none;
+    border-radius:16px;
+    background:linear-gradient(90deg,var(--btn-gradient-start),var(--btn-gradient-end));
+    color:var(--text-light);
+    font-weight:600; /* Font weight-i azaltdıq */
+    font-size: 11px; /* Font ölçüsünü kiçiltdik */
+    white-space: nowrap; /* Mətnin alt sətrə keçməsini önləyir */
+    overflow: hidden; /* Sığmayan hissəni gizlədir */
+    text-overflow: ellipsis; /* Sığmayan hissəyə ... əlavə edir */
+    transition:0.3s;
+}
+.menu button.active{
+    background:linear-gradient(90deg,var(--secondary-btn-gradient-start),var(--secondary-btn-gradient-end));
+    box-shadow:0 0 18px rgba(255,95,109,0.6);
+}
+
+#form{display:none;margin-top:12px;}
+#form input{
+    width:100%;
+    padding:12px;
+    margin:6px 0;
+    border-radius:12px;
+    border:1px solid var(--card-border);
+    background:var(--card-bg);
+    color:var(--input-text); /* Tema dəyişəni ilə idarə olunur */
+}
+#form input::placeholder {
+    color: var(--input-text); 
+    opacity: 0.5; /* Placeholder-i bir az solğun et */
+}
+#form button{width:100%;padding:14px;margin-top:8px;border:none;border-radius:14px;background:linear-gradient(90deg,var(--secondary-btn-gradient-start),var(--secondary-btn-gradient-end));color:var(--text-light);font-weight:700;cursor:pointer;}
+.alert{margin-top:6px;padding:10px;border-radius:10px;display:none;}
+.alert.error{background:#f8d7da;color:#842029;}
+.alert.success{background:#d1e7dd;color:#0f5132;}
+
+/* Dinamik Timer Bar üçün CSS */
+.timer-bar-container {
+  height: 6px;
+  width: 0%;
+  border-radius: 4px;
+  margin-top: 6px;
+  /* Animasiya üçün yumşaq keçid - İndi barın dolmasını daha rəvan göstərəcək */
+  transition: width 1s linear, background-color 0.5s, box-shadow 0.5s; 
+}
+
+/* REFERRANS SƏHİFƏSİ STİLLƏRİ */
+.referral-card {
+    text-align: left;
+}
+.referral-card h2 {
+    text-align: center;
+    font-size: 18px;
+    color: var(--accent);
+    margin-bottom: 15px;
+}
+.referral-info {
+    font-size: 14px;
+    color: var(--text-dark);
+    margin-bottom: 20px;
+    line-height: 1.5;
+    background: var(--progress-bg);
+    padding: 15px;
+    border-radius: 12px;
+}
+.referral-info b {
+    color: var(--accent);
+}
+.referral-link-container {
+    display: flex;
+    align-items: center;
+    border: 1px solid var(--card-border);
+    border-radius: 12px;
+    background: var(--card-bg);
+    overflow: hidden;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+#referralLinkDisplay {
+    flex-grow: 1;
+    padding: 12px;
+    font-size: 14px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: var(--text-dark);
+    font-weight: 600;
+    cursor: default; /* Toxunulmaz etmək */
+}
+#copyRefLinkBtn {
+    padding: 12px 15px;
+    border: none;
+    background: linear-gradient(90deg,var(--btn-gradient-start),var(--btn-gradient-end));
+    color: var(--text-light);
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.2s;
+    height: 100%;
+}
+#copyRefLinkBtn:active {
+    transform: scale(0.98);
+}
+#copyMessage {
+    margin-top: 10px;
+    font-size: 13px;
+    color: #0f5132;
+    background: #d1e7dd;
+    padding: 8px;
+    border-radius: 8px;
+    text-align: center;
+    display: none;
+    font-weight: 600;
+}
+
+/* YENİLİK: BAŞLANĞIC EKRAN STİLİ (AĞ/QIRMIZI) */
+#loadingScreen{
+    position:fixed;
+    top:0; left:0;width:100%; height:100%;
+    background:linear-gradient(135deg, var(--bg-start), #ffc8c8); /* Ağdan solğun qırmızıya gradient */
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    z-index:99999;
+    transition:opacity .7s ease;
+}
+.loader-box{text-align:center;animation:fadeIn .8s ease;position:relative;}
+.shine-circle{position:absolute;width:220px; height:220px;top:-70px; left:50%;transform:translateX(-50%);background:radial-gradient(circle, rgba(255,0,0,0.35), transparent 80%);filter:blur(40px);animation:pulse 3s infinite ease-in-out;}
+@keyframes pulse{0%,100%{opacity:.4;}50%{opacity:1;}}
+.loader-title{font-size:40px;font-weight:900;color:#FF4B2B; letter-spacing:2px;text-shadow:0 0 12px #ff416c, 0 0 35px rgba(255,75,43,0.9);margin-bottom:32px;}
+.loader-bar{width:300px;height:16px;border-radius:20px;background:rgba(255,0,0,0.15);overflow:hidden;position:relative;box-shadow:0 0 14px rgba(255,0,0,0.3);}
+.loader-fill{height:100%;width:0%;border-radius:20px;background:linear-gradient(90deg,#ff416c,#FF4B2B); animation:fillAnim 3s forwards ease-in-out;}
+@keyframes fillAnim{from{width:0%;}to{width:100%;}}
+.glow{position:absolute;top:0; left:0;width:100%; height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.9),transparent);animation:shine 1.6s infinite;}
+@keyframes shine{0%{transform:translateX(-100%);}100%{transform:translateX(100%);}}
+.loader-text{margin-top:14px;font-size:17px;color:#FF4B2B;letter-spacing:1px;animation:blink 1.4s infinite;}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:.5;}}
+
+/* YENİLİK: TAPŞIRIQ BİLDİRİŞİ ANİMASİYASI */
+#taskNotification {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translate(-50%, -100px); /* Başlanğıcda ekranın yuxarısından kənarda */
+    background: var(--notification-bg);
+    color: var(--notification-text);
+    padding: 15px 25px;
+    border-radius: 12px;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+    font-weight: 700;
+    font-size: 16px;
+    opacity: 0;
+    z-index: 10000;
+    transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Elastik effekt üçün cubic-bezier */
+}
+/* Bildirişin görünməsi sinfi */
+.notification-show {
+    opacity: 1 !important;
+    transform: translate(-50%, 0) !important; /* Yuxarıdan aşağıya gəlir */
+}
+/* Bildirişin gizlənməsi sinfi */
+.notification-hide {
+    opacity: 0;
+    transform: translate(-50%, -100px); /* Geri yuxarıya gedir */
+}
+</style>
+</head>
+<body id="body">
+<div id="loadingScreen">
+  <div class="loader-box">
+    <div class="shine-circle"></div>
+    <div class="loader-title">Qazanc AZ</div>
+    <div class="loader-bar">
+      <div class="loader-fill"></div>
+      <div class="glow"></div>
+    </div>
+    <div class="loader-text" data-translate-key="loading">Yüklənir...</div>
+  </div>
+</div>
+
+<div id="taskNotification" class="notification-hide">
+    <span id="taskNotificationText"></span>
+</div>
+
+<div class="container">
+  
+  <div class="top-controls">
+    <button class="theme-toggle-btn" onclick="toggleTheme()">
+        <span id="themeIcon" class="theme-icon">🔆</span>
+    </button>
+    
+    <div class="lang-switcher-container">
+        <button class="lang-current-btn" onclick="toggleDropdown()">
+            <span id="currentLangDisplay">AZ</span>
+            <span id="langArrow"></span>
+        </button>
+        <div class="lang-dropdown" id="langDropdown">
+            <button onclick="setLang('az')" id="langAzBtn">AZ</button>
+            <button onclick="setLang('en')" id="langEnBtn">EN</button>
+            <button onclick="setLang('tr')" id="langTrBtn">TR</button>
+            <button onclick="setLang('ru')" id="langRuBtn">RU</button>
+        </div>
+    </div>
+  </div>
+  
+  <div id="adsPage" class="page active">
+    <div class="balance-card">
+      <h3 data-translate-key="currentBalance">Balans</h3>
+      <div class="amount"><span id="balance">0.0000</span> <span id="currencySymbol">₼</span></div>
+      <div class="usd"><span id="secondaryCurrencySymbol">$</span><span id="secondaryBalance">0.0000</span> <span id="secondaryCurrencyText">USD</span></div>
+    </div>
+
+    <div class="ad-card">
+      <h2 data-translate-key="dailyAds">Günlük Reklamlar</h2>
+      <p data-translate-key="adReward">Hər reklama görə <b>0.001 ₼</b> qazanın</p>
+      <div class="stats">
+        <div class="stat"><span id="adsCount">0</span><label data-translate-key="watched">İzlənən</label></div>
+        <div class="stat"><span data-translate-key="maxCount">100</span><label data-translate-key="maximum">Maksimum</label></div>
+      </div>
+      <div class="progress"><div class="progress-fill" id="progress"></div></div>
+      <p style="margin-top:6px;" data-translate-key="progressText">İrəliləyiş: <span id="progressTextSpan">0/100</span></p>
+      <button id="adBtn" class="ad-btn" data-translate-key="watchAd">Reklam</button>
+      <div id="msg"></div>
+    </div>
+  </div>
+
+  <div id="tasksPage" class="page">
+    <div class="task-card">
+      <h2 data-translate-key="premiumTask">Premium Tapşırıq</h2>
+      <p data-translate-key="taskReward1">Kanala qoşul və <b>0.1 ₼</b> qazan!</p>
+      <button id="joinBtn" data-translate-key="joinChannel">Kanala Qoşul</button>
+    </div>
+    <div class="task-card">
+      <h2 data-translate-key="bonusTask">Bonus Tapşırıq</h2>
+      <p data-translate-key="taskReward2">Qrupa qoşul və <b>0.1 ₼</b> qazan!</p>
+      <button id="joinBtn2" data-translate-key="joinGroup">Qrupa Qoşul</button>
+    </div>
+    <div class="task-card">
+      <h2 data-translate-key="bonusTask">Bonus Tapşırıq</h2>
+      <p data-translate-key="taskReward3">Kanala qoşul və <b>0.15 ₼</b> qazan!</p>
+      <button id="joinBtn3" data-translate-key="joinChannel">Kanala Qoşul</button>
+    </div>
+    <div class="task-card">
+      <h2 data-translate-key="sponsorTask">Sponsor Tapşırıq</h2>
+      <p data-translate-key="taskReward4">Kanala qoşul və <b>0.05 ₼</b> qazan!</p>
+      <button id="joinBtn4" data-translate-key="joinChannel">Kanala Qoşul</button>
+    </div>
+  </div>
+  
+  <div id="referralPage" class="page">
+    <div class="referral-card">
+        <h2 data-translate-key="referralTitle">Referans</h2>
+        <div class="referral-info">
+            <p data-translate-key="referralInfo1">
+                <span style="font-size:16px; font-weight:700; color:var(--accent);">⭐ Qeyd:</span> Referans ödülü yoxdur.
+            </p>
+            <p data-translate-key="referralInfo2">
+                Çıxarış etdiyinizdə linkinizdən bota qatılan istifadəçilərə baxılacaq.
+                Pulunuz **Bonuslu** olaraq göndəriləcək.
+            </p>
+        </div>
+        
+        <h3 style="font-size:16px; margin-bottom:10px; color:var(--text-dark);" data-translate-key="yourRefLink">Referans Linkiniz</h3>
+        <div class="referral-link-container">
+            <span id="referralLinkDisplay" data-ref-base="https://t.me/qazancazbot?startapp=" data-ref-code="1234567890"></span>
+            
+            <button id="copyRefLinkBtn" data-translate-key="copy">Kopyala</button>
+        </div>
+        <div id="copyMessage" data-translate-key="copied">Kopyalandı!</div>
+    </div>
+  </div>
+
+  <div id="walletPage" class="page">
+    <div class="balance-card">
+      <h3 data-translate-key="withdrawBalance">Balans</h3>
+      <div class="amount"><span id="balance2">0.0000</span> <span id="currencySymbol2">₼</span></div>
+      <div class="usd"><span id="secondaryCurrencySymbol2">$</span><span id="secondaryBalance2">0.0000</span> <span id="secondaryCurrencyText2">USD</span></div>
+    </div>
+    <h2 style="text-align:center;margin-bottom:12px;color:var(--text-dark);" data-translate-key="withdrawTitle">Çıxarış</h2>
+    <div class="method-list" id="methods">
+      
+      <div class="method" data-type="m10">
+          <img src="https://i.postimg.cc/Kj94hVNG/unnamed.png" alt="M10 Logo" class="method-logo">
+          <span class="method-text">M10</span>
+          <span class="min-withdraw-label" data-min-key="m10">3 ₼</span>
+      </div>
+      <div class="method" data-type="azercell">
+          <img src="https://i.postimg.cc/qM5gmPqZ/applogo512.png" alt="Azercell Logo" class="method-logo">
+          <span class="method-text">Azercell</span>
+          <span class="min-withdraw-label" data-min-key="azercell">3 ₼</span>
+      </div>
+      <div class="method" data-type="bakcell">
+          <img src="https://i.postimg.cc/Pqmx5N49/images.jpg" alt="Bakcell Logo" class="method-logo">
+          <span class="method-text">Bakcell</span>
+          <span class="min-withdraw-label" data-min-key="bakcell">3 ₼</span>
+      </div>
+      <div class="method" data-type="nar">
+          <img src="https://i.postimg.cc/4NmxhWPy/images.png" alt="Nar Logo" class="method-logo">
+          <span class="method-text">Nar</span>
+          <span class="min-withdraw-label" data-min-key="nar">3 ₼</span>
+      </div>
+      <div class="method" data-type="bank">
+          <img src="https://i.postimg.cc/L6H0yWwZ/42492-bank-1024.png" alt="Bank Logo" class="method-logo bank-logo">
+          <span class="method-text" data-translate-key="bankCard">Bank</span>
+          <span class="min-withdraw-label" data-min-key="bank">3 ₼</span>
+      </div>
+      <div class="method" data-type="usdt">
+          <img src="https://i.postimg.cc/X7HxsY98/Tether-USDT-Logo.png" alt="USDT Logo" class="method-logo">
+          <span class="method-text">USDT</span>
+          <span class="min-withdraw-label" data-min-key="usdt">10 ₼</span>
+      </div>
+    </div>
+    <div class="form" id="form">
+      <button id="backBtn" style="background:none;border:none;color:var(--accent);font-weight:700;">⬅ <span data-translate-key="back">Geri</span></button>
+      <input id="details" placeholder="">
+      <input id="amount" type="number" placeholder="Məbləğ">
+      <button id="withdrawBtn" data-translate-key="withdraw">Çıxarış Et</button>
+      <div id="alert" class="alert"></div>
+    </div>
+  </div>
+
+</div>
+
+<div class="menu">
+  <button onclick="showPage('adsPage',this)" class="active" data-translate-key="home">Ev</button>
+  <button onclick="showPage('tasksPage',this)" data-translate-key="tasks">Görevler</button>
+  <button onclick="showPage('referralPage',this)" data-translate-key="referral">Referans</button>
+  <button onclick="showPage('walletPage',this)" data-translate-key="wallet">Cüzdan</button>
+</div>
+<script>
+// --- YERLİ SAXLAMA KÖMƏKÇİLƏRİ ---
+function safeGet(k,d=0){try{return JSON.parse(localStorage.getItem(k))??d;}catch{return d;}}
+function safeSet(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}
+// 10 rəqəmli Referans Kodu yaradır (hər bir istifadəçi üçün fərqli olmalıdır)
+function generateRefCode(){
+    let code = safeGet('refCode', null);
+    if (!code) {
+        code = Math.floor(1000000000 + Math.random() * 9000000000).toString();
+        safeSet('refCode', code);
+    }
+    return code;
+}
+
+// --- TEMA İDARƏETMƏSİ ---
+const THEME_KEY = 'theme';
+const body = document.getElementById('body');
+const themeIcon = document.getElementById('themeIcon');
+
+function applyTheme(isDark) {
+    if (isDark) {
+        body.classList.add('dark-theme');
+        themeIcon.textContent = '🌙'; // Qaranlıq üçün ay
+        safeSet(THEME_KEY, 'dark');
+    } else {
+        body.classList.remove('dark-theme');
+        themeIcon.textContent = '🔆'; // Açıq üçün günəş
+        safeSet(THEME_KEY, 'light');
+    }
+}
+
+function toggleTheme() {
+    const isDark = body.classList.contains('dark-theme');
+    applyTheme(!isDark);
+}
+
+// Səhifə yüklənəndə temani tətbiq et
+const savedTheme = safeGet(THEME_KEY, 'light');
+applyTheme(savedTheme === 'dark');
+
+
+// --- VALYUTA VƏ MƏZƏNNƏLƏR ---
+const EXCHANGE_RATES = {
+    AZN_TO_USD: 0.59, 
+    AZN_TO_TRY: 25.00,  
+    AZN_TO_RUB: 46.45 
+};
+const CURRENCIES = {
+    'az': { main: 'AZN', symbol: '₼', secondary: 'USD', secondarySymbol: '$' },
+    'tr': { main: 'TRY', symbol: '₺', secondary: 'USD', secondarySymbol: '$' },
+    'en': { main: 'USD', symbol: '$', secondary: 'AZN', secondarySymbol: '₼' },
+    'ru': { main: 'RUB', symbol: '₽', secondary: 'USD', secondarySymbol: '$' }
+};
+
+// YENİLƏNİB: Reklam qazancı 0.001 AZN
+const AZN_REWARD = 0.001; 
+const AZN_TASK_REWARDS = [0.1, 0.1, 0.15, 0.05]; 
+
+// YENİLƏNİB: Minimum limitlər AZN ilə
+const AZN_MIN_WITHDRAW = { m10: 3, azercell: 3, bakcell: 3, nar: 3, bank: 3, usdt: 10 }; 
+
+// --- TƏRCÜMƏ MƏLUMATLARI (DİL SÖZLÜYÜ) ---
+function getLocalizedReward(lang) {
+    let reward = AZN_REWARD;
+    let symbol = CURRENCIES[lang].symbol;
+    let currency = CURRENCIES[lang].main;
+    let format = (val) => val.toFixed(4); // AZN üçün 4 rəqəm
+
+    if (lang === 'tr') {
+        reward = AZN_REWARD * EXCHANGE_RATES.AZN_TO_TRY;
+        format = (val) => val.toFixed(3); // TRY üçün 3 rəqəm
+    } else if (lang === 'en') {
+        reward = AZN_REWARD * EXCHANGE_RATES.AZN_TO_USD;
+        format = (val) => val.toFixed(5); // USD üçün 5 rəqəm
+    } else if (lang === 'ru') {
+        reward = AZN_REWARD * EXCHANGE_RATES.AZN_TO_RUB;
+        format = (val) => val.toFixed(3); // RUB üçün 3 rəqəm
+    }
+    
+    return {
+        reward: reward,
+        formattedReward: format(reward),
+        symbol: symbol,
+        currency: currency
+    };
+}
+
+function getLocalizedTaskReward(lang, aznReward) {
+    let symbol = CURRENCIES[lang].symbol;
+    let format = (val) => val.toFixed(2); 
+
+    let localizedReward = aznReward;
+
+    if (lang === 'tr') {
+        localizedReward = aznReward * EXCHANGE_RATES.AZN_TO_TRY;
+    } else if (lang === 'en') {
+        localizedReward = aznReward * EXCHANGE_RATES.AZN_TO_USD;
+        format = (val) => val.toFixed(3);
+    } else if (lang === 'ru') {
+        localizedReward = aznReward * EXCHANGE_RATES.AZN_TO_RUB;
+    }
+    
+    return `<b>${format(localizedReward)} ${symbol}</b>`;
+}
+
+const TRANSLATIONS = {
+    'az': {
+        pageTitle: 'Qazanc AZ',
+        loading: 'Yüklənir...',
+        currentBalance: 'Balans',
+        withdrawBalance: 'Balans',
+        dailyAds: 'Günlük Reklamlar',
+        adReward: (r) => `Hər reklama görə ${r} qazanın`, 
+        watched: 'İzlənən',
+        maximum: 'Maksimum',
+        maxCount: '100',
+        progressText: 'İrəliləyiş: ',
+        watchAd: 'Reklam İzle',
+        adLimitReached: '📣 Gündəlik limitə çatdınız!',
+        watching: 'İzlənir...',
+        rewardAdded: (r) => `✅ ${r} əlavə olundu!`, 
+        wait: '⏳ {s}s gözləyin',
+        premiumTask: 'Premium Tapşırıq',
+        bonusTask: 'Bonus Tapşırıq',
+        sponsorTask: 'Sponsor Tapşırıq',
+        taskReward1: (r) => `Kanala qoşul və ${r} qazan!`,
+        taskReward2: (r) => `Qrupa qoşul və ${r} qazan!`,
+        taskReward3: (r) => `Kanala qoşul və ${r} qazan!`,
+        taskReward4: (r) => `Kanala qoşul və ${r} qazan!`,
+        joinChannel: 'Kanala Qoşul',
+        joinGroup: 'Qrupa Qoşul',
+        withdrawTitle: 'Çıxarış',
+        bankCard: 'Bank Kartı',
+        back: 'Geri',
+        withdraw: 'Çıxarış Et',
+        methodError: 'Metod seçin',
+        detailsError: 'Detalları daxil edin',
+        amountError: 'Məbləği düzgün daxil edin',
+        minAmount: (min) => `Minimum məbləğ ${min}`, 
+        balanceError: 'Balans kifayət etmir',
+        withdrawSuccess: '✅ Çıxarış göndərildi! 48 saat ərzində yerinə yetiriləcək.',
+        home: 'Ev',
+        tasks: 'Görevler',
+        referral: 'Referans',
+        wallet: 'Cüzdan',
+        referralTitle: 'Referans',
+        referralInfo1: '⭐ Qeyd: Referans ödülü yoxdur.',
+        referralInfo2: 'Çıxarış etdiyinizdə linkinizdən bota qatılan istifadəçilərə baxılacaq. Pulunuz **Bonuslu** olaraq göndəriləcək.',
+        yourRefLink: 'Referans Linkiniz',
+        copy: 'Kopyala',
+        copied: 'Kopyalandı!',
+        copyFailed: 'Kopyalama uğursuz oldu!', /* Yeni əlavə edildi */
+        placeholderDetails_m10: '10 rəqəmli nömrə',
+        placeholderDetails_azercell: '050xxxxxxx',
+        placeholderDetails_bakcell: '055xxxxxxx',
+        placeholderDetails_nar: '070xxxxxxx',
+        placeholderDetails_bank: '16 rəqəmli kart nömrəsi',
+        placeholderDetails_usdt: 'TON adresi',
+        placeholderAmount: 'Məbləğ',
+        completed: 'Tamamlandı', 
+        taskSuccess: (r) => `✅ Tapşırıq tamamlandı! ${r} əlavə olundu.`, // YENİ TƏRCÜMƏ AÇARI
+    },
+    'en': {
+        pageTitle: 'Earn AZ',
+        loading: 'Loading...',
+        currentBalance: 'Balance',
+        withdrawBalance: 'Balance',
+        dailyAds: 'Daily Ads',
+        adReward: (r) => `Earn ${r} for each ad`, 
+        watched: 'Watched',
+        maximum: 'Maximum',
+        maxCount: '100',
+        progressText: 'Progress: ',
+        watchAd: 'Watch Ad',
+        adLimitReached: '📣 Daily limit reached!',
+        watching: 'Watching...',
+        rewardAdded: (r) => `✅ ${r} added!`, 
+        wait: '⏳ {s}s wait',
+        premiumTask: 'Premium Task',
+        bonusTask: 'Bonus Task',
+        sponsorTask: 'Sponsor Task',
+        taskReward1: (r) => `Join channel and earn ${r}!`,
+        taskReward2: (r) => `Join group and earn ${r}!`,
+        taskReward3: (r) => `Join channel and earn ${r}!`,
+        taskReward4: (r) => `Join channel and earn ${r}!`,
+        joinChannel: 'Join Channel',
+        joinGroup: 'Join Group',
+        withdrawTitle: 'Withdrawal',
+        bankCard: 'Bank Card',
+        back: 'Back',
+        withdraw: 'Withdraw',
+        methodError: 'Select a method',
+        detailsError: 'Enter details',
+        amountError: 'Enter correct amount',
+        minAmount: (min) => `Minimum amount ${min}`,
+        balanceError: 'Insufficient balance',
+        withdrawSuccess: '✅ Withdrawal sent! It will be executed within 48 hours.',
+        home: 'Home',
+        tasks: 'Tasks',
+        referral: 'Referral',
+        wallet: 'Wallet',
+        referralTitle: 'Referral',
+        referralInfo1: '⭐ Note: There is no referral reward.',
+        referralInfo2: 'When you withdraw, users who joined the bot through your link will be checked. Your money will be sent as a **Bonus**.',
+        yourRefLink: 'Your Referral Link',
+        copy: 'Copy',
+        copied: 'Copied!',
+        copyFailed: 'Copy failed!', /* Yeni əlavə edildi */
+        placeholderDetails_m10: '10 digit M10 number',
+        placeholderDetails_azercell: '050xxxxxxx',
+        placeholderDetails_bakcell: '055xxxxxxx',
+        placeholderDetails_nar: '070xxxxxxx',
+        placeholderDetails_bank: '16 digit card number',
+        placeholderDetails_usdt: 'TON address',
+        placeholderAmount: 'Amount',
+        completed: 'Completed', 
+        taskSuccess: (r) => `✅ Task completed! ${r} added.`, // YENİ TƏRCÜMƏ AÇARI
+    },
+    'tr': {
+        pageTitle: 'Kazan AZ',
+        loading: 'Yükleniyor...',
+        currentBalance: 'Bakiye',
+        withdrawBalance: 'Bakiye',
+        dailyAds: 'Günlük Reklamlar',
+        adReward: (r) => `Her reklam için ${r} kazanın`, 
+        watched: 'İzlenen',
+        maximum: 'Maksimum',
+        maxCount: '100',
+        progressText: 'İlerleme: ',
+        watchAd: 'Reklam İzle',
+        adLimitReached: '📣 Günlük sınıra ulaştınız!',
+        watching: 'İzleniyor...',
+        rewardAdded: (r) => `✅ ${r} eklendi!`, 
+        wait: '⏳ {s}sn bekleyin',
+        premiumTask: 'Premium Görev',
+        bonusTask: 'Bonus Görev',
+        sponsorTask: 'Sponsor Görevi',
+        taskReward1: (r) => `Kanala katıl ve ${r} kazan!`,
+        taskReward2: (r) => `Gruba katıl ve ${r} kazan!`,
+        taskReward3: (r) => `Kanala katıl ve ${r} kazan!`,
+        taskReward4: (r) => `Kanala katıl ve ${r} kazan!`,
+        joinChannel: 'Kanala Katıl',
+        joinGroup: 'Gruba Katıl',
+        withdrawTitle: 'Para Çekme',
+        bankCard: 'Banka Kartı',
+        back: 'Geri',
+        withdraw: 'Para Çek',
+        methodError: 'Yöntem seçin',
+        detailsError: 'Bilgileri girin',
+        amountError: 'Miktarı doğru girin',
+        minAmount: (min) => `Minimum miktar ${min}`,
+        balanceError: 'Yetersiz bakiye',
+        withdrawSuccess: '✅ Çekim talebi gönderildi! 48 saat içinde tamamlanacaktır.',
+        home: 'Ana Sayfa',
+        tasks: 'Görevler',
+        referral: 'Referans',
+        wallet: 'Cüzdan',
+        referralTitle: 'Referans',
+        referralInfo1: '⭐ Not: Referans ödülü yoktur.',
+        referralInfo2: 'Para çektiğinizde, linkiniz üzerinden bota katılan kullanıcılar kontrol edilecektir. Paranız **Bonuslu** olarak gönderilecektir.',
+        yourRefLink: 'Referans Bağlantınız',
+        copy: 'Kopyala',
+        copied: 'Kopyalandı!',
+        copyFailed: 'Kopyalama başarısız!', /* Yeni əlavə edildi */
+        placeholderDetails_m10: '10 haneli M10 numarası',
+        placeholderDetails_azercell: '050xxxxxxx',
+        placeholderDetails_bakcell: '055xxxxxxx',
+        placeholderDetails_nar: '070xxxxxxx',
+        placeholderDetails_bank: '16 haneli kart numarası',
+        placeholderDetails_usdt: 'TON adresi',
+        placeholderAmount: 'Miktar',
+        completed: 'Tamamlandı', 
+        taskSuccess: (r) => `✅ Görev tamamlandı! ${r} eklendi.`, // YENİ TƏRCÜMƏ AÇARI
+    },
+    'ru': { 
+        pageTitle: 'Заработок AZ',
+        loading: 'Загрузка...',
+        currentBalance: 'Баланс',
+        withdrawBalance: 'Баланс',
+        dailyAds: 'Ежедневная Реклама',
+        adReward: (r) => `Зарабатывайте ${r} за каждую рекламу`, 
+        watched: 'Просмотрено',
+        maximum: 'Максимум',
+        maxCount: '100',
+        progressText: 'Прогресс: ',
+        watchAd: 'Смотреть Рекламу',
+        adLimitReached: '📣 Достигнут дневной лимит!',
+        watching: 'Просмотр...',
+        rewardAdded: (r) => `✅ ${r} добавлено!`, 
+        wait: '⏳ {s}с ожидайте',
+        premiumTask: 'Премиум Задание',
+        bonusTask: 'Бонусное Задание',
+        sponsorTask: 'Спонсорское Задание',
+        taskReward1: (r) => `Подпишитесь на канал и заработайте ${r}!`,
+        taskReward2: (r) => `Присоединитесь к группе и заработайте ${r}!`,
+        taskReward3: (r) => `Подпишитесь на канал и заработайте ${r}!`,
+        taskReward4: (r) => `Подпишитесь на канал и заработайте ${r}!`,
+        joinChannel: 'Подписаться',
+        joinGroup: 'Вступить в Группу',
+        withdrawTitle: 'Вывод Средств',
+        bankCard: 'Банковская Карта',
+        back: 'Назад',
+        withdraw: 'Вывести',
+        methodError: 'Выберите способ',
+        detailsError: 'Введите данные',
+        amountError: 'Введите правильную сумму',
+        minAmount: (min) => `Минимальная сумма ${min}`,
+        balanceError: 'Недостаточно средств',
+        withdrawSuccess: '✅ Заявка отправлена! Будет исполнена в течение 48 часов.',
+        home: 'Главная',
+        tasks: 'Задания',
+        referral: 'Рефералы',
+        wallet: 'Кошелек',
+        referralTitle: 'Рефералы',
+        referralInfo1: '⭐ Примечание: Реферального вознаграждения нет.',
+        referralInfo2: 'При выводе средств будут проверены пользователи, присоединившиеся к боту по вашей ссылке. Ваши деньги будут отправлены как **Бонус**.',
+        yourRefLink: 'Ваша Реферальная Ссылка',
+        copy: 'Копировать',
+        copied: 'Скопировано!',
+        copyFailed: 'Сбой копирования!', /* Yeni əlavə edildi */
+        placeholderDetails_m10: '10-значный номер M10',
+        placeholderDetails_azercell: '050xxxxxxx',
+        placeholderDetails_bakcell: '055xxxxxxx',
+        placeholderDetails_nar: '070xxxxxxx',
+        placeholderDetails_bank: '16-значный номер карты',
+        placeholderDetails_usdt: 'TON адрес',
+        placeholderAmount: 'Сумма',
+        completed: 'Выполнено', 
+        taskSuccess: (r) => `✅ Задание выполнено! ${r} добавлено.`, // YENİ TƏRCÜMƏ AÇARI
+    }
+};
+
+let currentLang = localStorage.getItem('lang') || 'az';
+const USER_REF_CODE = generateRefCode(); // İstifadəçinin unikal 10 rəqəmli kodu
+
+const LIMIT = 100;
+const BAL_KEY='bal',COUNT_KEY='cnt',RESET_KEY='resetTime';
+const JOIN_KEY='joined',JOIN_KEY2='joined2',JOIN_KEY3='joined3',JOIN_KEY4='joined4'; 
+
+// YENİLƏNİB: Balansın oxunması və İlkin Balansın təyin edilməsi
+let bal = parseFloat(safeGet(BAL_KEY, -1)); // -1 ilkin olaraq oxunmasını göstərir
+
+// Əgər balans local storage-də yoxdursa və ya ilk dəfə açılırsa, 0.5 AZN ilə başla
+if (bal === -1 || isNaN(bal)) { 
+    bal = 0.50; // YENİLİK: Başlanğıc balansı 0.5 AZN
+    safeSet(BAL_KEY, bal);
+}
+
+let cnt=parseInt(safeGet(COUNT_KEY,0));
+let resetTime=safeGet(RESET_KEY,null);
+
+function getNextResetTime(){
+  const now=new Date();
+  const AZ_OFFSET=4;
+  let resetUTC=new Date(Date.UTC(
+    now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(),
+    23-AZ_OFFSET,0,0,0
+  ));
+  if(now.getTime()>resetUTC.getTime()){resetUTC.setUTCDate(resetUTC.getUTCDate()+1);}
+  return resetUTC.getTime();
+}
+
+if(!resetTime||Date.now()>resetTime){
+  cnt=0;
+  resetTime=getNextResetTime();
+  safeSet(RESET_KEY,resetTime);
+  safeSet(COUNT_KEY,cnt);
+}
+
+// Balansın və Valyutanın göstərilməsi
+function update(){
+  const lang = currentLang;
+  const rates = EXCHANGE_RATES;
+  const currencyInfo = CURRENCIES[lang];
+  
+  let mainBalance = bal;
+  let secondaryBalance = bal;
+  
+  let mainSymbol = currencyInfo.symbol;
+  let secondarySymbol = currencyInfo.secondarySymbol;
+  let secondaryText = currencyInfo.secondary;
+
+  let mainFormat = (val) => val.toFixed(4);
+  let secondaryFormat = (val) => val.toFixed(4);
+  
+  // Balansı cari dilin valyutasına çeviririk
+  if (lang === 'tr') {
+      mainBalance = bal * rates.AZN_TO_TRY;
+      secondaryBalance = bal * rates.AZN_TO_USD;
+      mainFormat = (val) => val.toFixed(2);
+      secondaryFormat = (val) => val.toFixed(4);
+  } else if (lang === 'en') {
+      mainBalance = bal * rates.AZN_TO_USD;
+      if (currencyInfo.secondary === 'AZN') {
+          secondaryBalance = bal; 
+      }
+      mainFormat = (val) => val.toFixed(4);
+      secondaryFormat = (val) => val.toFixed(4);
+  } else if (lang === 'ru') { 
+      mainBalance = bal * rates.AZN_TO_RUB;
+      secondaryBalance = bal * rates.AZN_TO_USD;
+      mainFormat = (val) => val.toFixed(2);
+      secondaryFormat = (val) => val.toFixed(4);
+  } else { // AZ
+      mainBalance = bal;
+      secondaryBalance = bal * rates.AZN_TO_USD;
+  }
+  
+  // Əsas balans
+  document.getElementById('balance').textContent = mainFormat(mainBalance);
+  document.getElementById('balance2').textContent = mainFormat(mainBalance);
+  document.getElementById('currencySymbol').textContent = mainSymbol;
+  document.getElementById('currencySymbol2').textContent = mainSymbol;
+  
+  // Köməkçi balans (USD/AZN)
+  document.getElementById('secondaryBalance').textContent = secondaryFormat(secondaryBalance);
+  document.getElementById('secondaryBalance2').textContent = secondaryFormat(secondaryBalance);
+  document.getElementById('secondaryCurrencySymbol').textContent = secondarySymbol;
+  document.getElementById('secondaryCurrencySymbol2').textContent = secondarySymbol;
+  document.getElementById('secondaryCurrencyText').textContent = secondaryText;
+  document.getElementById('secondaryCurrencyText2').textContent = secondaryText;
+
+  document.getElementById('adsCount').textContent=cnt;
+  document.getElementById('progress').style.width=(cnt/LIMIT*100)+'%';
+  const progressTextSpan = document.getElementById('progressTextSpan');
+  if(progressTextSpan) progressTextSpan.textContent = `${cnt}/${LIMIT}`;
+  safeSet(BAL_KEY,bal);
+  safeSet(COUNT_KEY,cnt);
+}
+
+// Tapşırıqlar düymələrini fərdi olaraq yeniləyən funksiya
+function updateTaskButtons() {
+    const t = TRANSLATIONS[currentLang];
+    
+    taskButtons.forEach((task, index) => {
+        const btn = document.getElementById(task.id);
+        if (!btn) return;
+
+        // Mükafat mətnini yenilə
+        const taskRewardKey = `taskReward${index + 1}`;
+        const localizedRewardText = getLocalizedTaskReward(currentLang, AZN_TASK_REWARDS[index]);
+        const rewardEl = btn.parentElement.querySelector(`p[data-translate-key="${taskRewardKey}"]`);
+        if (rewardEl) {
+            rewardEl.innerHTML = t[taskRewardKey](localizedRewardText);
+        }
+        
+        // LocalStorage-də tamamlanıbsa
+        if (localStorage.getItem(task.key)){
+            btn.classList.remove('waiting'); 
+            btn.classList.add('completed');
+            btn.textContent = t.completed;
+            btn.disabled = true; 
+        } else {
+            if (!btn.classList.contains('waiting')) {
+                 btn.classList.remove('completed');
+                 btn.disabled = false;
+                 
+                 const key = btn.getAttribute('data-translate-key');
+                 if(t[key]) {
+                     btn.textContent = t[key];
+                 }
+            }
+        }
+    });
+}
+
+// Minimum çıxarış məbləğini formatlayan funksiya
+function getLocalizedMinAmount(methodType, lang) {
+    const aznMin = AZN_MIN_WITHDRAW[methodType];
+    const currencyInfo = CURRENCIES[lang];
+    let minAmount = aznMin;
+    let format = (val) => val.toFixed(2); 
+
+    if (lang === 'tr') {
+        minAmount = aznMin * EXCHANGE_RATES.AZN_TO_TRY;
+    } else if (lang === 'en') {
+        minAmount = aznMin * EXCHANGE_RATES.AZN_TO_USD;
+        format = (val) => val.toFixed(4);
+    } else if (lang === 'ru') {
+        minAmount = aznMin * EXCHANGE_RATES.AZN_TO_RUB;
+    } else { // AZN üçün
+        format = (val) => val.toFixed(0); 
+    }
+    
+    return `${format(minAmount)} ${currencyInfo.symbol}`;
+}
+
+// Çıxarış forması üçün placeholder-ləri təyin edir
+function setPlaceholders(methodType) {
+    const t = TRANSLATIONS[currentLang];
+    const currency = CURRENCIES[currentLang].main;
+    
+    const localizedMinAmount = getLocalizedMinAmount(methodType, currentLang);
+    const minText = t.minAmount(localizedMinAmount);
+    
+    const detailsKey = `placeholderDetails_${methodType}`;
+    
+    details.placeholder = t[detailsKey] || '';
+    
+    const minTextOnly = localizedMinAmount.trim(); 
+    amount.placeholder = `${t.placeholderAmount} (${currency}) - ${minTextOnly}`;
+}
+
+// Tərcümələri tətbiq edir
+function applyTranslations(lang) {
+    const t = TRANSLATIONS[lang];
+    if (!t) return;
+
+    document.getElementById('pageTitle').textContent = t.pageTitle;
+    document.getElementById('currentLangDisplay').textContent = lang.toUpperCase(); 
+    document.getElementById('langArrow').textContent = '⬇️'; 
+
+    document.getElementById('langAzBtn').classList.remove('active');
+    document.getElementById('langEnBtn').classList.remove('active');
+    document.getElementById('langTrBtn').classList.remove('active');
+    document.getElementById('langRuBtn')?.classList.remove('active');
+    
+    const langBtnId = `lang${lang.charAt(0).toUpperCase() + lang.slice(1)}Btn`;
+    const activeBtn = document.getElementById(langBtnId);
+    if(activeBtn) {
+        activeBtn.classList.add('active');
+    }
+
+    const rewardInfo = getLocalizedReward(lang);
+    
+    document.querySelectorAll('[data-translate-key]').forEach(el => {
+        const key = el.getAttribute('data-translate-key');
+        if (typeof t[key] === 'function') {
+             // Reklam mükafatı
+             if (key === 'adReward') {
+                const formattedRewardText = `<b>${rewardInfo.formattedReward} ${rewardInfo.symbol}</b>`;
+                el.innerHTML = t[key](formattedRewardText);
+             } 
+
+        } else if (t[key]) {
+            el.innerHTML = t[key];
+        }
+    });
+    
+    // Tapşırıq mükafatlarını yenilə
+    updateTaskButtons(); 
+
+    // Çıxarış metodları üzərindəki minimum məbləğləri yenilə
+    document.querySelectorAll('.min-withdraw-label').forEach(label => {
+        const methodType = label.getAttribute('data-min-key');
+        if (methodType) {
+            label.textContent = getLocalizedMinAmount(methodType, lang);
+        }
+    });
+    
+    // Referans linkini yenilə
+    updateReferralLink();
+    
+    const progressTextSpan = document.getElementById('progressTextSpan');
+    if(progressTextSpan) {
+        progressTextSpan.textContent = `${cnt}/${LIMIT}`;
+    }
+    
+    update(); // Valyutaları yenilə
+
+    document.querySelectorAll('.menu button').forEach(button => {
+        const key = button.getAttribute('data-translate-key');
+        if (key && t[key]) {
+            button.textContent = t[key];
+        }
+    });
+    
+    if (document.getElementById('form').style.display === 'block' && type) {
+        setPlaceholders(type);
+    }
+}
+
+// Açılan menyu funksiyası
+function toggleDropdown() {
+    const dropdown = document.getElementById('langDropdown');
+    dropdown.classList.toggle('show');
+    document.getElementById('langArrow').textContent = dropdown.classList.contains('show') ? '▲' : '⬇️'; 
+}
+
+function setLang(lang) {
+    currentLang = lang;
+    localStorage.setItem('lang', lang);
+    
+    document.getElementById('langArrow').textContent = ''; 
+    
+    applyTranslations(lang);
+    toggleDropdown(); 
+}
+
+// Reklam düyməsi Funksiyası
+const adBtn=document.getElementById('adBtn'), msg=document.getElementById('msg');
+adBtn.onclick=()=>{
+  const t = TRANSLATIONS[currentLang];
+  const rewardInfo = getLocalizedReward(currentLang);
+  
+  if(cnt>=LIMIT){ msg.textContent=t.adLimitReached; return; }
+  
+  adBtn.disabled=true; 
+  adBtn.classList.add('waiting');
+  
+  let s=10; // Geri sayım saniyəsi
+  
+  // Mesaj və Timer Barı ilkin vəziyyətdə göstər
+  msg.innerHTML=`<span>${t.wait.replace('{s}', s)}</span><div id="timerBar" class="timer-bar-container"></div>`;
+
+  // Reklamı göstər (mümkünsə)
+  try{if(typeof show_10024800==='function'){show_10024800();}}catch(e){} 
+  
+  let rewarded = false; 
+
+  const tInterval=setInterval(()=>{
+    s--;
+    const timerBar=document.getElementById('timerBar');
+    
+    if(timerBar){
+        const progressPercentage = (10 - s) / 10 * 100;
+        // YENİLİK: Qırmızı gradientə uyğun rəngləmə
+        const color = `hsl(0, ${95 - (10 - s) * 5}%, 50%)`; 
+        
+        timerBar.style.width=`${progressPercentage}%`;
+        timerBar.style.background=`linear-gradient(90deg, #ff416c, ${color})`; 
+        timerBar.style.boxShadow = `0 0 8px rgba(255, 65, 108, 0.6)`; 
+    }
+    
+    // PUL ƏLAVƏ EDİLMƏSİ (1 saniyə keçdikdə, yəni s==9 olanda)
+    if(s === 9 && !rewarded) { 
+        bal+=AZN_REWARD; // Balans həmişə AZN ilə artırılır
+        cnt++; 
+        update(); 
+        rewarded = true; 
+        
+        // Mükafat mesajını yaradırıq
+        const rewardMsgElement = document.createElement('div');
+        const formattedRewardText = `<b>${rewardInfo.formattedReward} ${rewardInfo.symbol}</b>`;
+        rewardMsgElement.innerHTML = t.rewardAdded(formattedRewardText);
+        rewardMsgElement.style.marginTop = '10px';
+        rewardMsgElement.style.fontWeight = 'bold';
+        rewardMsgElement.id = 'rewardMsg';
+        msg.appendChild(rewardMsgElement); 
+        
+        // MÜKAFAT MESAJININ GİZLƏDİLMƏSİ (2 saniyə sonra)
+        setTimeout(() => {
+            const currentRewardMsg = document.getElementById('rewardMsg');
+            if (currentRewardMsg) {
+                 currentRewardMsg.remove();
+            }
+        }, 2000); // 2000ms = 2 saniyə
+    }
+    
+    // Geri sayım mətnini yeniləyirik
+    const msgSpan = msg.querySelector('span');
+    if (msgSpan) msgSpan.textContent = t.wait.replace('{s}', s);
+    
+    // 10 saniyə bitdikdə
+    if(s<=0){
+      clearInterval(tInterval);
+      
+      adBtn.disabled=false;
+      adBtn.classList.remove('waiting');
+      
+      msg.textContent = ''; 
+    }
+  },1000);
+};
+
+// YENİLİK: Bildirişi göstərən funksiya
+const taskNotification = document.getElementById('taskNotification');
+const taskNotificationText = document.getElementById('taskNotificationText');
+
+function showTaskNotification(message) {
+    taskNotificationText.innerHTML = message;
+    
+    // Köhnə sinifləri təmizlə
+    taskNotification.classList.remove('notification-hide');
+    taskNotification.classList.remove('notification-show');
+    
+    // Animasiyanı başlat
+    taskNotification.classList.add('notification-show');
+    
+    // 3 saniyə sonra gizlət
+    setTimeout(() => {
+        taskNotification.classList.remove('notification-show');
+        taskNotification.classList.add('notification-hide');
+    }, 3000);
+}
+
+// --- TAPŞIRIQLAR FUNKSİYALARI ---
+const taskButtons = [
+    { id: 'joinBtn', key: JOIN_KEY, reward: AZN_TASK_REWARDS[0], url: 'https://t.me/qazancazicmasi' },
+    { id: 'joinBtn2', key: JOIN_KEY2, reward: AZN_TASK_REWARDS[1], url: 'https://t.me/qazancazchat' },
+    { id: 'joinBtn3', key: JOIN_KEY3, reward: AZN_TASK_REWARDS[2], url: 'https://t.me/turaldevelopers' },
+    { id: 'joinBtn4', key: JOIN_KEY4, reward: AZN_TASK_REWARDS[3], url: 'https://t.me/ads_reklam69' }
+];
+
+// Bütün tapşırıqları dövr edib klik funksiyasını əlavə edirik
+taskButtons.forEach(task => {
+    const btn = document.getElementById(task.id);
+    if (!btn) return;
+    
+    // Yüklənmə zamanı ilkin yoxlama
+    if (localStorage.getItem(task.key)){
+        const completedText = TRANSLATIONS[currentLang].completed;
+        btn.classList.add('completed');
+        btn.textContent = completedText;
+        btn.disabled=true;
+    }
+    
+    btn.onclick = () => {
+        if (localStorage.getItem(task.key) || btn.disabled) {
+            return; 
+        }
+        
+        const t = TRANSLATIONS[currentLang];
+
+        window.open(task.url, '_blank');
+        
+        btn.disabled = true;
+        btn.classList.add('waiting'); 
+        btn.textContent = t.wait.replace('{s}', '3');
+        
+        setTimeout(() => {
+            
+            // Balans həmişə AZN ilə artırılır
+            bal += task.reward; 
+            safeSet(BAL_KEY, bal);
+            
+            localStorage.setItem(task.key, '1');
+            
+            update();
+            
+            btn.classList.remove('waiting');
+            btn.classList.add('completed');
+            btn.textContent = t.completed;
+            btn.disabled = true;
+            
+            const localizedRewardText = getLocalizedTaskReward(currentLang, task.reward);
+
+            // YENİLİK: ANİMASİYALI BİLDİRİŞİ GÖSTƏRİRİK
+            showTaskNotification(t.taskSuccess(localizedRewardText));
+            
+        }, 3000); // 3000ms = 3 saniyə
+    };
+});
+
+
+// --- REFERANS FUNKSİYALARI ---
+const refLinkDisplay = document.getElementById('referralLinkDisplay');
+const copyBtn = document.getElementById('copyRefLinkBtn');
+const copyMessage = document.getElementById('copyMessage');
+
+function updateReferralLink() {
+    // Sizin istəyinizə uyğun link bazası (https://t.me/qazancazbot?startapp=)
+    const baseUrl = refLinkDisplay.getAttribute('data-ref-base'); 
+    
+    // Unikal 10 rəqəmli kod (səhifə yenilənsə də dəyişməyən)
+    const fullLink = baseUrl + USER_REF_CODE; 
+    
+    refLinkDisplay.textContent = fullLink;
+}
+
+// YENİLƏNMİŞ KOPYALAMA FUNKSİYASI (Navigator API + Fallback)
+async function fallbackCopyTextToClipboard(text, t) {
+    const textArea = document.createElement("textarea");
+    textArea.value = text;
+
+    // Görünməz et
+    textArea.style.position = "fixed";
+    textArea.style.top = 0;
+    textArea.style.left = 0;
+    textArea.style.width = '2em';
+    textArea.style.height = '2em';
+    textArea.style.padding = 0;
+    textArea.style.border = 'none';
+    textArea.style.outline = 'none';
+    textArea.style.boxShadow = 'none';
+    textArea.style.background = 'transparent';
+
+    document.body.appendChild(textArea);
+    textArea.focus();
+    textArea.select();
+
+    try {
+        const successful = document.execCommand('copy');
+        document.body.removeChild(textArea);
+        if (successful) {
+            return true;
+        } else {
+            throw new Error('execCommand failed');
+        }
+    } catch (err) {
+        document.body.removeChild(textArea);
+        console.error('Fallback Kopyalama Uğursuz Oldu:', err);
+        return false;
+    }
+}
+
+copyBtn.onclick = async () => {
+    const fullLink = refLinkDisplay.textContent;
+    const t = TRANSLATIONS[currentLang];
+    let success = false;
+    
+    // 1. Standart Navigator API ilə cəhd
+    if (navigator.clipboard && window.isSecureContext) {
+        try {
+            await navigator.clipboard.writeText(fullLink);
+            success = true;
+        } catch (err) {
+            console.error('Navigator Kopyalama Uğursuz Oldu, Fallback istifadə edilir:', err);
+        }
+    }
+    
+    // 2. Əgər 1-ci cəhd uğursuz olarsa, Fallback-i cəhd et
+    if (!success) {
+        success = await fallbackCopyTextToClipboard(fullLink, t);
+    }
+    
+    if (success) {
+        copyMessage.textContent = t.copied;
+        copyMessage.style.display = 'block';
+        copyMessage.style.backgroundColor = '#d1e7dd';
+        copyMessage.style.color = '#0f5132';
+    } else {
+        copyMessage.textContent = t.copyFailed;
+        copyMessage.style.display = 'block';
+        copyMessage.style.backgroundColor = '#f8d7da';
+        copyMessage.style.color = '#842029';
+    }
+
+    setTimeout(() => {
+        copyMessage.style.display = 'none';
+    }, 2000);
+};
+
+
+// Səhifə Naviqasiyası
+function showPage(id, btn){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.querySelectorAll('.menu button').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  
+  // Dil dəyişəndə naviqasiya panelindəki yazılar sıxılmasın deyə bu funksiyaları çağırırıq.
+  if (id === 'tasksPage') {
+    updateTaskButtons();
+  } else if (id === 'referralPage') {
+    updateReferralLink();
+  }
+}
+
+// Cüzdan çıxarış sistemi
+const methods = document.querySelectorAll('.method');
+const form = document.getElementById('form');
+const details = document.getElementById('details');
+const amount = document.getElementById('amount');
+const alertBox = document.getElementById('alert');
+let type = '';
+
+methods.forEach(m=>{
+  m.onclick=()=>{
+    type=m.dataset.type;
+    document.getElementById('methods').style.display='none';
+    form.style.display='block';
+    setPlaceholders(type);
+    details.value='';
+    amount.value='';
+    alertBox.style.display='none';
+  };
+});
+
+document.getElementById('backBtn').onclick=()=>{
+  form.style.display='none';
+  document.getElementById('methods').style.display='flex';
+  alertBox.style.display='none';
+  type='';
+};
+
+document.getElementById('withdrawBtn').onclick=()=>{
+  const det = details.value.trim();
+  const amt = parseFloat(amount.value);
+  alertBox.style.display='none';
+  const t = TRANSLATIONS[currentLang];
+  const currencyInfo = CURRENCIES[currentLang];
+
+  if(!type){ showErr(t.methodError); return; }
+  if(!det){ showErr(t.detailsError); return; }
+  if(isNaN(amt) || amt <= 0){ showErr(t.amountError); return; }
+  
+  // Minimal məbləği cari valyutaya çevir
+  const aznMin = AZN_MIN_WITHDRAW[type];
+  let minAmount = aznMin;
+  
+  if (currentLang === 'tr') {
+    minAmount = aznMin * EXCHANGE_RATES.AZN_TO_TRY;
+  } else if (currentLang === 'en') {
+    minAmount = aznMin * EXCHANGE_RATES.AZN_TO_USD;
+  } else if (currentLang === 'ru') {
+    minAmount = aznMin * EXCHANGE_RATES.AZN_TO_RUB;
+  }
+  
+  // Cari balansı cari valyutaya çevir
+  let currentBalanceInLang = bal; 
+  if (currentLang === 'tr') {
+      currentBalanceInLang = bal * EXCHANGE_RATES.AZN_TO_TRY;
+  } else if (currentLang === 'en') {
+      currentBalanceInLang = bal * EXCHANGE_RATES.AZN_TO_USD;
+  } else if (currentLang === 'ru') {
+      currentBalanceInLang = bal * EXCHANGE_RATES.AZN_TO_RUB;
+  }
+  
+  let format = (val) => val.toFixed(2);
+  if (currentLang === 'en') format = (val) => val.toFixed(4);
+
+  // Minimum limit yoxlaması
+  if(amt < minAmount){ showErr(t.minAmount(getLocalizedMinAmount(type, currentLang))); return; }
+  
+  // Balans yoxlaması
+  if(amt > currentBalanceInLang){ showErr(t.balanceError); return; }
+
+  // Çıxarılacaq məbləği AZN-ə çevir (Çünki balans AZN-də saxlanılır)
+  let withdrawalAmountInAZN = amt;
+  if (currentLang === 'tr') {
+    withdrawalAmountInAZN = amt / EXCHANGE_RATES.AZN_TO_TRY;
+  } else if (currentLang === 'en') {
+    withdrawalAmountInAZN = amt / EXCHANGE_RATES.AZN_TO_USD;
+  } else if (currentLang === 'ru') {
+    withdrawalAmountInAZN = amt / EXCHANGE_RATES.AZN_TO_RUB;
+  }
+
+  // Çıxarışın göndərilməsi simulyasiyası
+  bal -= withdrawalAmountInAZN; // AZN-də çıxarış
+  safeSet(BAL_KEY,bal);
+  update();
+
+  alertBox.textContent=t.withdrawSuccess;
+  alertBox.className='alert success';
+  alertBox.style.display='block';
+
+  // Formanı bağla və metodları geri göstər
+  setTimeout(()=>{
+    form.style.display='none';
+    document.getElementById('methods').style.display='flex';
+    alertBox.style.display='none';
+    type='';
+  }, 2000);
+  
+};
+
+function showErr(msg){
+  alertBox.textContent=msg;
+  alertBox.className='alert error';
+  alertBox.style.display='block';
+}
+
+// --- İLKİN YÜKLƏNMƏ VƏ LOADING SCREEN MƏNTİQİ ---
+
+// Funksionallığı yüklə
+update();
+applyTranslations(currentLang); 
+updateReferralLink();
+
+// Loading Screen-i 3 saniyədən sonra bağla
+setTimeout(()=>{
+  const s=document.getElementById("loadingScreen");
+  s.style.opacity="0";
+  setTimeout(()=>s.style.display="none",700);
+},3000);
+</script>
+</body>
+</html>
