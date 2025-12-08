@@ -518,7 +518,7 @@ body{
         
         <h3 style="font-size:16px; margin-bottom:10px; color:var(--text-dark);" data-translate-key="yourRefLink">Referans Linkiniz</h3>
         <div class="referral-link-container">
-            <span id="referralLinkDisplay" data-ref-base="https://t.me/qazancazbot?startapp=" data-ref-code="1234567890"></span>
+            <span id="referralLinkDisplay" data-ref-base="https://t.me/qazancazbot?start=" data-ref-code="1234567890"></span>
             
             <button id="copyRefLinkBtn" data-translate-key="copy">Kopyala</button>
         </div>
@@ -1334,7 +1334,7 @@ const copyBtn = document.getElementById('copyRefLinkBtn');
 const copyMessage = document.getElementById('copyMessage');
 
 function updateReferralLink() {
-    // Sizin istəyinizə uyğun link bazası (https://t.me/qazancazbot?startapp=)
+    // Sizin istəyinizə uyğun link bazası (https://t.me/qazancazbot?start=)
     const baseUrl = refLinkDisplay.getAttribute('data-ref-base'); 
     
     // Unikal 10 rəqəmli kod (səhifə yenilənsə də dəyişməyən)
