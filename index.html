@@ -91,6 +91,8 @@ body{
     margin-right: 10px;
     opacity: 0.9;
     transition: color 0.3s;
+    /* Əgər istifadəçi adı yoxdursa, solda yer tutur, lakin boş qalır */
+    /* display:none; JavaScript tərəfindən idarə olunur */
 }
 .username-navbar-display .icon {
     font-size: 16px;
@@ -106,6 +108,8 @@ body{
     display: flex;
     gap: 10px; /* Düymələr arasında boşluq */
     align-items: center;
+    /* SAĞA YIĞILMASINI TƏMİN EDİR (Flex container daxilində) */
+    margin-left: auto; 
 }
 
 /* DİL VƏ TEMA Düymələrinin ÜMUMİ Stili */
@@ -266,10 +270,18 @@ body{
 }
 /* Profil Kartı Stili Sonu */
 
-/* Metod Siyahısı */
-.method-list{display:flex;flex-wrap:wrap;gap:10px;margin:12px 0;justify-content:space-between;}
+/* Metod Siyahısı - DİL DƏYİŞƏNDƏ YERLƏŞMƏ PROBLEMLƏRİNİ HƏLL ETMƏK ÜÇÜN DÜZƏLİŞ */
+.method-list{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    margin:12px 0;
+    justify-content:space-between;
+}
 .method{
-    flex:1 1 calc(50% - 10px);
+    /* Flex-grow 1: Qalan yeri doldurur. Flex-shrink 1: Mümkün olduqda kiçilir. */
+    /* calc(50% - 5px) HƏR ZAMAN 2 SÜTUN QALMASINI TƏMİN EDİR (50% - yarım gap) */
+    flex:1 1 calc(50% - 5px); 
     padding:14px;
     border-radius:14px;
     background:linear-gradient(90deg,var(--btn-gradient-start),var(--btn-gradient-end)); 
@@ -284,6 +296,9 @@ body{
     justify-content: center;
     height: 100px;
     position: relative;
+    /* Mətnin daşmasının qarşısını alır */
+    word-break: break-word; 
+    overflow: hidden; 
 }
 .method:hover{transform:scale(1.03);box-shadow:0 0 10px rgba(0,0,0,0.2);}
 .method-logo{
@@ -294,6 +309,8 @@ body{
     object-fit: contain; 
     background-color: #fff;
     padding: 4px; 
+    /* Logo üçün dəyişməz ölçü */
+    flex-shrink: 0; 
 }
 .method-logo.bank-logo {
     border-radius: 6px; 
@@ -301,6 +318,9 @@ body{
 }
 .method-text {
     font-size: 14px;
+    /* Mətnin daşmasının qarşısını alır */
+    overflow: hidden;
+    text-overflow: ellipsis; 
 }
 .min-withdraw-label {
     position: absolute;
@@ -694,7 +714,7 @@ body{
       <div class="profile-stats-grid">
         <div class="profile-stat">
             <span class="profile-icon">👀</span>
-            <span class="profile-stat-value" id="totalAdsCount">0</span>
+            <span class="profile-stat-value" id="totalAdsCount">0</span> 
             <span class="profile-stat-label" data-translate-key="totalAds">Toplam İzlənən Reklam</span>
         </div>
         
@@ -1219,6 +1239,7 @@ const LIMIT = 100;
 const BAL_KEY='bal',COUNT_KEY='cnt',RESET_KEY='resetTime';
 const JOIN_KEY='joined',JOIN_KEY2='joined2',JOIN_KEY3='joined3',JOIN_KEY4='joined4'; 
 
+// "Əvvəldən izlədikləri" üçün açarlar
 const TOTAL_ADS_KEY = 'totalAdsWatched';
 const TOTAL_EARNED_KEY = 'totalAZNEarned';
 
@@ -1229,7 +1250,9 @@ if (bal === -1 || isNaN(bal)) {
     safeSet(BAL_KEY, bal);
 }
 
+// Bütün zamanlar üçün izlənilən reklam sayı
 let totalAds = parseInt(safeGet(TOTAL_ADS_KEY, 0));
+// Bütün zamanlar üçün qazanc (ilkin balans daxil olmaqla)
 let totalEarned = parseFloat(safeGet(TOTAL_EARNED_KEY, bal)); 
 
 let cnt=parseInt(safeGet(COUNT_KEY,0));
@@ -1339,14 +1362,18 @@ function updateProfileStats() {
     });
 
     const currencyInfo = CURRENCIES[currentLang];
-    const totalEarnedInLang = (totalEarned * (currentLang === 'tr' ? EXCHANGE_RATES.AZN_TO_TRY : 
+    const totalEarnedInAZN = totalEarned; // totalEarned AZN-də saxlanılır
+    
+    // Total Earned cari dildə göstərilir
+    const totalEarnedInLang = (totalEarnedInAZN * (currentLang === 'tr' ? EXCHANGE_RATES.AZN_TO_TRY : 
                                                currentLang === 'en' ? EXCHANGE_RATES.AZN_TO_USD :
                                                currentLang === 'ru' ? EXCHANGE_RATES.AZN_TO_RUB : 1));
                                                
     let format = (val) => currentLang === 'en' ? val.toFixed(4) : val.toFixed(2);
     if (currentLang === 'az') format = (val) => val.toFixed(2); 
 
-    document.getElementById('totalAdsCount').textContent = totalAds.toLocaleString('az-AZ');
+    // İstifadəçinin bütün izlədiyi reklam sayı
+    document.getElementById('totalAdsCount').textContent = totalAds.toLocaleString('az-AZ'); 
     document.getElementById('completedTasksCount').textContent = completedTasks.toLocaleString('az-AZ');
     document.getElementById('totalEarnedAmount').textContent = `${format(totalEarnedInLang)} ${currencyInfo.symbol}`;
 
@@ -1365,7 +1392,7 @@ function updateUsernameDisplay() {
         display.textContent = `@${savedUsername}`;
         card.style.display = 'flex';
     } else {
-        // Əgər ad yoxdursa, Navbarda da gizlədirik
+        // Əgər ad yoxdursa, Navbarda gizlədirik
         card.style.display = 'none';
     }
 }
@@ -1481,6 +1508,7 @@ function applyTranslations(lang) {
     
     updateTaskButtons(); 
 
+    // Çıxarış metodlarının minimum məbləğlərini yenilə
     document.querySelectorAll('.min-withdraw-label').forEach(label => {
         const methodType = label.getAttribute('data-min-key');
         if (methodType) {
@@ -1563,9 +1591,9 @@ adBtn.onclick=()=>{
     // PUL ƏLAVƏ EDİLMƏSİ (1 saniyə keçdikdə, yəni s==9 olanda)
     if(s === 9 && !rewarded) { 
         bal+=AZN_REWARD; 
-        totalEarned += AZN_REWARD; 
+        totalEarned += AZN_REWARD; // Total qazanca əlavə et
         cnt++; 
-        totalAds++; 
+        totalAds++; // Total izlənilən reklama əlavə et
         update(); 
         rewarded = true; 
         
@@ -1658,7 +1686,7 @@ taskButtons.forEach(task => {
         setTimeout(() => {
             
             bal += task.reward; 
-            totalEarned += task.reward; 
+            totalEarned += task.reward; // Total qazanca əlavə et
             safeSet(BAL_KEY, bal);
             safeSet(TOTAL_EARNED_KEY, totalEarned);
             
