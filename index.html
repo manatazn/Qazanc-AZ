@@ -4,7 +4,7 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
 <title id="pageTitle">Qazanc AZ</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 <script src="//libtl.com/sdk.js" data-zone="10024800" data-sdk="show_10024800"></script>
 <style>
 /* --- RƏNG DƏYİŞƏNLƏRİ (VARS) --- */
@@ -19,7 +19,8 @@
   --accent: #FF0000; 
   --menu-bg: rgba(255, 255, 255, 0.15);
   --progress-bg: rgba(0, 0, 0, 0.08);
-  --input-text: #1B1B1B; /* Input mətni üçün */
+  --input-text: #1B1B1B; 
+  --modal-bg: rgba(255, 255, 255, 0.95); /* Modal fonu */
 
   /* Qırmızı Gradientlər */
   --btn-gradient-start: #FF416C; 
@@ -28,7 +29,7 @@
   --secondary-btn-gradient-start: #ffc371; 
   --secondary-btn-gradient-end: #ff5f6d; 
   
-  /* YENİ: Bildiriş rəngləri */
+  /* Bildiriş rəngləri */
   --notification-bg: #2ecc71; /* Yaşıl */
   --notification-text: #ffffff; 
 }
@@ -44,8 +45,9 @@ body.dark-theme {
   --accent: #FF4B2B; 
   --menu-bg: rgba(0, 0, 0, 0.3);
   --progress-bg: rgba(255, 255, 255, 0.15);
-  --input-text: #ffffff; /* Qaranlıq temada input mətni ağ olsun */
-  --notification-bg: #27ae60; /* Bir az tünd yaşıl */
+  --input-text: #ffffff; 
+  --modal-bg: rgba(30, 30, 30, 0.95); /* Modal fonu */
+  --notification-bg: #27ae60; 
 }
 
 /* --- ÜMUMİ STİLLƏR --- */
@@ -68,16 +70,45 @@ body{
   100%{background-position:0% 50;}
 }
 
-/* Yuxarı boşluğu azaltmaq */
 .container{max-width:480px;margin:auto;padding:20px;padding-top:20px;} 
 
 /* DİL VƏ TEMA SEÇİMİ (YENİ DÜZƏNLƏMƏ) */
 .top-controls {
     display: flex;
-    justify-content: space-between; /* Sol və Sağ tərəfi ayırır */
+    justify-content: space-between; /* Elementləri kənarlara yığırıq */
     align-items: center;
     margin-bottom: 20px;
 }
+
+/* İstifadəçi Adı Navbar-da (SOL TƏRƏF) */
+.username-navbar-display {
+    display: flex;
+    align-items: center;
+    padding: 6px 0;
+    font-weight: 700;
+    color: var(--text-dark);
+    font-size: 14px; /* Kiçildildi */
+    margin-right: 10px;
+    opacity: 0.9;
+    transition: color 0.3s;
+}
+.username-navbar-display .icon {
+    font-size: 16px;
+    color: var(--accent);
+    margin-right: 5px;
+}
+.username-navbar-display span {
+    color: var(--accent);
+}
+
+/* TEMA VƏ DİL DÜYMƏLƏRİ (SAĞ TƏRƏF) */
+.right-controls {
+    display: flex;
+    gap: 10px; /* Düymələr arasında boşluq */
+    align-items: center;
+}
+
+/* DİL VƏ TEMA Düymələrinin ÜMUMİ Stili */
 .lang-switcher-container {
     position: relative;
 }
@@ -102,7 +133,6 @@ body{
     box-shadow: 0 4px 15px rgba(255,0,0,0.2);
 }
 
-/* Tema keçid simvolu üçün xüsusi stil */
 .theme-icon {
     font-size: 20px;
 }
@@ -148,7 +178,7 @@ body{
 @keyframes fadeIn{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
 
 /* Balans və Kart Dizaynı */
-.balance-card, .ad-card, .task-card, .referral-card{
+.balance-card, .ad-card, .task-card, .referral-card, .profile-card{
   background:var(--card-bg);
   border-radius:25px;
   padding:20px 18px;
@@ -162,6 +192,79 @@ body{
 .balance-card h3{font-size:16px;color:var(--accent);margin-bottom:8px;letter-spacing:0.5px;}
 .balance-card .amount{font-size:32px;font-weight:700;margin-top:5px;color:var(--text-dark);text-shadow:0 2px 5px rgba(0,0,0,0.1);}
 .balance-card .usd{font-size:14px;color:var(--text-dark);opacity:0.7;margin-top:4px;}
+
+/* Profil Kartı Stili (YENİLƏNMİŞ - DAHA BALACA VƏ GÖZƏL) */
+.profile-card {
+    text-align: left;
+}
+.profile-card h2 {
+    text-align: center;
+    font-size: 24px;
+    color: var(--accent);
+    margin-bottom: 25px;
+    font-weight: 800;
+}
+.profile-username-section {
+    text-align: center; 
+    margin-bottom: 25px;
+    background: var(--progress-bg); /* Yüngül fon əlavə edildi */
+    padding: 15px;
+    border-radius: 18px;
+}
+.profile-username-section h3 {
+    font-size: 14px; 
+    font-weight: 600; 
+    color: var(--text-dark); 
+    margin-bottom: 6px;
+    opacity: 0.8;
+}
+.profile-username-section p {
+    font-size: 20px; /* Bir az kiçildildi */
+    font-weight: 900; 
+    color: var(--accent);
+}
+
+.profile-stats-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* 2 bərabər sütun */
+    gap: 10px; /* Məsafə azaldıldı */
+}
+.profile-stat {
+    background: var(--progress-bg);
+    border-radius: 12px; /* Kiçildildi */
+    padding: 12px 8px; /* Kiçildildi */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    transition: transform 0.2s;
+}
+.profile-stat:hover {
+    transform: translateY(-2px);
+}
+.profile-stat-label {
+    font-size: 11px; /* Kiçildildi */
+    font-weight: 600;
+    color: var(--text-dark);
+    opacity: 0.7;
+    margin-top: 4px;
+}
+.profile-stat-value {
+    font-size: 18px; /* Kiçildildi */
+    font-weight: 800;
+    color: var(--accent);
+    margin-top: 2px;
+    line-height: 1;
+}
+.profile-stat-value.money {
+    font-size: 18px; /* Kiçildildi */
+}
+.profile-icon {
+    font-size: 20px; /* Kiçildildi */
+    color: var(--text-dark); 
+}
+/* Profil Kartı Stili Sonu */
 
 /* Metod Siyahısı */
 .method-list{display:flex;flex-wrap:wrap;gap:10px;margin:12px 0;justify-content:space-between;}
@@ -219,9 +322,7 @@ body{
 .task-card button{width:100%;margin-top:8px;padding:10px;font-size:13px;font-weight:700;border:none;border-radius:12px;background:linear-gradient(90deg,var(--secondary-btn-gradient-start),var(--secondary-btn-gradient-end)); 
     color:var(--text-light);cursor:pointer;transition:0.3s;}
 .task-card button:hover{transform:scale(1.03);box-shadow:0 0 20px rgba(255,95,109,0.6);}
-/* Düzəliş: Tamamlanmış düymənin CSS-i */
 .task-card button.completed{background:gray !important;box-shadow:none !important;cursor:not-allowed !important;pointer-events:none !important;opacity:0.55;}
-/* Gözləmə CSS-i */
 .task-card button.waiting {
     background: orange !important;
     cursor: wait !important;
@@ -244,28 +345,28 @@ body{
     left:50%;
     transform:translateX(-50%);
     width:92%;
-    max-width:450px; /* Maksimum genişlik əlavə etdik */
+    max-width:450px; 
     display:flex;
     justify-content:space-around;
     background:var(--menu-bg);
-    padding:8px 6px; /* Paddingi azaltdıq */
+    padding:8px 6px; 
     border-radius:22px;
     box-shadow:0 6px 20px rgba(0,0,0,.3);
     backdrop-filter:blur(8px);
 }
 .menu button{
-    flex:1 1 23%; /* Hər düyməyə bərabər yer ayırır */
-    margin:0 4px; /* Margin-i azaltdıq */
-    padding:10px 4px; /* Paddingi azaltdıq */
+    flex:1 1 20%; 
+    margin:0 4px; 
+    padding:10px 4px; 
     border:none;
     border-radius:16px;
     background:linear-gradient(90deg,var(--btn-gradient-start),var(--btn-gradient-end));
     color:var(--text-light);
-    font-weight:600; /* Font weight-i azaltdıq */
-    font-size: 11px; /* Font ölçüsünü kiçiltdik */
-    white-space: nowrap; /* Mətnin alt sətrə keçməsini önləyir */
-    overflow: hidden; /* Sığmayan hissəni gizlədir */
-    text-overflow: ellipsis; /* Sığmayan hissəyə ... əlavə edir */
+    font-weight:600; 
+    font-size: 11px; 
+    white-space: nowrap; 
+    overflow: hidden; 
+    text-overflow: ellipsis; 
     transition:0.3s;
 }
 .menu button.active{
@@ -281,11 +382,11 @@ body{
     border-radius:12px;
     border:1px solid var(--card-border);
     background:var(--card-bg);
-    color:var(--input-text); /* Tema dəyişəni ilə idarə olunur */
+    color:var(--input-text); 
 }
 #form input::placeholder {
     color: var(--input-text); 
-    opacity: 0.5; /* Placeholder-i bir az solğun et */
+    opacity: 0.5; 
 }
 #form button{width:100%;padding:14px;margin-top:8px;border:none;border-radius:14px;background:linear-gradient(90deg,var(--secondary-btn-gradient-start),var(--secondary-btn-gradient-end));color:var(--text-light);font-weight:700;cursor:pointer;}
 .alert{margin-top:6px;padding:10px;border-radius:10px;display:none;}
@@ -298,7 +399,6 @@ body{
   width: 0%;
   border-radius: 4px;
   margin-top: 6px;
-  /* Animasiya üçün yumşaq keçid - İndi barın dolmasını daha rəvan göstərəcək */
   transition: width 1s linear, background-color 0.5s, box-shadow 0.5s; 
 }
 
@@ -342,7 +442,7 @@ body{
     white-space: nowrap;
     color: var(--text-dark);
     font-weight: 600;
-    cursor: default; /* Toxunulmaz etmək */
+    cursor: default; 
 }
 #copyRefLinkBtn {
     padding: 12px 15px;
@@ -369,11 +469,11 @@ body{
     font-weight: 600;
 }
 
-/* YENİLİK: BAŞLANĞIC EKRAN STİLİ (AĞ/QIRMIZI) */
+/* BAŞLANĞIC EKRAN STİLİ */
 #loadingScreen{
     position:fixed;
     top:0; left:0;width:100%; height:100%;
-    background:linear-gradient(135deg, var(--bg-start), #ffc8c8); /* Ağdan solğun qırmızıya gradient */
+    background:linear-gradient(135deg, var(--bg-start), #ffc8c8); 
     display:flex;
     justify-content:center;
     align-items:center;
@@ -392,12 +492,12 @@ body{
 .loader-text{margin-top:14px;font-size:17px;color:#FF4B2B;letter-spacing:1px;animation:blink 1.4s infinite;}
 @keyframes blink{0%,100%{opacity:1;}50%{opacity:.5;}}
 
-/* YENİLİK: TAPŞIRIQ BİLDİRİŞİ ANİMASİYASI */
+/* TAPŞIRIQ BİLDİRİŞİ ANİMASİYASI */
 #taskNotification {
     position: fixed;
     top: 20px;
     left: 50%;
-    transform: translate(-50%, -100px); /* Başlanğıcda ekranın yuxarısından kənarda */
+    transform: translate(-50%, -100px); 
     background: var(--notification-bg);
     color: var(--notification-text);
     padding: 15px 25px;
@@ -407,18 +507,94 @@ body{
     font-size: 16px;
     opacity: 0;
     z-index: 10000;
-    transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Elastik effekt üçün cubic-bezier */
+    transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
 }
-/* Bildirişin görünməsi sinfi */
 .notification-show {
     opacity: 1 !important;
-    transform: translate(-50%, 0) !important; /* Yuxarıdan aşağıya gəlir */
+    transform: translate(-50%, 0) !important; 
 }
-/* Bildirişin gizlənməsi sinfi */
 .notification-hide {
     opacity: 0;
-    transform: translate(-50%, -100px); /* Geri yuxarıya gedir */
+    transform: translate(-50%, -100px); 
 }
+
+/* YENİLİK: İstifadəçi Adı Modalı */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    display: none; /* İlkin olaraq gizli */
+    justify-content: center;
+    align-items: center;
+    z-index: 500;
+    backdrop-filter: blur(5px);
+}
+.modal-content {
+    background: var(--modal-bg);
+    border-radius: 20px;
+    padding: 30px;
+    width: 90%;
+    max-width: 400px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    text-align: center;
+    color: var(--text-dark);
+    transition: background-color 0.5s;
+}
+.modal-content h3 {
+    color: var(--accent);
+    margin-bottom: 20px;
+    font-size: 20px;
+}
+.input-group {
+    display: flex;
+    align-items: center;
+    border: 1px solid var(--card-border);
+    border-radius: 12px;
+    background: var(--card-bg);
+    overflow: hidden;
+    margin-bottom: 15px;
+}
+.input-group span {
+    padding: 12px;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--accent);
+    background: var(--progress-bg);
+}
+.input-group input {
+    flex-grow: 1;
+    border: none;
+    padding: 12px;
+    background: transparent;
+    color: var(--input-text);
+    font-size: 16px;
+    outline: none;
+}
+.modal-error {
+    color: #FF4B2B;
+    margin-bottom: 10px;
+    font-size: 14px;
+    height: 1.2em;
+}
+.modal-content button {
+    width: 100%;
+    padding: 14px;
+    margin-top: 10px;
+    border: none;
+    border-radius: 14px;
+    background: linear-gradient(90deg, var(--btn-gradient-start), var(--btn-gradient-end));
+    color: var(--text-light);
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.3s;
+}
+.modal-content button:active {
+    transform: scale(0.98);
+}
+
 </style>
 </head>
 <body id="body">
@@ -438,23 +614,43 @@ body{
     <span id="taskNotificationText"></span>
 </div>
 
+<div class="modal-overlay" id="usernameModal">
+    <div class="modal-content">
+        <h3 data-translate-key="usernameTitle">İstifadəçi Adı Qeydiyyatı</h3>
+        <p style="margin-bottom: 15px; font-size: 14px;" data-translate-key="usernameInfo">Davam etmək üçün Telegram istifadəçi adınızı (@ olmadan, 5-15 simvol) daxil edin.</p>
+        
+        <div class="input-group">
+            <span>@</span>
+            <input id="usernameInput" type="text" placeholder="username" maxlength="15"> </div>
+        
+        <div class="modal-error" id="usernameError"></div>
+        
+        <button id="saveUsernameBtn" data-translate-key="saveUsername">Yadda Saxla</button>
+    </div>
+</div>
 <div class="container">
   
   <div class="top-controls">
-    <button class="theme-toggle-btn" onclick="toggleTheme()">
-        <span id="themeIcon" class="theme-icon">🔆</span>
-    </button>
-    
-    <div class="lang-switcher-container">
-        <button class="lang-current-btn" onclick="toggleDropdown()">
-            <span id="currentLangDisplay">AZ</span>
-            <span id="langArrow"></span>
+    <div class="username-navbar-display" id="usernameNavbarDisplay" style="display:none;">
+        <span class="icon">👤</span><span id="activeUsernameNavbar"></span>
+    </div>
+
+    <div class="right-controls">
+        <button class="theme-toggle-btn" onclick="toggleTheme()">
+            <span id="themeIcon" class="theme-icon">🔆</span>
         </button>
-        <div class="lang-dropdown" id="langDropdown">
-            <button onclick="setLang('az')" id="langAzBtn">AZ</button>
-            <button onclick="setLang('en')" id="langEnBtn">EN</button>
-            <button onclick="setLang('tr')" id="langTrBtn">TR</button>
-            <button onclick="setLang('ru')" id="langRuBtn">RU</button>
+        
+        <div class="lang-switcher-container">
+            <button class="lang-current-btn" onclick="toggleDropdown()">
+                <span id="currentLangDisplay">AZ</span>
+                <span id="langArrow"></span>
+            </button>
+            <div class="lang-dropdown" id="langDropdown">
+                <button onclick="setLang('az')" id="langAzBtn">AZ</button>
+                <button onclick="setLang('en')" id="langEnBtn">EN</button>
+                <button onclick="setLang('tr')" id="langTrBtn">TR</button>
+                <button onclick="setLang('ru')" id="langRuBtn">RU</button>
+            </div>
         </div>
     </div>
   </div>
@@ -475,11 +671,47 @@ body{
       </div>
       <div class="progress"><div class="progress-fill" id="progress"></div></div>
       <p style="margin-top:6px;" data-translate-key="progressText">İrəliləyiş: <span id="progressTextSpan">0/100</span></p>
-      <button id="adBtn" class="ad-btn" data-translate-key="watchAd">Reklam</button>
+      <button id="adBtn" class="ad-btn" data-translate-key="watchAd">Reklam İzle</button>
       <div id="msg"></div>
     </div>
   </div>
+  
+  <div id="profilePage" class="page">
+    <div class="balance-card">
+        <h3 data-translate-key="currentBalance">Balans</h3>
+        <div class="amount"><span id="balanceProfile">0.0000</span> <span id="currencySymbolProfile">₼</span></div>
+        <div class="usd"><span id="secondaryCurrencySymbolProfile">$</span><span id="secondaryBalanceProfile">0.0000</span> <span id="secondaryCurrencyTextProfile">USD</span></div>
+    </div>
+      
+    <div class="profile-card">
+      <h2 data-translate-key="profile">Profil</h2>
+      
+      <div class="profile-username-section">
+        <h3 data-translate-key="yourUsernameTitle">İstifadəçi Adınız:</h3>
+        <p><span id="profileUsernameDisplay">@</span></p>
+      </div>
 
+      <div class="profile-stats-grid">
+        <div class="profile-stat">
+            <span class="profile-icon">👀</span>
+            <span class="profile-stat-value" id="totalAdsCount">0</span>
+            <span class="profile-stat-label" data-translate-key="totalAds">Toplam İzlənən Reklam</span>
+        </div>
+        
+        <div class="profile-stat">
+            <span class="profile-icon">✅</span>
+            <span class="profile-stat-value" id="completedTasksCount">0</span>
+            <span class="profile-stat-label" data-translate-key="completedTasks">Tamamlanmış Tapşırıqlar</span>
+        </div>
+        
+        <div class="profile-stat" style="grid-column: span 2;"> 
+            <span class="profile-icon">💰</span>
+            <span class="profile-stat-value money" id="totalEarnedAmount">0.00 ₼</span>
+            <span class="profile-stat-label" data-translate-key="totalEarned">Ümumi Qazanc</span>
+        </div>
+      </div>
+      </div>
+  </div>
   <div id="tasksPage" class="page">
     <div class="task-card">
       <h2 data-translate-key="premiumTask">Premium Tapşırıq</h2>
@@ -579,6 +811,7 @@ body{
 
 <div class="menu">
   <button onclick="showPage('adsPage',this)" class="active" data-translate-key="home">Ev</button>
+  <button onclick="showPage('profilePage',this)" data-translate-key="profile">Profil</button>
   <button onclick="showPage('tasksPage',this)" data-translate-key="tasks">Görevler</button>
   <button onclick="showPage('referralPage',this)" data-translate-key="referral">Referans</button>
   <button onclick="showPage('walletPage',this)" data-translate-key="wallet">Cüzdan</button>
@@ -587,6 +820,8 @@ body{
 // --- YERLİ SAXLAMA KÖMƏKÇİLƏRİ ---
 function safeGet(k,d=0){try{return JSON.parse(localStorage.getItem(k))??d;}catch{return d;}}
 function safeSet(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}
+function safeRemove(k){try{localStorage.removeItem(k);}catch(e){}}
+
 // 10 rəqəmli Referans Kodu yaradır (hər bir istifadəçi üçün fərqli olmalıdır)
 function generateRefCode(){
     let code = safeGet('refCode', null);
@@ -637,12 +872,17 @@ const CURRENCIES = {
     'ru': { main: 'RUB', symbol: '₽', secondary: 'USD', secondarySymbol: '$' }
 };
 
-// YENİLƏNİB: Reklam qazancı 0.001 AZN
 const AZN_REWARD = 0.001; 
 const AZN_TASK_REWARDS = [0.1, 0.1, 0.15, 0.05]; 
+const TOTAL_TASKS_COUNT = AZN_TASK_REWARDS.length; 
 
-// YENİLƏNİB: Minimum limitlər AZN ilə
 const AZN_MIN_WITHDRAW = { m10: 3, azercell: 3, bakcell: 3, nar: 3, bank: 3, usdt: 10 }; 
+
+// --- İSTİFADƏÇİ ADI AÇARI ---
+const USERNAME_KEY = 'az_username';
+const USERNAME_MIN_LENGTH = 5;
+const USERNAME_MAX_LENGTH = 15;
+
 
 // --- TƏRCÜMƏ MƏLUMATLARI (DİL SÖZLÜYÜ) ---
 function getLocalizedReward(lang) {
@@ -653,13 +893,13 @@ function getLocalizedReward(lang) {
 
     if (lang === 'tr') {
         reward = AZN_REWARD * EXCHANGE_RATES.AZN_TO_TRY;
-        format = (val) => val.toFixed(3); // TRY üçün 3 rəqəm
+        format = (val) => val.toFixed(3); 
     } else if (lang === 'en') {
         reward = AZN_REWARD * EXCHANGE_RATES.AZN_TO_USD;
-        format = (val) => val.toFixed(5); // USD üçün 5 rəqəm
+        format = (val) => val.toFixed(5); 
     } else if (lang === 'ru') {
         reward = AZN_REWARD * EXCHANGE_RATES.AZN_TO_RUB;
-        format = (val) => val.toFixed(3); // RUB üçün 3 rəqəm
+        format = (val) => val.toFixed(3); 
     }
     
     return {
@@ -688,12 +928,17 @@ function getLocalizedTaskReward(lang, aznReward) {
     return `<b>${format(localizedReward)} ${symbol}</b>`;
 }
 
+// YENİLƏNİB: Yeni tərcümələr əlavə edildi və məhdudiyyətlər uyğunlaşdırıldı
 const TRANSLATIONS = {
     'az': {
         pageTitle: 'Qazanc AZ',
         loading: 'Yüklənir...',
         currentBalance: 'Balans',
         withdrawBalance: 'Balans',
+        profile: 'Profil', 
+        totalAds: 'Toplam İzlənən Reklam', 
+        completedTasks: 'Tamamlanmış Tapşırıqlar', 
+        totalEarned: 'Ümumi Qazanc', 
         dailyAds: 'Günlük Reklamlar',
         adReward: (r) => `Hər reklama görə ${r} qazanın`, 
         watched: 'İzlənən',
@@ -734,7 +979,7 @@ const TRANSLATIONS = {
         yourRefLink: 'Referans Linkiniz',
         copy: 'Kopyala',
         copied: 'Kopyalandı!',
-        copyFailed: 'Kopyalama uğursuz oldu!', /* Yeni əlavə edildi */
+        copyFailed: 'Kopyalama uğursuz oldu!',
         placeholderDetails_m10: '10 rəqəmli nömrə',
         placeholderDetails_azercell: '050xxxxxxx',
         placeholderDetails_bakcell: '055xxxxxxx',
@@ -743,13 +988,27 @@ const TRANSLATIONS = {
         placeholderDetails_usdt: 'TON adresi',
         placeholderAmount: 'Məbləğ',
         completed: 'Tamamlandı', 
-        taskSuccess: (r) => `✅ Tapşırıq tamamlandı! ${r} əlavə olundu.`, // YENİ TƏRCÜMƏ AÇARI
+        taskSuccess: (r) => `✅ Tapşırıq tamamlandı! ${r} əlavə olundu.`,
+        // YENİ TƏRCÜMƏLƏR
+        usernameTitle: 'İstifadəçi Adı Qeydiyyatı',
+        usernameInfo: `Davam etmək üçün Telegram istifadəçi adınızı (@ olmadan, ${USERNAME_MIN_LENGTH}-${USERNAME_MAX_LENGTH} simvol) daxil edin.`,
+        saveUsername: 'Yadda Saxla',
+        usernameTooShort: `İstifadəçi adı minimum ${USERNAME_MIN_LENGTH} simvol olmalıdır!`,
+        usernameTooLong: `İstifadəçi adı maksimum ${USERNAME_MAX_LENGTH} simvol olmalıdır!`,
+        usernameInvalid: "İstifadəçi adı yalnız hərflər, rəqəmlər və '_' ibarət olmalıdır. (@-siz daxil edin)",
+        usernameSaved: '✅ İstifadəçi adı qeyd edildi!',
+        activeUsernameTitle: 'Aktiv İstifadəçi Adınız',
+        yourUsernameTitle: 'İstifadəçi Adınız',
     },
     'en': {
         pageTitle: 'Earn AZ',
         loading: 'Loading...',
         currentBalance: 'Balance',
         withdrawBalance: 'Balance',
+        profile: 'Profile', 
+        totalAds: 'Total Ads Watched', 
+        completedTasks: 'Completed Tasks', 
+        totalEarned: 'Total Earned', 
         dailyAds: 'Daily Ads',
         adReward: (r) => `Earn ${r} for each ad`, 
         watched: 'Watched',
@@ -790,7 +1049,7 @@ const TRANSLATIONS = {
         yourRefLink: 'Your Referral Link',
         copy: 'Copy',
         copied: 'Copied!',
-        copyFailed: 'Copy failed!', /* Yeni əlavə edildi */
+        copyFailed: 'Copy failed!', 
         placeholderDetails_m10: '10 digit M10 number',
         placeholderDetails_azercell: '050xxxxxxx',
         placeholderDetails_bakcell: '055xxxxxxx',
@@ -799,13 +1058,27 @@ const TRANSLATIONS = {
         placeholderDetails_usdt: 'TON address',
         placeholderAmount: 'Amount',
         completed: 'Completed', 
-        taskSuccess: (r) => `✅ Task completed! ${r} added.`, // YENİ TƏRCÜMƏ AÇARI
+        taskSuccess: (r) => `✅ Task completed! ${r} added.`, 
+        // YENİ TƏRCÜMƏLƏR
+        usernameTitle: 'Username Registration',
+        usernameInfo: `Please enter your Telegram username (without @, ${USERNAME_MIN_LENGTH}-${USERNAME_MAX_LENGTH} chars) to continue.`,
+        saveUsername: 'Save',
+        usernameTooShort: `Username must be at least ${USERNAME_MIN_LENGTH} characters!`,
+        usernameTooLong: `Username must be maximum ${USERNAME_MAX_LENGTH} characters!`,
+        usernameInvalid: "Username must contain only letters, numbers and '_'. (Enter without @)",
+        usernameSaved: '✅ Username saved!',
+        activeUsernameTitle: 'Active Username',
+        yourUsernameTitle: 'Your Username',
     },
     'tr': {
         pageTitle: 'Kazan AZ',
         loading: 'Yükleniyor...',
         currentBalance: 'Bakiye',
         withdrawBalance: 'Bakiye',
+        profile: 'Profil', 
+        totalAds: 'Toplam İzlenen Reklam', 
+        completedTasks: 'Tamamlanan Görevler', 
+        totalEarned: 'Toplam Kazanç', 
         dailyAds: 'Günlük Reklamlar',
         adReward: (r) => `Her reklam için ${r} kazanın`, 
         watched: 'İzlenen',
@@ -846,7 +1119,7 @@ const TRANSLATIONS = {
         yourRefLink: 'Referans Bağlantınız',
         copy: 'Kopyala',
         copied: 'Kopyalandı!',
-        copyFailed: 'Kopyalama başarısız!', /* Yeni əlavə edildi */
+        copyFailed: 'Kopyalama başarısız!', 
         placeholderDetails_m10: '10 haneli M10 numarası',
         placeholderDetails_azercell: '050xxxxxxx',
         placeholderDetails_bakcell: '055xxxxxxx',
@@ -855,13 +1128,27 @@ const TRANSLATIONS = {
         placeholderDetails_usdt: 'TON adresi',
         placeholderAmount: 'Miktar',
         completed: 'Tamamlandı', 
-        taskSuccess: (r) => `✅ Görev tamamlandı! ${r} eklendi.`, // YENİ TƏRCÜMƏ AÇARI
+        taskSuccess: (r) => `✅ Görev tamamlandı! ${r} eklendi.`, 
+        // YENİ TƏRCÜMƏLƏR
+        usernameTitle: 'Kullanıcı Adı Kaydı',
+        usernameInfo: `Devam etmek için Telegram kullanıcı adınızı (@ olmadan, ${USERNAME_MIN_LENGTH}-${USERNAME_MAX_LENGTH} karakter) giriniz.`,
+        saveUsername: 'Kaydet',
+        usernameTooShort: `Kullanıcı adı en az ${USERNAME_MIN_LENGTH} karakter olmalıdır!`,
+        usernameTooLong: `Kullanıcı adı maksimum ${USERNAME_MAX_LENGTH} karakter olmalıdır!`,
+        usernameInvalid: "Kullanıcı adı sadece harfler, rakamlar ve '_' içermelidir. (@-siz giriniz)",
+        usernameSaved: '✅ Kullanıcı adı kaydedildi!',
+        activeUsernameTitle: 'Aktif Kullanıcı Adınız',
+        yourUsernameTitle: 'Kullanıcı Adınız',
     },
     'ru': { 
         pageTitle: 'Заработок AZ',
         loading: 'Загрузка...',
         currentBalance: 'Баланс',
         withdrawBalance: 'Баланс',
+        profile: 'Профиль', 
+        totalAds: 'Всего Просмотрено Рекламы', 
+        completedTasks: 'Выполненные Задания', 
+        totalEarned: 'Общий Заработок', 
         dailyAds: 'Ежедневная Реклама',
         adReward: (r) => `Зарабатывайте ${r} за каждую рекламу`, 
         watched: 'Просмотрено',
@@ -902,7 +1189,7 @@ const TRANSLATIONS = {
         yourRefLink: 'Ваша Реферальная Ссылка',
         copy: 'Копировать',
         copied: 'Скопировано!',
-        copyFailed: 'Сбой копирования!', /* Yeni əlavə edildi */
+        copyFailed: 'Сбой копирования!', 
         placeholderDetails_m10: '10-значный номер M10',
         placeholderDetails_azercell: '050xxxxxxx',
         placeholderDetails_bakcell: '055xxxxxxx',
@@ -911,25 +1198,39 @@ const TRANSLATIONS = {
         placeholderDetails_usdt: 'TON адрес',
         placeholderAmount: 'Сумма',
         completed: 'Выполнено', 
-        taskSuccess: (r) => `✅ Задание выполнено! ${r} добавлено.`, // YENİ TƏRCÜMƏ AÇARI
+        taskSuccess: (r) => `✅ Задание выполнено! ${r} добавлено.`,
+        // YENİ TƏRCÜMƏLƏR
+        usernameTitle: 'Регистрация Имени Пользователя',
+        usernameInfo: `Для продолжения введите свое имя пользователя Telegram (без @, ${USERNAME_MIN_LENGTH}-${USERNAME_MAX_LENGTH} символов).`,
+        saveUsername: 'Сохранить',
+        usernameTooShort: `Имя пользователя должно содержать не менее ${USERNAME_MIN_LENGTH} символов!`,
+        usernameTooLong: `Имя пользователя должно содержать не более ${USERNAME_MAX_LENGTH} символов!`,
+        usernameInvalid: "Имя пользователя должно содержать только буквы, цифры и '_'. (Введите без @)",
+        usernameSaved: '✅ Имя пользователя сохранено!',
+        activeUsernameTitle: 'Активное Имя Пользователя',
+        yourUsernameTitle: 'Ваше Имя Пользователя',
     }
 };
 
 let currentLang = localStorage.getItem('lang') || 'az';
-const USER_REF_CODE = generateRefCode(); // İstifadəçinin unikal 10 rəqəmli kodu
+const USER_REF_CODE = generateRefCode(); 
 
 const LIMIT = 100;
 const BAL_KEY='bal',COUNT_KEY='cnt',RESET_KEY='resetTime';
 const JOIN_KEY='joined',JOIN_KEY2='joined2',JOIN_KEY3='joined3',JOIN_KEY4='joined4'; 
 
-// YENİLƏNİB: Balansın oxunması və İlkin Balansın təyin edilməsi
-let bal = parseFloat(safeGet(BAL_KEY, -1)); // -1 ilkin olaraq oxunmasını göstərir
+const TOTAL_ADS_KEY = 'totalAdsWatched';
+const TOTAL_EARNED_KEY = 'totalAZNEarned';
 
-// Əgər balans local storage-də yoxdursa və ya ilk dəfə açılırsa, 0.5 AZN ilə başla
+let bal = parseFloat(safeGet(BAL_KEY, -1)); 
+
 if (bal === -1 || isNaN(bal)) { 
-    bal = 0.50; // YENİLİK: Başlanğıc balansı 0.5 AZN
+    bal = 0.50; 
     safeSet(BAL_KEY, bal);
 }
+
+let totalAds = parseInt(safeGet(TOTAL_ADS_KEY, 0));
+let totalEarned = parseFloat(safeGet(TOTAL_EARNED_KEY, bal)); 
 
 let cnt=parseInt(safeGet(COUNT_KEY,0));
 let resetTime=safeGet(RESET_KEY,null);
@@ -991,26 +1292,82 @@ function update(){
       secondaryBalance = bal * rates.AZN_TO_USD;
   }
   
-  // Əsas balans
+  // Əsas balans (adsPage, walletPage, profilePage üçün)
   document.getElementById('balance').textContent = mainFormat(mainBalance);
   document.getElementById('balance2').textContent = mainFormat(mainBalance);
+  document.getElementById('balanceProfile').textContent = mainFormat(mainBalance);
+  
   document.getElementById('currencySymbol').textContent = mainSymbol;
   document.getElementById('currencySymbol2').textContent = mainSymbol;
+  document.getElementById('currencySymbolProfile').textContent = mainSymbol;
   
   // Köməkçi balans (USD/AZN)
   document.getElementById('secondaryBalance').textContent = secondaryFormat(secondaryBalance);
   document.getElementById('secondaryBalance2').textContent = secondaryFormat(secondaryBalance);
+  document.getElementById('secondaryBalanceProfile').textContent = secondaryFormat(secondaryBalance);
+  
   document.getElementById('secondaryCurrencySymbol').textContent = secondarySymbol;
   document.getElementById('secondaryCurrencySymbol2').textContent = secondarySymbol;
+  document.getElementById('secondaryCurrencySymbolProfile').textContent = secondarySymbol;
+  
   document.getElementById('secondaryCurrencyText').textContent = secondaryText;
   document.getElementById('secondaryCurrencyText2').textContent = secondaryText;
+  document.getElementById('secondaryCurrencyTextProfile').textContent = secondaryText;
+
 
   document.getElementById('adsCount').textContent=cnt;
   document.getElementById('progress').style.width=(cnt/LIMIT*100)+'%';
   const progressTextSpan = document.getElementById('progressTextSpan');
   if(progressTextSpan) progressTextSpan.textContent = `${cnt}/${LIMIT}`;
+  
   safeSet(BAL_KEY,bal);
   safeSet(COUNT_KEY,cnt);
+  safeSet(TOTAL_ADS_KEY, totalAds); 
+  safeSet(TOTAL_EARNED_KEY, totalEarned); 
+  
+  updateProfileStats(); // Hər balans yeniləndikdə Profil statistikasını da yenilə
+  updateUsernameDisplay(); // Navbarda istifadəçi adını yenilə
+}
+
+// YENİ: Profil məlumatlarını yeniləyən funksiya
+function updateProfileStats() {
+    let completedTasks = 0;
+    taskButtons.forEach(task => {
+        if (localStorage.getItem(task.key)) {
+            completedTasks++;
+        }
+    });
+
+    const currencyInfo = CURRENCIES[currentLang];
+    const totalEarnedInLang = (totalEarned * (currentLang === 'tr' ? EXCHANGE_RATES.AZN_TO_TRY : 
+                                               currentLang === 'en' ? EXCHANGE_RATES.AZN_TO_USD :
+                                               currentLang === 'ru' ? EXCHANGE_RATES.AZN_TO_RUB : 1));
+                                               
+    let format = (val) => currentLang === 'en' ? val.toFixed(4) : val.toFixed(2);
+    if (currentLang === 'az') format = (val) => val.toFixed(2); 
+
+    document.getElementById('totalAdsCount').textContent = totalAds.toLocaleString('az-AZ');
+    document.getElementById('completedTasksCount').textContent = completedTasks.toLocaleString('az-AZ');
+    document.getElementById('totalEarnedAmount').textContent = `${format(totalEarnedInLang)} ${currencyInfo.symbol}`;
+
+    // Profil səhifəsində istifadəçi adını yenilə
+    const savedUsername = safeGet(USERNAME_KEY, '');
+    document.getElementById('profileUsernameDisplay').textContent = savedUsername ? `@${savedUsername}` : '---';
+}
+
+// YENİ: İstifadəçi Adı Göstəricisini (Navbar) yeniləyir
+function updateUsernameDisplay() {
+    const savedUsername = safeGet(USERNAME_KEY, '');
+    const card = document.getElementById('usernameNavbarDisplay');
+    const display = document.getElementById('activeUsernameNavbar');
+
+    if (savedUsername) {
+        display.textContent = `@${savedUsername}`;
+        card.style.display = 'flex';
+    } else {
+        // Əgər ad yoxdursa, Navbarda da gizlədirik
+        card.style.display = 'none';
+    }
 }
 
 // Tapşırıqlar düymələrini fərdi olaraq yeniləyən funksiya
@@ -1122,10 +1479,8 @@ function applyTranslations(lang) {
         }
     });
     
-    // Tapşırıq mükafatlarını yenilə
     updateTaskButtons(); 
 
-    // Çıxarış metodları üzərindəki minimum məbləğləri yenilə
     document.querySelectorAll('.min-withdraw-label').forEach(label => {
         const methodType = label.getAttribute('data-min-key');
         if (methodType) {
@@ -1133,7 +1488,6 @@ function applyTranslations(lang) {
         }
     });
     
-    // Referans linkini yenilə
     updateReferralLink();
     
     const progressTextSpan = document.getElementById('progressTextSpan');
@@ -1141,7 +1495,7 @@ function applyTranslations(lang) {
         progressTextSpan.textContent = `${cnt}/${LIMIT}`;
     }
     
-    update(); // Valyutaları yenilə
+    update(); 
 
     document.querySelectorAll('.menu button').forEach(button => {
         const key = button.getAttribute('data-translate-key');
@@ -1199,7 +1553,6 @@ adBtn.onclick=()=>{
     
     if(timerBar){
         const progressPercentage = (10 - s) / 10 * 100;
-        // YENİLİK: Qırmızı gradientə uyğun rəngləmə
         const color = `hsl(0, ${95 - (10 - s) * 5}%, 50%)`; 
         
         timerBar.style.width=`${progressPercentage}%`;
@@ -1209,8 +1562,10 @@ adBtn.onclick=()=>{
     
     // PUL ƏLAVƏ EDİLMƏSİ (1 saniyə keçdikdə, yəni s==9 olanda)
     if(s === 9 && !rewarded) { 
-        bal+=AZN_REWARD; // Balans həmişə AZN ilə artırılır
+        bal+=AZN_REWARD; 
+        totalEarned += AZN_REWARD; 
         cnt++; 
+        totalAds++; 
         update(); 
         rewarded = true; 
         
@@ -1229,7 +1584,7 @@ adBtn.onclick=()=>{
             if (currentRewardMsg) {
                  currentRewardMsg.remove();
             }
-        }, 2000); // 2000ms = 2 saniyə
+        }, 2000); 
     }
     
     // Geri sayım mətnini yeniləyirik
@@ -1255,14 +1610,11 @@ const taskNotificationText = document.getElementById('taskNotificationText');
 function showTaskNotification(message) {
     taskNotificationText.innerHTML = message;
     
-    // Köhnə sinifləri təmizlə
     taskNotification.classList.remove('notification-hide');
     taskNotification.classList.remove('notification-show');
     
-    // Animasiyanı başlat
     taskNotification.classList.add('notification-show');
     
-    // 3 saniyə sonra gizlət
     setTimeout(() => {
         taskNotification.classList.remove('notification-show');
         taskNotification.classList.add('notification-hide');
@@ -1305,9 +1657,10 @@ taskButtons.forEach(task => {
         
         setTimeout(() => {
             
-            // Balans həmişə AZN ilə artırılır
             bal += task.reward; 
+            totalEarned += task.reward; 
             safeSet(BAL_KEY, bal);
+            safeSet(TOTAL_EARNED_KEY, totalEarned);
             
             localStorage.setItem(task.key, '1');
             
@@ -1320,10 +1673,11 @@ taskButtons.forEach(task => {
             
             const localizedRewardText = getLocalizedTaskReward(currentLang, task.reward);
 
-            // YENİLİK: ANİMASİYALI BİLDİRİŞİ GÖSTƏRİRİK
             showTaskNotification(t.taskSuccess(localizedRewardText));
             
-        }, 3000); // 3000ms = 3 saniyə
+            updateProfileStats(); 
+            
+        }, 3000); 
     };
 });
 
@@ -1334,21 +1688,17 @@ const copyBtn = document.getElementById('copyRefLinkBtn');
 const copyMessage = document.getElementById('copyMessage');
 
 function updateReferralLink() {
-    // Sizin istəyinizə uyğun link bazası (https://t.me/qazancazbot?startapp=)
     const baseUrl = refLinkDisplay.getAttribute('data-ref-base'); 
-    
-    // Unikal 10 rəqəmli kod (səhifə yenilənsə də dəyişməyən)
     const fullLink = baseUrl + USER_REF_CODE; 
     
     refLinkDisplay.textContent = fullLink;
 }
 
-// YENİLƏNMİŞ KOPYALAMA FUNKSİYASI (Navigator API + Fallback)
+// KOPYALAMA FUNKSİYASI
 async function fallbackCopyTextToClipboard(text, t) {
     const textArea = document.createElement("textarea");
     textArea.value = text;
 
-    // Görünməz et
     textArea.style.position = "fixed";
     textArea.style.top = 0;
     textArea.style.left = 0;
@@ -1384,7 +1734,6 @@ copyBtn.onclick = async () => {
     const t = TRANSLATIONS[currentLang];
     let success = false;
     
-    // 1. Standart Navigator API ilə cəhd
     if (navigator.clipboard && window.isSecureContext) {
         try {
             await navigator.clipboard.writeText(fullLink);
@@ -1394,7 +1743,6 @@ copyBtn.onclick = async () => {
         }
     }
     
-    // 2. Əgər 1-ci cəhd uğursuz olarsa, Fallback-i cəhd et
     if (!success) {
         success = await fallbackCopyTextToClipboard(fullLink, t);
     }
@@ -1416,6 +1764,64 @@ copyBtn.onclick = async () => {
     }, 2000);
 };
 
+// --- İSTİFADƏÇİ ADI MODALI MƏNTİQİ ---
+const usernameModal = document.getElementById('usernameModal');
+const usernameInput = document.getElementById('usernameInput');
+const saveUsernameBtn = document.getElementById('saveUsernameBtn');
+const usernameError = document.getElementById('usernameError');
+
+saveUsernameBtn.onclick = () => {
+    const t = TRANSLATIONS[currentLang];
+    // Boşluqları silirik, amma @ işarəsini yoxlayırıq.
+    let username = usernameInput.value.trim(); 
+    
+    if (username.length < USERNAME_MIN_LENGTH) {
+        usernameError.textContent = t.usernameTooShort;
+        setTimeout(() => { usernameError.textContent = ''; }, 3000);
+        return;
+    }
+    
+    if (username.length > USERNAME_MAX_LENGTH) {
+        usernameError.textContent = t.usernameTooLong;
+        setTimeout(() => { usernameError.textContent = ''; }, 3000);
+        return;
+    }
+    
+    // Yalnız hərflər, rəqəmlər və alt xəttə icazə veririk
+    if (!/^[a-zA-Z0-9_]{5,15}$/.test(username)) { // Məhdudiyyətə uyğunlaşdırıldı
+         usernameError.textContent = t.usernameInvalid;
+         setTimeout(() => { usernameError.textContent = ''; }, 3000);
+         return;
+    }
+
+    // İstifadəçi adını yadda saxlayırıq (avtomatik olaraq @ olmadan)
+    safeSet(USERNAME_KEY, username);
+    
+    // Uğur mesajı
+    showTaskNotification(t.usernameSaved);
+    
+    // Modalı bağlayırıq
+    usernameModal.style.display = 'none';
+    
+    // Səhifələri və interfeysi yeniləyirik
+    update();
+};
+
+function checkUsernameAndShowModal() {
+    const savedUsername = safeGet(USERNAME_KEY, '');
+    const currentPageId = document.querySelector('.page.active').id;
+    
+    // Əgər Profil səhifəsidirsə VƏ istifadəçi adı yoxdursa, Modalı göstəririk
+    if (currentPageId === 'profilePage' && !savedUsername) {
+        usernameModal.style.display = 'flex';
+        // Girişi sıfırlayırıq
+        usernameInput.value = '';
+        usernameError.textContent = '';
+        return true; 
+    }
+    
+    return false;
+}
 
 // Səhifə Naviqasiyası
 function showPage(id, btn){
@@ -1424,11 +1830,15 @@ function showPage(id, btn){
   document.querySelectorAll('.menu button').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active');
   
-  // Dil dəyişəndə naviqasiya panelindəki yazılar sıxılmasın deyə bu funksiyaları çağırırıq.
   if (id === 'tasksPage') {
     updateTaskButtons();
   } else if (id === 'referralPage') {
     updateReferralLink();
+  } else if (id === 'profilePage') { 
+    // Profil səhifəsinə keçid zamanı istifadəçi adını yoxla
+    if (!checkUsernameAndShowModal()) {
+        updateProfileStats();
+    }
   }
 }
 
@@ -1470,7 +1880,6 @@ document.getElementById('withdrawBtn').onclick=()=>{
   if(!det){ showErr(t.detailsError); return; }
   if(isNaN(amt) || amt <= 0){ showErr(t.amountError); return; }
   
-  // Minimal məbləği cari valyutaya çevir
   const aznMin = AZN_MIN_WITHDRAW[type];
   let minAmount = aznMin;
   
@@ -1482,7 +1891,6 @@ document.getElementById('withdrawBtn').onclick=()=>{
     minAmount = aznMin * EXCHANGE_RATES.AZN_TO_RUB;
   }
   
-  // Cari balansı cari valyutaya çevir
   let currentBalanceInLang = bal; 
   if (currentLang === 'tr') {
       currentBalanceInLang = bal * EXCHANGE_RATES.AZN_TO_TRY;
@@ -1495,13 +1903,10 @@ document.getElementById('withdrawBtn').onclick=()=>{
   let format = (val) => val.toFixed(2);
   if (currentLang === 'en') format = (val) => val.toFixed(4);
 
-  // Minimum limit yoxlaması
   if(amt < minAmount){ showErr(t.minAmount(getLocalizedMinAmount(type, currentLang))); return; }
   
-  // Balans yoxlaması
   if(amt > currentBalanceInLang){ showErr(t.balanceError); return; }
 
-  // Çıxarılacaq məbləği AZN-ə çevir (Çünki balans AZN-də saxlanılır)
   let withdrawalAmountInAZN = amt;
   if (currentLang === 'tr') {
     withdrawalAmountInAZN = amt / EXCHANGE_RATES.AZN_TO_TRY;
@@ -1511,8 +1916,7 @@ document.getElementById('withdrawBtn').onclick=()=>{
     withdrawalAmountInAZN = amt / EXCHANGE_RATES.AZN_TO_RUB;
   }
 
-  // Çıxarışın göndərilməsi simulyasiyası
-  bal -= withdrawalAmountInAZN; // AZN-də çıxarış
+  bal -= withdrawalAmountInAZN; 
   safeSet(BAL_KEY,bal);
   update();
 
@@ -1520,7 +1924,6 @@ document.getElementById('withdrawBtn').onclick=()=>{
   alertBox.className='alert success';
   alertBox.style.display='block';
 
-  // Formanı bağla və metodları geri göstər
   setTimeout(()=>{
     form.style.display='none';
     document.getElementById('methods').style.display='flex';
@@ -1542,6 +1945,7 @@ function showErr(msg){
 update();
 applyTranslations(currentLang); 
 updateReferralLink();
+updateUsernameDisplay(); // Navbarda adı göstər
 
 // Loading Screen-i 3 saniyədən sonra bağla
 setTimeout(()=>{
