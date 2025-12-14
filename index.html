@@ -20,7 +20,7 @@
   --menu-bg: rgba(255, 255, 255, 0.15);
   --progress-bg: rgba(0, 0, 0, 0.08);
   --input-text: #1B1B1B; 
-  --modal-bg: rgba(255, 255, 255, 0.95); /* Modal fonu */
+  --modal-bg: rgba(255, 255, 255, 0.95); 
 
   /* Qırmızı Gradientlər */
   --btn-gradient-start: #FF416C; 
@@ -46,7 +46,7 @@ body.dark-theme {
   --menu-bg: rgba(0, 0, 0, 0.3);
   --progress-bg: rgba(255, 255, 255, 0.15);
   --input-text: #ffffff; 
-  --modal-bg: rgba(30, 30, 30, 0.95); /* Modal fonu */
+  --modal-bg: rgba(30, 30, 30, 0.95); 
   --notification-bg: #27ae60; 
 }
 
@@ -72,27 +72,24 @@ body{
 
 .container{max-width:480px;margin:auto;padding:20px;padding-top:20px;} 
 
-/* DİL VƏ TEMA SEÇİMİ (YENİ DÜZƏNLƏMƏ) */
+/* DİL VƏ TEMA SEÇİMİ */
 .top-controls {
     display: flex;
-    justify-content: space-between; /* Elementləri kənarlara yığırıq */
+    justify-content: space-between; 
     align-items: center;
     margin-bottom: 20px;
 }
 
-/* İstifadəçi Adı Navbar-da (SOL TƏRƏF) */
 .username-navbar-display {
     display: flex;
     align-items: center;
     padding: 6px 0;
     font-weight: 700;
     color: var(--text-dark);
-    font-size: 14px; /* Kiçildildi */
+    font-size: 14px; 
     margin-right: 10px;
     opacity: 0.9;
     transition: color 0.3s;
-    /* Əgər istifadəçi adı yoxdursa, solda yer tutur, lakin boş qalır */
-    /* display:none; JavaScript tərəfindən idarə olunur */
 }
 .username-navbar-display .icon {
     font-size: 16px;
@@ -103,12 +100,10 @@ body{
     color: var(--accent);
 }
 
-/* TEMA VƏ DİL DÜYMƏLƏRİ (SAĞ TƏRƏF) */
 .right-controls {
     display: flex;
-    gap: 10px; /* Düymələr arasında boşluq */
+    gap: 10px; 
     align-items: center;
-    /* SAĞA YIĞILMASINI TƏMİN EDİR (Flex container daxilində) */
     margin-left: auto; 
 }
 
@@ -197,7 +192,7 @@ body{
 .balance-card .amount{font-size:32px;font-weight:700;margin-top:5px;color:var(--text-dark);text-shadow:0 2px 5px rgba(0,0,0,0.1);}
 .balance-card .usd{font-size:14px;color:var(--text-dark);opacity:0.7;margin-top:4px;}
 
-/* Profil Kartı Stili (YENİLƏNMİŞ - DAHA BALACA VƏ GÖZƏL) */
+/* Profil Kartı Stili */
 .profile-card {
     text-align: left;
 }
@@ -211,7 +206,7 @@ body{
 .profile-username-section {
     text-align: center; 
     margin-bottom: 25px;
-    background: var(--progress-bg); /* Yüngül fon əlavə edildi */
+    background: var(--progress-bg); 
     padding: 15px;
     border-radius: 18px;
 }
@@ -223,20 +218,20 @@ body{
     opacity: 0.8;
 }
 .profile-username-section p {
-    font-size: 20px; /* Bir az kiçildildi */
+    font-size: 20px; 
     font-weight: 900; 
     color: var(--accent);
 }
 
 .profile-stats-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr; /* 2 bərabər sütun */
-    gap: 10px; /* Məsafə azaldıldı */
+    grid-template-columns: 1fr 1fr; 
+    gap: 10px; 
 }
 .profile-stat {
     background: var(--progress-bg);
-    border-radius: 12px; /* Kiçildildi */
-    padding: 12px 8px; /* Kiçildildi */
+    border-radius: 12px; 
+    padding: 12px 8px; 
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -248,29 +243,28 @@ body{
     transform: translateY(-2px);
 }
 .profile-stat-label {
-    font-size: 11px; /* Kiçildildi */
+    font-size: 11px; 
     font-weight: 600;
     color: var(--text-dark);
     opacity: 0.7;
     margin-top: 4px;
 }
 .profile-stat-value {
-    font-size: 18px; /* Kiçildildi */
+    font-size: 18px; 
     font-weight: 800;
     color: var(--accent);
     margin-top: 2px;
     line-height: 1;
 }
 .profile-stat-value.money {
-    font-size: 18px; /* Kiçildildi */
+    font-size: 18px; 
 }
 .profile-icon {
-    font-size: 20px; /* Kiçildildi */
+    font-size: 20px; 
     color: var(--text-dark); 
 }
-/* Profil Kartı Stili Sonu */
 
-/* Metod Siyahısı - DİL DƏYİŞƏNDƏ YERLƏŞMƏ PROBLEMLƏRİNİ HƏLL ETMƏK ÜÇÜN DÜZƏLİŞ */
+/* Metod Siyahısı */
 .method-list{
     display:flex;
     flex-wrap:wrap;
@@ -279,8 +273,6 @@ body{
     justify-content:space-between;
 }
 .method{
-    /* Flex-grow 1: Qalan yeri doldurur. Flex-shrink 1: Mümkün olduqda kiçilir. */
-    /* calc(50% - 5px) HƏR ZAMAN 2 SÜTUN QALMASINI TƏMİN EDİR (50% - yarım gap) */
     flex:1 1 calc(50% - 5px); 
     padding:14px;
     border-radius:14px;
@@ -296,7 +288,6 @@ body{
     justify-content: center;
     height: 100px;
     position: relative;
-    /* Mətnin daşmasının qarşısını alır */
     word-break: break-word; 
     overflow: hidden; 
 }
@@ -309,7 +300,6 @@ body{
     object-fit: contain; 
     background-color: #fff;
     padding: 4px; 
-    /* Logo üçün dəyişməz ölçü */
     flex-shrink: 0; 
 }
 .method-logo.bank-logo {
@@ -318,7 +308,6 @@ body{
 }
 .method-text {
     font-size: 14px;
-    /* Mətnin daşmasının qarşısını alır */
     overflow: hidden;
     text-overflow: ellipsis; 
 }
@@ -355,10 +344,64 @@ body{
 .stat label{font-size:11px;color:var(--text-dark);opacity:0.7;}
 .progress{height:10px;background:var(--progress-bg);border-radius:6px;overflow:hidden;margin-top:12px;}
 .progress-fill{height:100%;background:var(--accent);width:0%;transition:width .4s;} 
-.ad-btn{width:100%;margin-top:12px;padding:12px;font-size:14px;font-weight:700;border:none;border-radius:14px;color:var(--text-light);cursor:pointer;transition:0.3s;background:linear-gradient(90deg,var(--btn-gradient-start),var(--btn-gradient-end));box-shadow:0 0 16px var(--btn-shadow);}
+
+/* REKLAM DÜYMƏSİ STİLİ */
+.ad-btn{
+    width:100%;
+    margin-top:12px;
+    padding:12px;
+    font-size:14px;
+    font-weight:700;
+    border:none;
+    border-radius:14px;
+    color:var(--text-light);
+    cursor:pointer;
+    transition:0.3s;
+    background:linear-gradient(90deg,var(--btn-gradient-start),var(--btn-gradient-end));
+    box-shadow:0 0 16px var(--btn-shadow);
+    position: relative; 
+    overflow: hidden; 
+    z-index: 1; 
+}
 .ad-btn:hover:not(.waiting){transform:scale(1.03);box-shadow:0 0 20px var(--btn-shadow);}
 
-/* NAVİQASİYA PANELİ DÜZƏLİŞLƏRİ */
+/* Bar gedəndə düymənin stili */
+.ad-btn.waiting {
+    background: #ccc !important;
+    color: #555 !important;
+    cursor: not-allowed;
+    box-shadow: none !important;
+    position: relative; 
+    overflow: hidden; 
+}
+.ad-btn-content {
+    /* Mətnin mövqeyini barın üstündə sabitləmək üçün */
+    position: relative;
+    z-index: 2; 
+    display: block; 
+}
+
+/* YENİLİK: Dinamik Timer Bar üçün CSS (QIRMIZI GRADIENT) */
+.timer-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 0%; 
+  border-radius: 14px;
+  /* QIRMIZI GRADIENT */
+  background: linear-gradient(90deg, var(--btn-gradient-start), var(--btn-gradient-end)); 
+  transition: width 1s linear; 
+  z-index: 1; 
+  border-radius: 14px;
+}
+
+/* Mətnin rəngini geri sayım aktiv olanda dəyişdiririk ki, qırmızı fon üzərində yaxşı görünsün */
+.ad-btn.waiting .ad-btn-content {
+    color: var(--text-light) !important; 
+}
+
+/* NAVİQASİYA PANELİ */
 .menu{
     position:fixed;
     bottom:15px;
@@ -413,15 +456,6 @@ body{
 .alert.error{background:#f8d7da;color:#842029;}
 .alert.success{background:#d1e7dd;color:#0f5132;}
 
-/* Dinamik Timer Bar üçün CSS */
-.timer-bar-container {
-  height: 6px;
-  width: 0%;
-  border-radius: 4px;
-  margin-top: 6px;
-  transition: width 1s linear, background-color 0.5s, box-shadow 0.5s; 
-}
-
 /* REFERRANS SƏHİFƏSİ STİLLƏRİ */
 .referral-card {
     text-align: left;
@@ -445,7 +479,7 @@ body{
     color: var(--accent);
 }
 
-/* YENİLƏNMİŞ REFERANS DÜYMƏLƏRİ VƏ KONTEYNER */
+/* REFERANS DÜYMƏLƏRİ VƏ KONTEYNER */
 .referral-actions-container {
     display: flex;
     align-items: stretch; 
@@ -483,8 +517,8 @@ body{
     cursor: pointer;
     transition: background 0.3s, transform 0.2s;
     flex-shrink: 0; 
-    font-size: 18px; /* Emoji ölçüsü */
-    width: 50px; /* Düymə ölçüsü */
+    font-size: 18px; 
+    width: 50px; 
     text-align: center;
 }
 #copyRefLinkBtn {
@@ -492,7 +526,7 @@ body{
     border-left: 1px solid rgba(255, 255, 255, 0.2); 
 }
 #shareRefLinkBtn {
-    background: linear-gradient(90deg, #1e90ff, #00bfff); /* Mavi gradient */
+    background: linear-gradient(90deg, #1e90ff, #00bfff); 
     border-left: 1px solid rgba(255, 255, 255, 0.2); 
 }
 #copyRefLinkBtn:active, #shareRefLinkBtn:active {
@@ -561,7 +595,7 @@ body{
     transform: translate(-50%, -100px); 
 }
 
-/* YENİLİK: İstifadəçi Adı Modalı */
+/* İstifadəçi Adı Modalı */
 .modal-overlay {
     position: fixed;
     top: 0;
@@ -569,7 +603,7 @@ body{
     width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.6);
-    display: none; /* İlkin olaraq gizli */
+    display: none; 
     justify-content: center;
     align-items: center;
     z-index: 500;
@@ -714,7 +748,9 @@ body{
       </div>
       <div class="progress"><div class="progress-fill" id="progress"></div></div>
       <p style="margin-top:6px;" data-translate-key="progressText">İrəliləyiş: <span id="progressTextSpan">0/100</span></p>
-      <button id="adBtn" class="ad-btn" data-translate-key="watchAd">Reklam İzle</button>
+      <button id="adBtn" class="ad-btn">
+        <span class="ad-btn-content" data-translate-key="watchAd">Reklam İzle</span>
+        </button>
       <div id="msg"></div>
     </div>
   </div>
@@ -886,11 +922,11 @@ const themeIcon = document.getElementById('themeIcon');
 function applyTheme(isDark) {
     if (isDark) {
         body.classList.add('dark-theme');
-        themeIcon.textContent = '🌙'; // Qaranlıq üçün ay
+        themeIcon.textContent = '🌙'; 
         safeSet(THEME_KEY, 'dark');
     } else {
         body.classList.remove('dark-theme');
-        themeIcon.textContent = '🔆'; // Açıq üçün günəş
+        themeIcon.textContent = '🔆'; 
         safeSet(THEME_KEY, 'light');
     }
 }
@@ -922,7 +958,6 @@ const AZN_REWARD = 0.001;
 const AZN_TASK_REWARDS = [0.1, 0.1, 0.15, 0.05]; 
 const TOTAL_TASKS_COUNT = AZN_TASK_REWARDS.length; 
 
-// USDT minimum limiti 10₼-dan 3₼-a dəyişdirildi
 const AZN_MIN_WITHDRAW = { m10: 3, azercell: 3, bakcell: 3, nar: 3, bank: 3, usdt: 3 }; 
 
 // --- İSTİFADƏÇİ ADI AÇARI ---
@@ -936,7 +971,7 @@ function getLocalizedReward(lang) {
     let reward = AZN_REWARD;
     let symbol = CURRENCIES[lang].symbol;
     let currency = CURRENCIES[lang].main;
-    let format = (val) => val.toFixed(4); // AZN üçün 4 rəqəm
+    let format = (val) => val.toFixed(4); 
 
     if (lang === 'tr') {
         reward = AZN_REWARD * EXCHANGE_RATES.AZN_TO_TRY;
@@ -975,7 +1010,6 @@ function getLocalizedTaskReward(lang, aznReward) {
     return `<b>${format(localizedReward)} ${symbol}</b>`;
 }
 
-// YENİLƏNİB: Paylaşım mətnləri yeniləndi (Qazanc AZ)
 const TRANSLATIONS = {
     'az': {
         pageTitle: 'Qazanc AZ',
@@ -1045,7 +1079,6 @@ const TRANSLATIONS = {
         usernameSaved: '✅ İstifadəçi adı qeyd edildi!',
         activeUsernameTitle: 'Aktiv İstifadəçi Adınız',
         yourUsernameTitle: 'İstifadəçi Adınız',
-        // YENİ PAYLAŞMA MƏTNLƏRİ
         share: 'Paylaş', 
         shareMessage: (link) => `Mən Qazanc AZ ilə reklam izləyərək qazanıram 💰\nSən də mənim linkimdən qoşul 🔗\n${link}\nReklam izləyərək birlikdə qazanaq 📲💸\nFürsəti qaçırma, indi başla! 🔥🚀`,
     },
@@ -1117,7 +1150,6 @@ const TRANSLATIONS = {
         usernameSaved: '✅ Username saved!',
         activeUsernameTitle: 'Active Username',
         yourUsernameTitle: 'Your Username',
-        // YENİ PAYLAŞMA MƏTNLƏRİ
         share: 'Share',
         shareMessage: (link) => `I earn by watching ads with Qazanc AZ 💰\nJoin with my link 🔗\n${link}\nLet's earn together by watching ads 📲💸\nDon't miss the chance, start now! 🔥🚀`,
     },
@@ -1189,7 +1221,6 @@ const TRANSLATIONS = {
         usernameSaved: '✅ Kullanıcı adı kaydedildi!',
         activeUsernameTitle: 'Aktif Kullanıcı Adınız',
         yourUsernameTitle: 'Kullanıcı Adınız',
-        // YENİ PAYLAŞMA MƏTNLƏRİ
         share: 'Paylaş',
         shareMessage: (link) => `Qazanc AZ ile reklam izleyerek kazanıyorum 💰\nSen de benim linkimden katıl 🔗\n${link}\nReklam izleyerek birlikte kazanalım 📲💸\nFırsatı kaçırma, hemen başla! 🔥🚀`,
     },
@@ -1241,7 +1272,7 @@ const TRANSLATIONS = {
         referralInfo2: 'При выводе средств будут проверены пользователи, присоединившиеся к боту по вашей ссылке. Ваши деньги будут отправлены как **Бонус**.',
         yourRefLink: 'Ваша Реферальная Ссылка',
         copy: 'Копировать',
-        copied: 'Скопировано!',
+        copied: 'Скопировано!', 
         copyFailed: 'Сбой копирования!', 
         placeholderDetails_m10: '10-значный номер M10',
         placeholderDetails_azercell: '050xxxxxxx',
@@ -1261,7 +1292,6 @@ const TRANSLATIONS = {
         usernameSaved: '✅ Имя пользователя сохранено!',
         activeUsernameTitle: 'Активное Имя Пользователя',
         yourUsernameTitle: 'Ваше Имя Пользователя',
-        // YENİ PAYLAŞMA MƏTNLƏRİ
         share: 'Поделиться',
         shareMessage: (link) => `Я зарабатываю, просматривая рекламу с Qazanc AZ 💰\nПрисоединяйся по моей ссылке 🔗\n${link}\nДавайте зарабатывать вместе, просматривая рекламу 📲💸\nНе упусти шанс, начни прямо сейчас! 🔥🚀`,
     }
@@ -1274,7 +1304,6 @@ const LIMIT = 100;
 const BAL_KEY='bal',COUNT_KEY='cnt',RESET_KEY='resetTime';
 const JOIN_KEY='joined',JOIN_KEY2='joined2',JOIN_KEY3='joined3',JOIN_KEY4='joined4'; 
 
-// "Əvvəldən izlədikləri" üçün açarlar
 const TOTAL_ADS_KEY = 'totalAdsWatched';
 const TOTAL_EARNED_KEY = 'totalAZNEarned';
 
@@ -1285,13 +1314,16 @@ if (bal === -1 || isNaN(bal)) {
     safeSet(BAL_KEY, bal);
 }
 
-// Bütün zamanlar üçün izlənilən reklam sayı
 let totalAds = parseInt(safeGet(TOTAL_ADS_KEY, 0));
-// Bütün zamanlar üçün qazanc (ilkin balans daxil olmaqla)
 let totalEarned = parseFloat(safeGet(TOTAL_EARNED_KEY, bal)); 
 
 let cnt=parseInt(safeGet(COUNT_KEY,0));
 let resetTime=safeGet(RESET_KEY,null);
+
+// Reklam izləmə prosesi üçün global dəyişənlər
+let tInterval = null; // setInterval üçün istifadə olunur
+let remainingSeconds = 0; // Qalan saniyə
+const MAX_SECONDS = 10;
 
 function getNextResetTime(){
   const now=new Date();
@@ -1383,11 +1415,11 @@ function update(){
   safeSet(TOTAL_ADS_KEY, totalAds); 
   safeSet(TOTAL_EARNED_KEY, totalEarned); 
   
-  updateProfileStats(); // Hər balans yeniləndikdə Profil statistikasını da yenilə
-  updateUsernameDisplay(); // Navbarda istifadəçi adını yenilə
+  updateProfileStats(); 
+  updateUsernameDisplay(); 
 }
 
-// YENİ: Profil məlumatlarını yeniləyən funksiya
+// Profil məlumatlarını yeniləyən funksiya
 function updateProfileStats() {
     let completedTasks = 0;
     taskButtons.forEach(task => {
@@ -1397,9 +1429,8 @@ function updateProfileStats() {
     });
 
     const currencyInfo = CURRENCIES[currentLang];
-    const totalEarnedInAZN = totalEarned; // totalEarned AZN-də saxlanılır
+    const totalEarnedInAZN = totalEarned; 
     
-    // Total Earned cari dildə göstərilir
     const totalEarnedInLang = (totalEarnedInAZN * (currentLang === 'tr' ? EXCHANGE_RATES.AZN_TO_TRY : 
                                                currentLang === 'en' ? EXCHANGE_RATES.AZN_TO_USD :
                                                currentLang === 'ru' ? EXCHANGE_RATES.AZN_TO_RUB : 1));
@@ -1407,17 +1438,15 @@ function updateProfileStats() {
     let format = (val) => currentLang === 'en' ? val.toFixed(4) : val.toFixed(2);
     if (currentLang === 'az') format = (val) => val.toFixed(2); 
 
-    // İstifadəçinin bütün izlədiyi reklam sayı
     document.getElementById('totalAdsCount').textContent = totalAds.toLocaleString('az-AZ'); 
     document.getElementById('completedTasksCount').textContent = completedTasks.toLocaleString('az-AZ');
     document.getElementById('totalEarnedAmount').textContent = `${format(totalEarnedInLang)} ${currencyInfo.symbol}`;
 
-    // Profil səhifəsində istifadəçi adını yenilə
     const savedUsername = safeGet(USERNAME_KEY, '');
     document.getElementById('profileUsernameDisplay').textContent = savedUsername ? `@${savedUsername}` : '---';
 }
 
-// YENİ: İstifadəçi Adı Göstəricisini (Navbar) yeniləyir
+// İstifadəçi Adı Göstəricisini (Navbar) yeniləyir
 function updateUsernameDisplay() {
     const savedUsername = safeGet(USERNAME_KEY, '');
     const card = document.getElementById('usernameNavbarDisplay');
@@ -1427,7 +1456,6 @@ function updateUsernameDisplay() {
         display.textContent = `@${savedUsername}`;
         card.style.display = 'flex';
     } else {
-        // Əgər ad yoxdursa, Navbarda gizlədirik
         card.style.display = 'none';
     }
 }
@@ -1440,7 +1468,6 @@ function updateTaskButtons() {
         const btn = document.getElementById(task.id);
         if (!btn) return;
 
-        // Mükafat mətnini yenilə
         const taskRewardKey = `taskReward${index + 1}`;
         const localizedRewardText = getLocalizedTaskReward(currentLang, AZN_TASK_REWARDS[index]);
         const rewardEl = btn.parentElement.querySelector(`p[data-translate-key="${taskRewardKey}"]`);
@@ -1448,7 +1475,6 @@ function updateTaskButtons() {
             rewardEl.innerHTML = t[taskRewardKey](localizedRewardText);
         }
         
-        // LocalStorage-də tamamlanıbsa
         if (localStorage.getItem(task.key)){
             btn.classList.remove('waiting'); 
             btn.classList.add('completed');
@@ -1482,7 +1508,7 @@ function getLocalizedMinAmount(methodType, lang) {
         format = (val) => val.toFixed(4);
     } else if (lang === 'ru') {
         minAmount = aznMin * EXCHANGE_RATES.AZN_TO_RUB;
-    } else { // AZN üçün
+    } else { 
         format = (val) => val.toFixed(0); 
     }
     
@@ -1530,14 +1556,11 @@ function applyTranslations(lang) {
     document.querySelectorAll('[data-translate-key]').forEach(el => {
         const key = el.getAttribute('data-translate-key');
         if (typeof t[key] === 'function') {
-             // Reklam mükafatı
              if (key === 'adReward') {
                 const formattedRewardText = `<b>${rewardInfo.formattedReward} ${rewardInfo.symbol}</b>`;
                 el.innerHTML = t[key](formattedRewardText);
              } 
-
         } else if (t[key]) {
-            // Paylaş və Kopyala düymələrinin mətnini (emoji) dəyişmirik
             if(key !== 'copy' && key !== 'share') {
                el.innerHTML = t[key];
             }
@@ -1546,7 +1569,6 @@ function applyTranslations(lang) {
     
     updateTaskButtons(); 
 
-    // Çıxarış metodlarının minimum məbləğlərini yenilə
     document.querySelectorAll('.min-withdraw-label').forEach(label => {
         const methodType = label.getAttribute('data-min-key');
         if (methodType) {
@@ -1573,6 +1595,16 @@ function applyTranslations(lang) {
     if (document.getElementById('form').style.display === 'block' && type) {
         setPlaceholders(type);
     }
+    
+    // ƏLAVƏ DÜZƏLİŞ: Əgər geri sayım gedirsə, onun mətnini yenilə
+    if (tInterval && remainingSeconds > 0) {
+         adBtnContent.textContent = t.wait.replace('{s}', remainingSeconds);
+    } else {
+         // Əgər geri sayım bitibsə və ya yoxdursa, düymənin ilkin mətnini yenilə
+         if (!adBtn.classList.contains('waiting')) {
+             adBtnContent.textContent = t.watchAd;
+         }
+    }
 }
 
 // Açılan menyu funksiyası
@@ -1588,12 +1620,16 @@ function setLang(lang) {
     
     document.getElementById('langArrow').textContent = ''; 
     
+    // Əsas dəyişiklik: Tərcüməni tətbiq et, amma timer gedirsə, 'watchAd' mətnini toxunma
     applyTranslations(lang);
+    
     toggleDropdown(); 
 }
 
 // Reklam düyməsi Funksiyası
 const adBtn=document.getElementById('adBtn'), msg=document.getElementById('msg');
+const adBtnContent = document.querySelector('.ad-btn-content');
+
 adBtn.onclick=()=>{
   const t = TRANSLATIONS[currentLang];
   const rewardInfo = getLocalizedReward(currentLang);
@@ -1603,42 +1639,54 @@ adBtn.onclick=()=>{
   adBtn.disabled=true; 
   adBtn.classList.add('waiting');
   
-  let s=10; // Geri sayım saniyəsi
+  remainingSeconds = MAX_SECONDS; 
   
-  // Mesaj və Timer Barı ilkin vəziyyətdə göstər
-  msg.innerHTML=`<span>${t.wait.replace('{s}', s)}</span><div id="timerBar" class="timer-bar-container"></div>`;
-
+  // Timer barı yarat və düymənin içinə əlavə et (əgər yoxdursa)
+  let timerBar = adBtn.querySelector('.timer-bar');
+  if (!timerBar) {
+      timerBar = document.createElement('div');
+      timerBar.className = 'timer-bar';
+      adBtn.prepend(timerBar); 
+  }
+  
+  // Mətn dərhal saniyə sayğacına dəyişdirilir
+  adBtnContent.textContent = t.wait.replace('{s}', remainingSeconds); 
+  msg.textContent = '';
+  
   // Reklamı göstər (mümkünsə)
   try{if(typeof show_10024800==='function'){show_10024800();}}catch(e){} 
   
   let rewarded = false; 
+  
+  // Əvvəlki intervalı təmizlə
+  if (tInterval) clearInterval(tInterval); 
 
-  const tInterval=setInterval(()=>{
-    s--;
-    const timerBar=document.getElementById('timerBar');
+  tInterval=setInterval(()=>{
+    remainingSeconds--;
     
-    if(timerBar){
-        const progressPercentage = (10 - s) / 10 * 100;
-        const color = `hsl(0, ${95 - (10 - s) * 5}%, 50%)`; 
-        
-        timerBar.style.width=`${progressPercentage}%`;
-        timerBar.style.background=`linear-gradient(90deg, #ff416c, ${color})`; 
-        timerBar.style.boxShadow = `0 0 8px rgba(255, 65, 108, 0.6)`; 
-    }
+    const progressPercentage = (MAX_SECONDS - remainingSeconds) / MAX_SECONDS * 100;
+    timerBar.style.width=`${progressPercentage}%`;
     
-    // PUL ƏLAVƏ EDİLMƏSİ (1 saniyə keçdikdə, yəni s==9 olanda)
-    if(s === 9 && !rewarded) { 
+    // Düymənin içindəki mətni geri sayım ilə yenilə
+    // Bu, dili dəyişəndə avtomatik cari dilə uyğunlaşacaq (yuxarıda applyTranslations-da düzəliş edildi)
+    const currentT = TRANSLATIONS[currentLang];
+    adBtnContent.textContent = currentT.wait.replace('{s}', remainingSeconds > 0 ? remainingSeconds : '0'); 
+    
+    
+    // PUL ƏLAVƏ EDİLMƏSİ (9 saniyə keçdikdə, yəni remainingSeconds==9 olanda)
+    if(remainingSeconds === 9 && !rewarded) { 
         bal+=AZN_REWARD; 
-        totalEarned += AZN_REWARD; // Total qazanca əlavə et
+        totalEarned += AZN_REWARD; 
         cnt++; 
-        totalAds++; // Total izlənilən reklama əlavə et
+        totalAds++; 
         update(); 
         rewarded = true; 
         
-        // Mükafat mesajını yaradırıq
+        // Mükafat mesajını yaradırıq 
         const rewardMsgElement = document.createElement('div');
-        const formattedRewardText = `<b>${rewardInfo.formattedReward} ${rewardInfo.symbol}</b>`;
-        rewardMsgElement.innerHTML = t.rewardAdded(formattedRewardText);
+        const currentRewardInfo = getLocalizedReward(currentLang);
+        const formattedRewardText = `<b>${currentRewardInfo.formattedReward} ${currentRewardInfo.symbol}</b>`;
+        rewardMsgElement.innerHTML = currentT.rewardAdded(formattedRewardText);
         rewardMsgElement.style.marginTop = '10px';
         rewardMsgElement.style.fontWeight = 'bold';
         rewardMsgElement.id = 'rewardMsg';
@@ -1653,18 +1701,27 @@ adBtn.onclick=()=>{
         }, 2000); 
     }
     
-    // Geri sayım mətnini yeniləyirik
-    const msgSpan = msg.querySelector('span');
-    if (msgSpan) msgSpan.textContent = t.wait.replace('{s}', s);
-    
     // 10 saniyə bitdikdə
-    if(s<=0){
+    if(remainingSeconds<=0){
       clearInterval(tInterval);
+      tInterval = null;
       
+      // Timer barı sil
+      timerBar.remove(); 
+      
+      // Düyməni ilkin vəziyyətinə qaytar
       adBtn.disabled=false;
       adBtn.classList.remove('waiting');
       
-      msg.textContent = ''; 
+      // Yalnız burada, geri sayım bitdikdə, cari dildəki 'watchAd' mətni gəlir
+      adBtnContent.textContent = currentT.watchAd; 
+      
+      // Əgər limit dolubsa, mesajı göstər
+      if (cnt >= LIMIT) {
+        msg.textContent = currentT.adLimitReached;
+      } else {
+        msg.textContent = ''; 
+      }
     }
   },1000);
 };
@@ -1700,7 +1757,6 @@ taskButtons.forEach(task => {
     const btn = document.getElementById(task.id);
     if (!btn) return;
     
-    // Yüklənmə zamanı ilkin yoxlama
     if (localStorage.getItem(task.key)){
         const completedText = TRANSLATIONS[currentLang].completed;
         btn.classList.add('completed');
@@ -1724,7 +1780,7 @@ taskButtons.forEach(task => {
         setTimeout(() => {
             
             bal += task.reward; 
-            totalEarned += task.reward; // Total qazanca əlavə et
+            totalEarned += task.reward; 
             safeSet(BAL_KEY, bal);
             safeSet(TOTAL_EARNED_KEY, totalEarned);
             
@@ -1806,12 +1862,10 @@ copyBtn.onclick = async () => {
             await navigator.clipboard.writeText(fullLink);
             success = true;
         } catch (err) {
-            // Fallback istifadə etməyə ehtiyac yoxdur, çünki bu, mobil web-ə yönəlib
         }
     }
     
     if (!success) {
-        // Fallback əlavə etməklə daha çox cihazda işləməsini təmin edirik
         success = await fallbackCopyTextToClipboard(fullLink, t);
     }
     
@@ -1832,21 +1886,17 @@ copyBtn.onclick = async () => {
     }, 2000);
 };
 
-// YENİ: PAYLAŞMA FUNKSİYASI
+// PAYLAŞMA FUNKSİYASI
 shareBtn.onclick = () => {
     const fullLink = refLinkDisplay.textContent;
     const t = TRANSLATIONS[currentLang];
     
-    // Mesajı tərcümə edilmiş şəkildə link ilə birləşdiririk
     const shareText = t.shareMessage(fullLink);
 
-    // URL-i kodlaşdırırıq ki, Telegram düzgün anlasın
     const encodedText = encodeURIComponent(shareText);
     
-    // Telegram paylaşma linki
     const telegramShareUrl = `https://t.me/share/url?url=${encodedText}`;
 
-    // Yeni pəncərədə açırıq
     window.open(telegramShareUrl, '_blank');
 };
 
@@ -1859,7 +1909,6 @@ const usernameError = document.getElementById('usernameError');
 
 saveUsernameBtn.onclick = () => {
     const t = TRANSLATIONS[currentLang];
-    // Boşluqları silirik, amma @ işarəsini yoxlayırıq.
     let username = usernameInput.value.trim(); 
     
     if (username.length < USERNAME_MIN_LENGTH) {
@@ -1874,23 +1923,18 @@ saveUsernameBtn.onclick = () => {
         return;
     }
     
-    // Yalnız hərflər, rəqəmlər və alt xəttə icazə veririk
-    if (!/^[a-zA-Z0-9_]{5,15}$/.test(username)) { // Məhdudiyyətə uyğunlaşdırıldı
+    if (!/^[a-zA-Z0-9_]{5,15}$/.test(username)) { 
          usernameError.textContent = t.usernameInvalid;
          setTimeout(() => { usernameError.textContent = ''; }, 3000);
          return;
     }
 
-    // İstifadəçi adını yadda saxlayırıq (avtomatik olaraq @ olmadan)
     safeSet(USERNAME_KEY, username);
     
-    // Uğur mesajı
     showTaskNotification(t.usernameSaved);
     
-    // Modalı bağlayırıq
     usernameModal.style.display = 'none';
     
-    // Səhifələri və interfeysi yeniləyirik
     update();
 };
 
@@ -1898,10 +1942,8 @@ function checkUsernameAndShowModal() {
     const savedUsername = safeGet(USERNAME_KEY, '');
     const currentPageId = document.querySelector('.page.active').id;
     
-    // Əgər Profil səhifəsidirsə VƏ istifadəçi adı yoxdursa, Modalı göstəririk
     if (currentPageId === 'profilePage' && !savedUsername) {
         usernameModal.style.display = 'flex';
-        // Girişi sıfırlayırıq
         usernameInput.value = '';
         usernameError.textContent = '';
         return true; 
@@ -1922,7 +1964,6 @@ function showPage(id, btn){
   } else if (id === 'referralPage') {
     updateReferralLink();
   } else if (id === 'profilePage') { 
-    // Profil səhifəsinə keçid zamanı istifadəçi adını yoxla
     if (!checkUsernameAndShowModal()) {
         updateProfileStats();
     }
@@ -2032,7 +2073,7 @@ function showErr(msg){
 update();
 applyTranslations(currentLang); 
 updateReferralLink();
-updateUsernameDisplay(); // Navbarda adı göstər
+updateUsernameDisplay(); 
 
 // Loading Screen-i 3 saniyədən sonra bağla
 setTimeout(()=>{
