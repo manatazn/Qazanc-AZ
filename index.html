@@ -861,32 +861,32 @@ body{
       <div class="method" data-type="m10">
           <img src="https://i.postimg.cc/Kj94hVNG/unnamed.png" alt="M10 Logo" class="method-logo">
           <span class="method-text">M10</span>
-          <span class="min-withdraw-label" data-min-key="m10">3 ₼</span>
+          <span class="min-withdraw-label" data-min-key="m10">4 ₼</span>
       </div>
       <div class="method" data-type="azercell">
           <img src="https://i.postimg.cc/qM5gmPqZ/applogo512.png" alt="Azercell Logo" class="method-logo">
           <span class="method-text">Azercell</span>
-          <span class="min-withdraw-label" data-min-key="azercell">3 ₼</span>
+          <span class="min-withdraw-label" data-min-key="azercell">4 ₼</span>
       </div>
       <div class="method" data-type="bakcell">
           <img src="https://i.postimg.cc/Pqmx5N49/images.jpg" alt="Bakcell Logo" class="method-logo">
           <span class="method-text">Bakcell</span>
-          <span class="min-withdraw-label" data-min-key="bakcell">3 ₼</span>
+          <span class="min-withdraw-label" data-min-key="bakcell">4 ₼</span>
       </div>
       <div class="method" data-type="nar">
           <img src="https://i.postimg.cc/4NmxhWPy/images.png" alt="Nar Logo" class="method-logo">
           <span class="method-text">Nar</span>
-          <span class="min-withdraw-label" data-min-key="nar">3 ₼</span>
+          <span class="min-withdraw-label" data-min-key="nar">4 ₼</span>
       </div>
       <div class="method" data-type="bank">
           <img src="https://i.postimg.cc/L6H0yWwZ/42492-bank-1024.png" alt="Bank Logo" class="method-logo bank-logo">
           <span class="method-text" data-translate-key="bankCard">Bank</span>
-          <span class="min-withdraw-label" data-min-key="bank">3 ₼</span>
+          <span class="min-withdraw-label" data-min-key="bank">4 ₼</span>
       </div>
       <div class="method" data-type="usdt">
           <img src="https://i.postimg.cc/X7HxsY98/Tether-USDT-Logo.png" alt="USDT Logo" class="method-logo">
           <span class="method-text">USDT</span>
-          <span class="min-withdraw-label" data-min-key="usdt">3 ₼</span>
+          <span class="min-withdraw-label" data-min-key="usdt">4 ₼</span>
       </div>
     </div>
     <div class="form" id="form">
@@ -967,7 +967,8 @@ const AZN_REWARD = 0.001;
 const AZN_TASK_REWARDS = [0.1, 0.1, 0.15, 0.05]; 
 const TOTAL_TASKS_COUNT = AZN_TASK_REWARDS.length; 
 
-const AZN_MIN_WITHDRAW = { m10: 3, azercell: 3, bakcell: 3, nar: 3, bank: 3, usdt: 3 }; 
+// İSTƏK ÜZRƏ DÜZƏLİŞ: Bütün metodlar üçün minimum çıxarış 4 AZN olaraq təyin edildi
+const AZN_MIN_WITHDRAW = { m10: 4, azercell: 4, bakcell: 4, nar: 4, bank: 4, usdt: 4 }; 
 
 // --- İSTİFADƏÇİ ADI AÇARI ---
 const USERNAME_KEY = 'az_username';
@@ -1019,30 +1020,50 @@ function getLocalizedTaskReward(lang, aznReward) {
     return `<b>${format(localizedReward)} ${symbol}</b>`;
 }
 
-// YENİLİK: Çıxarış limitini formatlayan xüsusi funksiya (RU üçün 140 RUB təmin ediləcək)
+// YENİLİK: İSTƏK ÜZRƏ DÜZƏLİŞ: Çıxarış limitini formatlayan xüsusi funksiya (Hədəf dəyərlər tətbiq olunur)
 function getLocalizedMinAmount(methodType, lang) {
-    const aznMin = AZN_MIN_WITHDRAW[methodType];
     const currencyInfo = CURRENCIES[lang];
-    let minAmount = aznMin;
     let symbol = currencyInfo.symbol;
     let formattedAmount;
-
-    if (lang === 'tr') {
-        minAmount = aznMin * EXCHANGE_RATES.AZN_TO_TRY;
-        formattedAmount = minAmount.toFixed(0); // Tam ədəd (məsələn: 75)
+    
+    // AZN: 4 ₼
+    if (lang === 'az') {
+        formattedAmount = '4';
+        symbol = '₼';
+    // USD: 2.40 $
     } else if (lang === 'en') {
-        minAmount = aznMin * EXCHANGE_RATES.AZN_TO_USD;
-        formattedAmount = minAmount.toFixed(1); // Bir onluq rəqəm (məsələn: 1.8)
+        formattedAmount = '2.40'; 
+        symbol = '$';
+    // TRY: 100 ₺
+    } else if (lang === 'tr') {
+        formattedAmount = '100';
+        symbol = '₺';
+    // RUB: 188 ₽
     } else if (lang === 'ru') {
-        // İSTƏK ÜZRƏ DÜZƏLİŞ: Bütün RU metodları üçün min 140 RUB
-        minAmount = 140; 
+        formattedAmount = '188';
         symbol = '₽';
-        formattedAmount = minAmount.toFixed(0); 
-    } else { // AZ
-        formattedAmount = aznMin.toFixed(0); // Tam ədəd (məsələn: 3)
+    } else {
+        formattedAmount = '4';
+        symbol = '₼';
     }
     
     return `${formattedAmount} ${symbol}`;
+}
+
+// İSTƏK ÜZRƏ DÜZƏLİŞ: Minimum çıxarış məbləği hədəflərini AZN-ə çevirən (çıxarış üçün istifadə olunacaq)
+function getAZNEquivalentMinWithdrawal(lang) {
+    if (lang === 'en') {
+        // 2.40 $ / 0.59 (AZN_TO_USD)
+        return 2.40 / EXCHANGE_RATES.AZN_TO_USD; 
+    } else if (lang === 'tr') {
+        // 100 ₺ / 25.00 (AZN_TO_TRY)
+        return 100 / EXCHANGE_RATES.AZN_TO_TRY;
+    } else if (lang === 'ru') {
+        // 188 ₽ / 46.45 (AZN_TO_RUB)
+        return 188 / EXCHANGE_RATES.AZN_TO_RUB;
+    } else { // AZ
+        return 4.0; 
+    }
 }
 
 const TRANSLATIONS = {
@@ -1559,6 +1580,7 @@ function setPlaceholders(methodType) {
     details.placeholder = t[detailsKey] || '';
     
     // Placeholder-də formatlı min məbləğ istifadə olunur
+    // Məsələn: "Məbləğ (AZN) - 4"
     const minTextOnly = localizedMinAmount.split(' ')[0]; 
     amount.placeholder = `${t.placeholderAmount} (${currency}) - ${minTextOnly}`; 
 }
@@ -1608,10 +1630,11 @@ function applyTranslations(lang) {
     
     updateTaskButtons(); 
 
+    // İSTƏK ÜZRƏ DÜZƏLİŞ: Min çıxarış məbləğini göstərən label-ləri yenilə
     document.querySelectorAll('.min-withdraw-label').forEach(label => {
         const methodType = label.getAttribute('data-min-key');
         if (methodType) {
-            // YENİLİK: Səliqəli formatlanmış min məbləği istifadə edir
+            // Səliqəli formatlanmış min məbləği istifadə edir
             label.textContent = getLocalizedMinAmount(methodType, lang); 
         }
     });
@@ -2128,30 +2151,25 @@ document.getElementById('withdrawBtn').onclick=()=>{
   if(isNaN(amt) || amt <= 0){ showErr(t.amountError); return; }
   
   
+  // İSTƏK ÜZRƏ DÜZƏLİŞ: Minimum məbləğin AZN ekvivalentini götürürük
+  const aznEquivalentMinAmount = getAZNEquivalentMinWithdrawal(currentLang);
+
+  // İSTƏK ÜZRƏ DÜZƏLİŞ: Çıxarış məbləğini yoxlamaq üçün yerli valyuta dəyərini hesablayırıq
   let minAmount = 0;
-  
-  // YENİLİK: Minimum məbləğ hesablanması və RU üçün xüsusi yoxlama
-  if (currentLang === 'ru') {
-    minAmount = 140; // İSTƏK ÜZRƏ DÜZƏLİŞ: RU üçün minimum 140 RUB
-  } else {
-    const aznMin = AZN_MIN_WITHDRAW[type];
-    if (currentLang === 'tr') {
-      minAmount = aznMin * EXCHANGE_RATES.AZN_TO_TRY;
-    } else if (currentLang === 'en') {
-      minAmount = aznMin * EXCHANGE_RATES.AZN_TO_USD;
-    } else {
-      // AZ
-      minAmount = aznMin;
-    }
-  }
-  
   let currentBalanceInLang = bal; 
+  
   if (currentLang === 'tr') {
       currentBalanceInLang = bal * EXCHANGE_RATES.AZN_TO_TRY;
+      minAmount = 100;
   } else if (currentLang === 'en') {
       currentBalanceInLang = bal * EXCHANGE_RATES.AZN_TO_USD;
+      minAmount = 2.40;
   } else if (currentLang === 'ru') {
       currentBalanceInLang = bal * EXCHANGE_RATES.AZN_TO_RUB;
+      minAmount = 188;
+  } else { // AZ
+      currentBalanceInLang = bal;
+      minAmount = 4;
   }
   
   // Dəqiqlik fərqini aradan qaldırmaq üçün kiçik bir tolerans tətbiq edilə bilər
@@ -2163,17 +2181,19 @@ document.getElementById('withdrawBtn').onclick=()=>{
     return; 
   }
   
+  // Balans yoxlanışı: Çıxarılan məbləğ (yerli valyutada) balansdan (yerli valyutada) çoxdursa
   if(amt > currentBalanceInLang + EPSILON){ showErr(t.balanceError); return; }
 
-  // AZN-ə geri çevirib çıxarış edirik
-  let withdrawalAmountInAZN = amt;
+  // AZN-ə geri çevirib çıxarış edirik (Həmişə yerli valyutanın AZN ekvivalenti çıxarılır)
+  let withdrawalAmountInAZN = 0;
   if (currentLang === 'tr') {
     withdrawalAmountInAZN = amt / EXCHANGE_RATES.AZN_TO_TRY;
   } else if (currentLang === 'en') {
     withdrawalAmountInAZN = amt / EXCHANGE_RATES.AZN_TO_USD;
   } else if (currentLang === 'ru') {
-    // İSTƏK ÜZRƏ DÜZƏLİŞ: RU valyutasını AZN-ə çevirmək üçün
     withdrawalAmountInAZN = amt / EXCHANGE_RATES.AZN_TO_RUB;
+  } else {
+    withdrawalAmountInAZN = amt; 
   }
 
   bal -= withdrawalAmountInAZN; 
