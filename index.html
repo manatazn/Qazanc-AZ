@@ -444,17 +444,24 @@ body{
 .referral-info b {
     color: var(--accent);
 }
-.referral-link-container {
+
+/* YENİLƏNMİŞ REFERANS DÜYMƏLƏRİ VƏ KONTEYNER */
+.referral-actions-container {
     display: flex;
-    align-items: center;
+    align-items: stretch; 
     border: 1px solid var(--card-border);
     border-radius: 12px;
     background: var(--card-bg);
     overflow: hidden;
     box-shadow: 0 4px 10px rgba(0,0,0,0.05);
 }
-#referralLinkDisplay {
+
+.referral-link-display-wrapper {
     flex-grow: 1;
+    overflow: hidden;
+}
+
+#referralLinkDisplay {
     padding: 12px;
     font-size: 14px;
     overflow: hidden;
@@ -462,21 +469,37 @@ body{
     white-space: nowrap;
     color: var(--text-dark);
     font-weight: 600;
-    cursor: default; 
+    cursor: default;
+    display: block; 
+    height: 100%; 
 }
-#copyRefLinkBtn {
+
+/* Kopyala və Paylaş Düymələrinin Yeni Stili (Emoji) */
+#copyRefLinkBtn, #shareRefLinkBtn {
     padding: 12px 15px;
     border: none;
-    background: linear-gradient(90deg,var(--btn-gradient-start),var(--btn-gradient-end));
     color: var(--text-light);
     font-weight: 700;
     cursor: pointer;
     transition: background 0.3s, transform 0.2s;
-    height: 100%;
+    flex-shrink: 0; 
+    font-size: 18px; /* Emoji ölçüsü */
+    width: 50px; /* Düymə ölçüsü */
+    text-align: center;
 }
-#copyRefLinkBtn:active {
+#copyRefLinkBtn {
+    background: linear-gradient(90deg,var(--btn-gradient-start),var(--btn-gradient-end));
+    border-left: 1px solid rgba(255, 255, 255, 0.2); 
+}
+#shareRefLinkBtn {
+    background: linear-gradient(90deg, #1e90ff, #00bfff); /* Mavi gradient */
+    border-left: 1px solid rgba(255, 255, 255, 0.2); 
+}
+#copyRefLinkBtn:active, #shareRefLinkBtn:active {
     transform: scale(0.98);
 }
+
+
 #copyMessage {
     margin-top: 10px;
     font-size: 13px;
@@ -769,10 +792,13 @@ body{
         </div>
         
         <h3 style="font-size:16px; margin-bottom:10px; color:var(--text-dark);" data-translate-key="yourRefLink">Referans Linkiniz</h3>
-        <div class="referral-link-container">
-            <span id="referralLinkDisplay" data-ref-base="https://t.me/qazancazbot?startapp=" data-ref-code="1234567890"></span>
+        <div class="referral-actions-container">
+            <div class="referral-link-display-wrapper">
+                <span id="referralLinkDisplay" data-ref-base="https://t.me/qazancazbot?startapp=" data-ref-code="1234567890"></span>
+            </div>
             
-            <button id="copyRefLinkBtn" data-translate-key="copy">Kopyala</button>
+            <button id="copyRefLinkBtn" data-translate-key="copy">📋</button>
+            <button id="shareRefLinkBtn" data-translate-key="share">📤</button> 
         </div>
         <div id="copyMessage" data-translate-key="copied">Kopyalandı!</div>
     </div>
@@ -815,7 +841,7 @@ body{
       <div class="method" data-type="usdt">
           <img src="https://i.postimg.cc/X7HxsY98/Tether-USDT-Logo.png" alt="USDT Logo" class="method-logo">
           <span class="method-text">USDT</span>
-          <span class="min-withdraw-label" data-min-key="usdt">10 ₼</span>
+          <span class="min-withdraw-label" data-min-key="usdt">3 ₼</span>
       </div>
     </div>
     <div class="form" id="form">
@@ -896,7 +922,8 @@ const AZN_REWARD = 0.001;
 const AZN_TASK_REWARDS = [0.1, 0.1, 0.15, 0.05]; 
 const TOTAL_TASKS_COUNT = AZN_TASK_REWARDS.length; 
 
-const AZN_MIN_WITHDRAW = { m10: 3, azercell: 3, bakcell: 3, nar: 3, bank: 3, usdt: 10 }; 
+// USDT minimum limiti 10₼-dan 3₼-a dəyişdirildi
+const AZN_MIN_WITHDRAW = { m10: 3, azercell: 3, bakcell: 3, nar: 3, bank: 3, usdt: 3 }; 
 
 // --- İSTİFADƏÇİ ADI AÇARI ---
 const USERNAME_KEY = 'az_username';
@@ -948,7 +975,7 @@ function getLocalizedTaskReward(lang, aznReward) {
     return `<b>${format(localizedReward)} ${symbol}</b>`;
 }
 
-// YENİLƏNİB: Yeni tərcümələr əlavə edildi və məhdudiyyətlər uyğunlaşdırıldı
+// YENİLƏNİB: Paylaşım mətnləri yeniləndi (Qazanc AZ)
 const TRANSLATIONS = {
     'az': {
         pageTitle: 'Qazanc AZ',
@@ -1009,7 +1036,6 @@ const TRANSLATIONS = {
         placeholderAmount: 'Məbləğ',
         completed: 'Tamamlandı', 
         taskSuccess: (r) => `✅ Tapşırıq tamamlandı! ${r} əlavə olundu.`,
-        // YENİ TƏRCÜMƏLƏR
         usernameTitle: 'İstifadəçi Adı Qeydiyyatı',
         usernameInfo: `Davam etmək üçün Telegram istifadəçi adınızı (@ olmadan, ${USERNAME_MIN_LENGTH}-${USERNAME_MAX_LENGTH} simvol) daxil edin.`,
         saveUsername: 'Yadda Saxla',
@@ -1019,6 +1045,9 @@ const TRANSLATIONS = {
         usernameSaved: '✅ İstifadəçi adı qeyd edildi!',
         activeUsernameTitle: 'Aktiv İstifadəçi Adınız',
         yourUsernameTitle: 'İstifadəçi Adınız',
+        // YENİ PAYLAŞMA MƏTNLƏRİ
+        share: 'Paylaş', 
+        shareMessage: (link) => `Mən Qazanc AZ ilə reklam izləyərək qazanıram 💰\nSən də mənim linkimdən qoşul 🔗\n${link}\nReklam izləyərək birlikdə qazanaq 📲💸\nFürsəti qaçırma, indi başla! 🔥🚀`,
     },
     'en': {
         pageTitle: 'Earn AZ',
@@ -1079,7 +1108,6 @@ const TRANSLATIONS = {
         placeholderAmount: 'Amount',
         completed: 'Completed', 
         taskSuccess: (r) => `✅ Task completed! ${r} added.`, 
-        // YENİ TƏRCÜMƏLƏR
         usernameTitle: 'Username Registration',
         usernameInfo: `Please enter your Telegram username (without @, ${USERNAME_MIN_LENGTH}-${USERNAME_MAX_LENGTH} chars) to continue.`,
         saveUsername: 'Save',
@@ -1089,6 +1117,9 @@ const TRANSLATIONS = {
         usernameSaved: '✅ Username saved!',
         activeUsernameTitle: 'Active Username',
         yourUsernameTitle: 'Your Username',
+        // YENİ PAYLAŞMA MƏTNLƏRİ
+        share: 'Share',
+        shareMessage: (link) => `I earn by watching ads with Qazanc AZ 💰\nJoin with my link 🔗\n${link}\nLet's earn together by watching ads 📲💸\nDon't miss the chance, start now! 🔥🚀`,
     },
     'tr': {
         pageTitle: 'Kazan AZ',
@@ -1149,7 +1180,6 @@ const TRANSLATIONS = {
         placeholderAmount: 'Miktar',
         completed: 'Tamamlandı', 
         taskSuccess: (r) => `✅ Görev tamamlandı! ${r} eklendi.`, 
-        // YENİ TƏRCÜMƏLƏR
         usernameTitle: 'Kullanıcı Adı Kaydı',
         usernameInfo: `Devam etmek için Telegram kullanıcı adınızı (@ olmadan, ${USERNAME_MIN_LENGTH}-${USERNAME_MAX_LENGTH} karakter) giriniz.`,
         saveUsername: 'Kaydet',
@@ -1159,6 +1189,9 @@ const TRANSLATIONS = {
         usernameSaved: '✅ Kullanıcı adı kaydedildi!',
         activeUsernameTitle: 'Aktif Kullanıcı Adınız',
         yourUsernameTitle: 'Kullanıcı Adınız',
+        // YENİ PAYLAŞMA MƏTNLƏRİ
+        share: 'Paylaş',
+        shareMessage: (link) => `Qazanc AZ ile reklam izleyerek kazanıyorum 💰\nSen de benim linkimden katıl 🔗\n${link}\nReklam izleyerek birlikte kazanalım 📲💸\nFırsatı kaçırma, hemen başla! 🔥🚀`,
     },
     'ru': { 
         pageTitle: 'Заработок AZ',
@@ -1219,7 +1252,6 @@ const TRANSLATIONS = {
         placeholderAmount: 'Сумма',
         completed: 'Выполнено', 
         taskSuccess: (r) => `✅ Задание выполнено! ${r} добавлено.`,
-        // YENİ TƏRCÜMƏLƏR
         usernameTitle: 'Регистрация Имени Пользователя',
         usernameInfo: `Для продолжения введите свое имя пользователя Telegram (без @, ${USERNAME_MIN_LENGTH}-${USERNAME_MAX_LENGTH} символов).`,
         saveUsername: 'Сохранить',
@@ -1229,6 +1261,9 @@ const TRANSLATIONS = {
         usernameSaved: '✅ Имя пользователя сохранено!',
         activeUsernameTitle: 'Активное Имя Пользователя',
         yourUsernameTitle: 'Ваше Имя Пользователя',
+        // YENİ PAYLAŞMA MƏTNLƏRİ
+        share: 'Поделиться',
+        shareMessage: (link) => `Я зарабатываю, просматривая рекламу с Qazanc AZ 💰\nПрисоединяйся по моей ссылке 🔗\n${link}\nДавайте зарабатывать вместе, просматривая рекламу 📲💸\nНе упусти шанс, начни прямо сейчас! 🔥🚀`,
     }
 };
 
@@ -1502,7 +1537,10 @@ function applyTranslations(lang) {
              } 
 
         } else if (t[key]) {
-            el.innerHTML = t[key];
+            // Paylaş və Kopyala düymələrinin mətnini (emoji) dəyişmirik
+            if(key !== 'copy' && key !== 'share') {
+               el.innerHTML = t[key];
+            }
         }
     });
     
@@ -1713,6 +1751,7 @@ taskButtons.forEach(task => {
 // --- REFERANS FUNKSİYALARI ---
 const refLinkDisplay = document.getElementById('referralLinkDisplay');
 const copyBtn = document.getElementById('copyRefLinkBtn');
+const shareBtn = document.getElementById('shareRefLinkBtn');
 const copyMessage = document.getElementById('copyMessage');
 
 function updateReferralLink() {
@@ -1767,11 +1806,12 @@ copyBtn.onclick = async () => {
             await navigator.clipboard.writeText(fullLink);
             success = true;
         } catch (err) {
-            console.error('Navigator Kopyalama Uğursuz Oldu, Fallback istifadə edilir:', err);
+            // Fallback istifadə etməyə ehtiyac yoxdur, çünki bu, mobil web-ə yönəlib
         }
     }
     
     if (!success) {
+        // Fallback əlavə etməklə daha çox cihazda işləməsini təmin edirik
         success = await fallbackCopyTextToClipboard(fullLink, t);
     }
     
@@ -1791,6 +1831,25 @@ copyBtn.onclick = async () => {
         copyMessage.style.display = 'none';
     }, 2000);
 };
+
+// YENİ: PAYLAŞMA FUNKSİYASI
+shareBtn.onclick = () => {
+    const fullLink = refLinkDisplay.textContent;
+    const t = TRANSLATIONS[currentLang];
+    
+    // Mesajı tərcümə edilmiş şəkildə link ilə birləşdiririk
+    const shareText = t.shareMessage(fullLink);
+
+    // URL-i kodlaşdırırıq ki, Telegram düzgün anlasın
+    const encodedText = encodeURIComponent(shareText);
+    
+    // Telegram paylaşma linki
+    const telegramShareUrl = `https://t.me/share/url?url=${encodedText}`;
+
+    // Yeni pəncərədə açırıq
+    window.open(telegramShareUrl, '_blank');
+};
+
 
 // --- İSTİFADƏÇİ ADI MODALI MƏNTİQİ ---
 const usernameModal = document.getElementById('usernameModal');
