@@ -391,7 +391,7 @@ body{
   border-radius: 14px;
   /* QIRMIZI GRADIENT */
   background: linear-gradient(90deg, var(--btn-gradient-start), var(--btn-gradient-end)); 
-  transition: width 1s linear; 
+  /* transition: width 1s linear; <-- Bu xətt JavaScript-də dinamik idarə olunacaq */
   z-index: 1; 
   border-radius: 14px;
 }
@@ -1010,7 +1010,7 @@ function getLocalizedTaskReward(lang, aznReward) {
     return `<b>${format(localizedReward)} ${symbol}</b>`;
 }
 
-// YENİLİK: Çıxarış limitini formatlayan xüsusi funksiya
+// YENİLİK: Çıxarış limitini formatlayan xüsusi funksiya (RU üçün 140 RUB təmin ediləcək)
 function getLocalizedMinAmount(methodType, lang) {
     const aznMin = AZN_MIN_WITHDRAW[methodType];
     const currencyInfo = CURRENCIES[lang];
@@ -1025,8 +1025,10 @@ function getLocalizedMinAmount(methodType, lang) {
         minAmount = aznMin * EXCHANGE_RATES.AZN_TO_USD;
         formattedAmount = minAmount.toFixed(1); // Bir onluq rəqəm (məsələn: 1.8)
     } else if (lang === 'ru') {
-        minAmount = aznMin * EXCHANGE_RATES.AZN_TO_RUB;
-        formattedAmount = Math.round(minAmount).toFixed(0); // Ən yaxın tam ədədə yuvarlaqlaşdır (məsələn: 140)
+        // İSTƏK ÜZRƏ DÜZƏLİŞ: Bütün RU metodları üçün min 140 RUB
+        minAmount = 140; 
+        symbol = '₽';
+        formattedAmount = minAmount.toFixed(0); 
     } else { // AZ
         formattedAmount = aznMin.toFixed(0); // Tam ədəd (məsələn: 3)
     }
@@ -1678,6 +1680,15 @@ adBtn.onclick=()=>{
       adBtn.prepend(timerBar); 
   }
   
+  // YENİLİK: Barın 10 saniyəyə (MAX_SECONDS) tam dolması üçün keçid tətbiq olunur
+  timerBar.style.width = '0%';
+  timerBar.style.transition = `width ${MAX_SECONDS}s linear`; // 10 saniyə ərzində xətti olaraq 100% dolacaq
+  
+  // Barı dərhal doldurmağa başla
+  setTimeout(() => {
+    timerBar.style.width = '100%';
+  }, 50); // kiçik gecikmə, əmin olmaq üçün ki, 0% və 100% fərqi qeydə alınsın
+  
   // Mətn dərhal saniyə sayğacına dəyişdirilir
   adBtnContent.textContent = t.wait.replace('{s}', remainingSeconds); 
   msg.textContent = '';
@@ -1693,17 +1704,14 @@ adBtn.onclick=()=>{
   tInterval=setInterval(()=>{
     remainingSeconds--;
     
-    const progressPercentage = (MAX_SECONDS - remainingSeconds) / MAX_SECONDS * 100;
-    timerBar.style.width=`${progressPercentage}%`;
-    
-    // Düymənin içindəki mətni geri sayım ilə yenilə
-    // Bu, dili dəyişəndə avtomatik cari dilə uyğunlaşacaq (yuxarıda applyTranslations-da düzəliş edildi)
+    // Mətn yenilənməsi saniyələrə uyğun davam edir
     const currentT = TRANSLATIONS[currentLang];
     adBtnContent.textContent = currentT.wait.replace('{s}', remainingSeconds > 0 ? remainingSeconds : '0'); 
     
     
     // PUL ƏLAVƏ EDİLMƏSİ (9 saniyə keçdikdə, yəni remainingSeconds==9 olanda)
-    if(remainingSeconds === 9 && !rewarded) { 
+    // Saniyənin azalmasına baxmayaraq, pulun əlavə edilməsi saniyələrin azalmasına görə aparılır.
+    if(remainingSeconds === MAX_SECONDS - 1 && !rewarded) { // 10s geri sayımda 9 qaldıqda (ilk saniyə)
         bal+=AZN_REWARD; 
         totalEarned += AZN_REWARD; 
         cnt++; 
@@ -1735,7 +1743,8 @@ adBtn.onclick=()=>{
       clearInterval(tInterval);
       tInterval = null;
       
-      // Timer barı sil
+      // Keçidi sıfırla ki, növbəti dəfə sıfırdan başlasın
+      timerBar.style.transition = 'none'; 
       timerBar.remove(); 
       
       // Düyməni ilkin vəziyyətinə qaytar
@@ -2037,22 +2046,23 @@ document.getElementById('withdrawBtn').onclick=()=>{
   if(!det){ showErr(t.detailsError); return; }
   if(isNaN(amt) || amt <= 0){ showErr(t.amountError); return; }
   
-  const aznMin = AZN_MIN_WITHDRAW[type];
-  let minAmount = aznMin;
   
-  // Çıxarış zamanı yoxlama üçün onluq rəqəmləri dəqiq saxlayırıq (və ya lazım olan formata çeviririk)
-  if (currentLang === 'tr') {
-    minAmount = aznMin * EXCHANGE_RATES.AZN_TO_TRY;
-  } else if (currentLang === 'en') {
-    minAmount = aznMin * EXCHANGE_RATES.AZN_TO_USD;
-  } else if (currentLang === 'ru') {
-    minAmount = aznMin * EXCHANGE_RATES.AZN_TO_RUB;
+  let minAmount = 0;
+  
+  // YENİLİK: Minimum məbləğ hesablanması və RU üçün xüsusi yoxlama
+  if (currentLang === 'ru') {
+    minAmount = 140; // İSTƏK ÜZRƏ DÜZƏLİŞ: RU üçün minimum 140 RUB
+  } else {
+    const aznMin = AZN_MIN_WITHDRAW[type];
+    if (currentLang === 'tr') {
+      minAmount = aznMin * EXCHANGE_RATES.AZN_TO_TRY;
+    } else if (currentLang === 'en') {
+      minAmount = aznMin * EXCHANGE_RATES.AZN_TO_USD;
+    } else {
+      // AZ
+      minAmount = aznMin;
+    }
   }
-  
-  // Burada yoxlama üçün düzgün miqdarı almaq lazımdır.
-  // Məsələn, Əgər istifadəçi TR dilində $75$ daxil edibsə, biz onu $75.00$ kimi qəbul etməliyik.
-  // Lakin yoxlama hələ də $75$ ilə $75.00$ minimumu arasında olmalıdır.
-  // Formatlanma sadəcə göstəriş üçündür.
   
   let currentBalanceInLang = bal; 
   if (currentLang === 'tr') {
@@ -2081,6 +2091,7 @@ document.getElementById('withdrawBtn').onclick=()=>{
   } else if (currentLang === 'en') {
     withdrawalAmountInAZN = amt / EXCHANGE_RATES.AZN_TO_USD;
   } else if (currentLang === 'ru') {
+    // İSTƏK ÜZRƏ DÜZƏLİŞ: RU valyutasını AZN-ə çevirmək üçün
     withdrawalAmountInAZN = amt / EXCHANGE_RATES.AZN_TO_RUB;
   }
 
