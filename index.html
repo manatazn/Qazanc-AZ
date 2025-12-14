@@ -391,9 +391,9 @@ body{
   border-radius: 14px;
   /* QIRMIZI GRADIENT */
   background: linear-gradient(90deg, var(--btn-gradient-start), var(--btn-gradient-end)); 
-  /* transition: width 1s linear; <-- Bu xətt JavaScript-də dinamik idarə olunacaq */
   z-index: 1; 
   border-radius: 14px;
+  /* Transition-u JavaScript-də dinamik təyin edəcəyik */
 }
 
 /* Mətnin rəngini geri sayım aktiv olanda dəyişdiririk ki, qırmızı fon üzərində yaxşı görünsün */
@@ -435,7 +435,15 @@ body{
 .menu button.active{
     background:linear-gradient(90deg,var(--secondary-btn-gradient-start),var(--secondary-btn-gradient-end));
     box-shadow:0 0 18px rgba(255,95,109,0.6);
+    /* Aktiv düyməyə təkrar klikləməni vizual olaraq məhdudlaşdırmaq */
+    cursor: default; 
+    pointer-events: none; 
+    opacity: 0.9;
 }
+.menu button:not(.active):hover {
+    transform: scale(1.03); 
+}
+
 
 #form{display:none;margin-top:12px;}
 #form input{
@@ -892,11 +900,11 @@ body{
 </div>
 
 <div class="menu">
-  <button onclick="showPage('adsPage',this)" class="active" data-translate-key="home">Ev</button>
-  <button onclick="showPage('profilePage',this)" data-translate-key="profile">Profil</button>
-  <button onclick="showPage('tasksPage',this)" data-translate-key="tasks">Görevler</button>
-  <button onclick="showPage('referralPage',this)" data-translate-key="referral">Referans</button>
-  <button onclick="showPage('walletPage',this)" data-translate-key="wallet">Cüzdan</button>
+  <button onclick="showPage('adsPage',this)" class="active" data-translate-key="home" data-page-id="adsPage">Ev</button>
+  <button onclick="showPage('profilePage',this)" data-translate-key="profile" data-page-id="profilePage">Profil</button>
+  <button onclick="showPage('tasksPage',this)" data-translate-key="tasks" data-page-id="tasksPage">Görevler</button>
+  <button onclick="showPage('referralPage',this)" data-translate-key="referral" data-page-id="referralPage">Referans</button>
+  <button onclick="showPage('walletPage',this)" data-translate-key="wallet" data-page-id="walletPage">Cüzdan</button>
 </div>
 <script>
 // --- YERLİ SAXLAMA KÖMƏKÇİLƏRİ ---
@@ -1227,7 +1235,7 @@ const TRANSLATIONS = {
         referralInfo2: 'Para çektiğinizde, linkiniz üzerinden bota katılan kullanıcılar kontrol edilecektir. Paranız **Bonuslu** olarak gönderilecektir.',
         yourRefLink: 'Referans Bağlantınız',
         copy: 'Kopyala',
-        copied: 'Kopyalandı!',
+        copied: 'Kopyalandı!', 
         copyFailed: 'Kopyalama başarısız!', 
         placeholderDetails_m10: '10 haneli M10 numarası',
         placeholderDetails_azercell: '050xxxxxxx',
@@ -1550,8 +1558,8 @@ function setPlaceholders(methodType) {
     details.placeholder = t[detailsKey] || '';
     
     // Placeholder-də formatlı min məbləğ istifadə olunur
-    const minTextOnly = localizedMinAmount.trim(); 
-    amount.placeholder = `${t.placeholderAmount} (${currency}) - ${minTextOnly.split(' ')[0]}`; 
+    const minTextOnly = localizedMinAmount.split(' ')[0]; 
+    amount.placeholder = `${t.placeholderAmount} (${currency}) - ${minTextOnly}`; 
 }
 
 // Tərcümələri tətbiq edir
@@ -1661,18 +1669,72 @@ function setLang(lang) {
 const adBtn=document.getElementById('adBtn'), msg=document.getElementById('msg');
 const adBtnContent = document.querySelector('.ad-btn-content');
 
+// Reklam düyməsinin vəziyyətini bərpa edən funksiya
+function restoreAdBtnState() {
+    // Əgər reklam geri sayımı davam edirsə
+    if (tInterval && remainingSeconds > 0) {
+        const t = TRANSLATIONS[currentLang];
+        
+        adBtn.disabled = true;
+        adBtn.classList.add('waiting');
+
+        let timerBar = adBtn.querySelector('.timer-bar');
+        if (!timerBar) {
+            timerBar = document.createElement('div');
+            timerBar.className = 'timer-bar';
+            adBtn.prepend(timerBar);
+        }
+
+        // Qalan faizi hesabla (0-100%)
+        const percentage = 100 - (remainingSeconds / MAX_SECONDS) * 100;
+        
+        // Timer barın cari vəziyyətini real zaman axınına uyğun təyin et
+        timerBar.style.transition = 'none'; 
+        timerBar.style.width = `${percentage}%`; // Real qalan faizi göstər
+        
+        // Keçid müddətini qalan saniyələrə uyğun yenidən təyin et
+        setTimeout(() => {
+            // Animasiya qalan müddətdə 100%-ə çatmalıdır
+            timerBar.style.transition = `width ${remainingSeconds}s linear`;
+            timerBar.style.width = '100%'; 
+        }, 50); 
+
+        adBtnContent.textContent = t.wait.replace('{s}', remainingSeconds);
+        msg.textContent = '';
+        
+    } else {
+        adBtn.classList.remove('waiting');
+        adBtn.disabled = cnt >= LIMIT;
+        adBtnContent.textContent = TRANSLATIONS[currentLang].watchAd;
+        
+        // Əgər timer bar hələ də varsa, onu təmizlə
+        const timerBar = adBtn.querySelector('.timer-bar');
+        if (timerBar) timerBar.remove();
+
+        if (cnt >= LIMIT) {
+            msg.textContent = TRANSLATIONS[currentLang].adLimitReached;
+        } else {
+            msg.textContent = '';
+        }
+    }
+}
+
+
 adBtn.onclick=()=>{
   const t = TRANSLATIONS[currentLang];
   const rewardInfo = getLocalizedReward(currentLang);
   
   if(cnt>=LIMIT){ msg.textContent=t.adLimitReached; return; }
   
+  // Əgər proses artıq aktivdirsə, heç nə etmə
+  if (tInterval) return;
+
   adBtn.disabled=true; 
   adBtn.classList.add('waiting');
   
   remainingSeconds = MAX_SECONDS; 
   
-  // Timer barı yarat və düymənin içinə əlavə et (əgər yoxdursa)
+  // Timer barı yarat və düymənin içinə əlavə et
   let timerBar = adBtn.querySelector('.timer-bar');
   if (!timerBar) {
       timerBar = document.createElement('div');
@@ -1680,14 +1742,15 @@ adBtn.onclick=()=>{
       adBtn.prepend(timerBar); 
   }
   
-  // YENİLİK: Barın 10 saniyəyə (MAX_SECONDS) tam dolması üçün keçid tətbiq olunur
+  // Barı sıfırla və keçid müddətini təyin et
+  timerBar.style.transition = 'none';
   timerBar.style.width = '0%';
-  timerBar.style.transition = `width ${MAX_SECONDS}s linear`; // 10 saniyə ərzində xətti olaraq 100% dolacaq
   
-  // Barı dərhal doldurmağa başla
+  // Barı dərhal doldurmağa başla (10 saniyə ərzində xətti dolacaq)
   setTimeout(() => {
+    timerBar.style.transition = `width ${MAX_SECONDS}s linear`; 
     timerBar.style.width = '100%';
-  }, 50); // kiçik gecikmə, əmin olmaq üçün ki, 0% və 100% fərqi qeydə alınsın
+  }, 50); 
   
   // Mətn dərhal saniyə sayğacına dəyişdirilir
   adBtnContent.textContent = t.wait.replace('{s}', remainingSeconds); 
@@ -1698,20 +1761,18 @@ adBtn.onclick=()=>{
   
   let rewarded = false; 
   
-  // Əvvəlki intervalı təmizlə
-  if (tInterval) clearInterval(tInterval); 
-
   tInterval=setInterval(()=>{
     remainingSeconds--;
     
     // Mətn yenilənməsi saniyələrə uyğun davam edir
     const currentT = TRANSLATIONS[currentLang];
-    adBtnContent.textContent = currentT.wait.replace('{s}', remainingSeconds > 0 ? remainingSeconds : '0'); 
+    // Əmin olmaq üçün `adBtnContent` elementinin səhifədə olduğunu yoxlayırıq (səhifə keçidində yox ola bilər)
+    if (adBtnContent) {
+        adBtnContent.textContent = currentT.wait.replace('{s}', remainingSeconds > 0 ? remainingSeconds : '0'); 
+    }
     
-    
-    // PUL ƏLAVƏ EDİLMƏSİ (9 saniyə keçdikdə, yəni remainingSeconds==9 olanda)
-    // Saniyənin azalmasına baxmayaraq, pulun əlavə edilməsi saniyələrin azalmasına görə aparılır.
-    if(remainingSeconds === MAX_SECONDS - 1 && !rewarded) { // 10s geri sayımda 9 qaldıqda (ilk saniyə)
+    // PUL ƏLAVƏ EDİLMƏSİ (9 saniyə qaldıqda, yəni remainingSeconds 9-a bərabər olanda)
+    if(remainingSeconds === MAX_SECONDS - 1 && !rewarded) { 
         bal+=AZN_REWARD; 
         totalEarned += AZN_REWARD; 
         cnt++; 
@@ -1744,15 +1805,19 @@ adBtn.onclick=()=>{
       tInterval = null;
       
       // Keçidi sıfırla ki, növbəti dəfə sıfırdan başlasın
-      timerBar.style.transition = 'none'; 
-      timerBar.remove(); 
+      if (timerBar) {
+          timerBar.style.transition = 'none'; 
+          timerBar.remove(); 
+      }
       
       // Düyməni ilkin vəziyyətinə qaytar
       adBtn.disabled=false;
       adBtn.classList.remove('waiting');
       
       // Yalnız burada, geri sayım bitdikdə, cari dildəki 'watchAd' mətni gəlir
-      adBtnContent.textContent = currentT.watchAd; 
+      if (adBtnContent) {
+          adBtnContent.textContent = currentT.watchAd; 
+      }
       
       // Əgər limit dolubsa, mesajı göstər
       if (cnt >= LIMIT) {
@@ -1992,12 +2057,20 @@ function checkUsernameAndShowModal() {
 
 // Səhifə Naviqasiyası
 function showPage(id, btn){
+  // ƏLAVƏ DÜZƏLİŞ: Aktiv səhifə düyməsinə təkrar klikləməni yoxla
+  if (btn.classList.contains('active')) {
+      return; 
+  }
+
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.getElementById(id).classList.add('active');
   document.querySelectorAll('.menu button').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active');
   
-  if (id === 'tasksPage') {
+  if (id === 'adsPage') {
+    // Ev səhifəsinə qayıtdıqda timerin vəziyyətini bərpa et
+    restoreAdBtnState(); 
+  } else if (id === 'tasksPage') {
     updateTaskButtons();
   } else if (id === 'referralPage') {
     updateReferralLink();
@@ -2125,6 +2198,9 @@ update();
 applyTranslations(currentLang); 
 updateReferralLink();
 updateUsernameDisplay(); 
+
+// Ev səhifəsi aktivdirsə, timer vəziyyətini bərpa et
+restoreAdBtnState();
 
 // Loading Screen-i 3 saniyədən sonra bağla
 setTimeout(()=>{
