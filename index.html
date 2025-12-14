@@ -270,7 +270,7 @@ body{
     flex-wrap:wrap;
     gap:10px;
     margin:12px 0;
-    justify-content:space-between;
+    justify-content:space-around;
 }
 .method{
     flex:1 1 calc(50% - 5px); 
@@ -950,7 +950,7 @@ const EXCHANGE_RATES = {
 const CURRENCIES = {
     'az': { main: 'AZN', symbol: '₼', secondary: 'USD', secondarySymbol: '$' },
     'tr': { main: 'TRY', symbol: '₺', secondary: 'USD', secondarySymbol: '$' },
-    'en': { main: 'USD', symbol: '$', secondary: 'RUB', secondarySymbol: '₽' }, // <--- YENİLİK: AZN əvəzinə RUB
+    'en': { main: 'USD', symbol: '$', secondary: 'RUB', secondarySymbol: '₽' }, 
     'ru': { main: 'RUB', symbol: '₽', secondary: 'USD', secondarySymbol: '$' }
 };
 
@@ -1008,6 +1008,30 @@ function getLocalizedTaskReward(lang, aznReward) {
     }
     
     return `<b>${format(localizedReward)} ${symbol}</b>`;
+}
+
+// YENİLİK: Çıxarış limitini formatlayan xüsusi funksiya
+function getLocalizedMinAmount(methodType, lang) {
+    const aznMin = AZN_MIN_WITHDRAW[methodType];
+    const currencyInfo = CURRENCIES[lang];
+    let minAmount = aznMin;
+    let symbol = currencyInfo.symbol;
+    let formattedAmount;
+
+    if (lang === 'tr') {
+        minAmount = aznMin * EXCHANGE_RATES.AZN_TO_TRY;
+        formattedAmount = minAmount.toFixed(0); // Tam ədəd (məsələn: 75)
+    } else if (lang === 'en') {
+        minAmount = aznMin * EXCHANGE_RATES.AZN_TO_USD;
+        formattedAmount = minAmount.toFixed(1); // Bir onluq rəqəm (məsələn: 1.8)
+    } else if (lang === 'ru') {
+        minAmount = aznMin * EXCHANGE_RATES.AZN_TO_RUB;
+        formattedAmount = Math.round(minAmount).toFixed(0); // Ən yaxın tam ədədə yuvarlaqlaşdır (məsələn: 140)
+    } else { // AZ
+        formattedAmount = aznMin.toFixed(0); // Tam ədəd (məsələn: 3)
+    }
+    
+    return `${formattedAmount} ${symbol}`;
 }
 
 const TRANSLATIONS = {
@@ -1368,7 +1392,7 @@ function update(){
   } else if (lang === 'en') {
       mainBalance = bal * rates.AZN_TO_USD; // Əsas: USD
       
-      // İkinci: RUB (YENİLİK)
+      // İkinci: RUB
       if (currencyInfo.secondary === 'RUB') {
           secondaryBalance = bal * rates.AZN_TO_RUB; 
           secondaryFormat = (val) => val.toFixed(2); 
@@ -1484,11 +1508,8 @@ function updateTaskButtons() {
         const localizedRewardText = getLocalizedTaskReward(currentLang, AZN_TASK_REWARDS[index]);
         const rewardEl = btn.parentElement.querySelector(`p[data-translate-key="${taskRewardKey}"]`);
         if (rewardEl) {
-            // Tərcüməni tətbiq edərkən dinamik rəqəmi də daxil edirik
-            // Mövcud kodda bu hissə düzgün görünür, lakin təkrarlanmanın qarşısını alaq
             let baseText = t[taskRewardKey] ? t[taskRewardKey]((r) => r) : '';
             if (baseText) {
-                // Burada yüngül bir düzəliş edirəm ki, reward funksiyası düzgün işləsin
                 rewardEl.innerHTML = t[taskRewardKey](localizedRewardText);
             }
         }
@@ -1512,41 +1533,23 @@ function updateTaskButtons() {
     });
 }
 
-// Minimum çıxarış məbləğini formatlayan funksiya
-function getLocalizedMinAmount(methodType, lang) {
-    const aznMin = AZN_MIN_WITHDRAW[methodType];
-    const currencyInfo = CURRENCIES[lang];
-    let minAmount = aznMin;
-    let format = (val) => val.toFixed(2); 
-
-    if (lang === 'tr') {
-        minAmount = aznMin * EXCHANGE_RATES.AZN_TO_TRY;
-    } else if (lang === 'en') {
-        minAmount = aznMin * EXCHANGE_RATES.AZN_TO_USD;
-        format = (val) => val.toFixed(4);
-    } else if (lang === 'ru') {
-        minAmount = aznMin * EXCHANGE_RATES.AZN_TO_RUB;
-    } else { 
-        format = (val) => val.toFixed(0); 
-    }
-    
-    return `${format(minAmount)} ${currencyInfo.symbol}`;
-}
 
 // Çıxarış forması üçün placeholder-ləri təyin edir
 function setPlaceholders(methodType) {
     const t = TRANSLATIONS[currentLang];
     const currency = CURRENCIES[currentLang].main;
     
-    const localizedMinAmount = getLocalizedMinAmount(methodType, currentLang);
+    // YENİLİK: Düzgün formatlı min məbləği alır
+    const localizedMinAmount = getLocalizedMinAmount(methodType, currentLang); 
     const minText = t.minAmount(localizedMinAmount);
     
     const detailsKey = `placeholderDetails_${methodType}`;
     
     details.placeholder = t[detailsKey] || '';
     
+    // Placeholder-də formatlı min məbləğ istifadə olunur
     const minTextOnly = localizedMinAmount.trim(); 
-    amount.placeholder = `${t.placeholderAmount} (${currency}) - ${minTextOnly}`;
+    amount.placeholder = `${t.placeholderAmount} (${currency}) - ${minTextOnly.split(' ')[0]}`; 
 }
 
 // Tərcümələri tətbiq edir
@@ -1597,7 +1600,8 @@ function applyTranslations(lang) {
     document.querySelectorAll('.min-withdraw-label').forEach(label => {
         const methodType = label.getAttribute('data-min-key');
         if (methodType) {
-            label.textContent = getLocalizedMinAmount(methodType, lang);
+            // YENİLİK: Səliqəli formatlanmış min məbləği istifadə edir
+            label.textContent = getLocalizedMinAmount(methodType, lang); 
         }
     });
     
@@ -2036,6 +2040,7 @@ document.getElementById('withdrawBtn').onclick=()=>{
   const aznMin = AZN_MIN_WITHDRAW[type];
   let minAmount = aznMin;
   
+  // Çıxarış zamanı yoxlama üçün onluq rəqəmləri dəqiq saxlayırıq (və ya lazım olan formata çeviririk)
   if (currentLang === 'tr') {
     minAmount = aznMin * EXCHANGE_RATES.AZN_TO_TRY;
   } else if (currentLang === 'en') {
@@ -2043,6 +2048,11 @@ document.getElementById('withdrawBtn').onclick=()=>{
   } else if (currentLang === 'ru') {
     minAmount = aznMin * EXCHANGE_RATES.AZN_TO_RUB;
   }
+  
+  // Burada yoxlama üçün düzgün miqdarı almaq lazımdır.
+  // Məsələn, Əgər istifadəçi TR dilində $75$ daxil edibsə, biz onu $75.00$ kimi qəbul etməliyik.
+  // Lakin yoxlama hələ də $75$ ilə $75.00$ minimumu arasında olmalıdır.
+  // Formatlanma sadəcə göstəriş üçündür.
   
   let currentBalanceInLang = bal; 
   if (currentLang === 'tr') {
@@ -2053,13 +2063,18 @@ document.getElementById('withdrawBtn').onclick=()=>{
       currentBalanceInLang = bal * EXCHANGE_RATES.AZN_TO_RUB;
   }
   
-  let format = (val) => val.toFixed(2);
-  if (currentLang === 'en') format = (val) => val.toFixed(4);
-
-  if(amt < minAmount){ showErr(t.minAmount(getLocalizedMinAmount(type, currentLang))); return; }
+  // Dəqiqlik fərqini aradan qaldırmaq üçün kiçik bir tolerans tətbiq edilə bilər
+  const EPSILON = 0.0001; 
   
-  if(amt > currentBalanceInLang){ showErr(t.balanceError); return; }
+  if(amt < minAmount - EPSILON){ 
+    // YENİLİK: Tərcüməni yenidən formatlı min məbləği ilə göstəririk
+    showErr(t.minAmount(getLocalizedMinAmount(type, currentLang))); 
+    return; 
+  }
+  
+  if(amt > currentBalanceInLang + EPSILON){ showErr(t.balanceError); return; }
 
+  // AZN-ə geri çevirib çıxarış edirik
   let withdrawalAmountInAZN = amt;
   if (currentLang === 'tr') {
     withdrawalAmountInAZN = amt / EXCHANGE_RATES.AZN_TO_TRY;
