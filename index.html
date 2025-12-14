@@ -950,7 +950,7 @@ const EXCHANGE_RATES = {
 const CURRENCIES = {
     'az': { main: 'AZN', symbol: '₼', secondary: 'USD', secondarySymbol: '$' },
     'tr': { main: 'TRY', symbol: '₺', secondary: 'USD', secondarySymbol: '$' },
-    'en': { main: 'USD', symbol: '$', secondary: 'AZN', secondarySymbol: '₼' },
+    'en': { main: 'USD', symbol: '$', secondary: 'RUB', secondarySymbol: '₽' }, // <--- YENİLİK: AZN əvəzinə RUB
     'ru': { main: 'RUB', symbol: '₽', secondary: 'USD', secondarySymbol: '$' }
 };
 
@@ -1366,12 +1366,18 @@ function update(){
       mainFormat = (val) => val.toFixed(2);
       secondaryFormat = (val) => val.toFixed(4);
   } else if (lang === 'en') {
-      mainBalance = bal * rates.AZN_TO_USD;
-      if (currencyInfo.secondary === 'AZN') {
+      mainBalance = bal * rates.AZN_TO_USD; // Əsas: USD
+      
+      // İkinci: RUB (YENİLİK)
+      if (currencyInfo.secondary === 'RUB') {
+          secondaryBalance = bal * rates.AZN_TO_RUB; 
+          secondaryFormat = (val) => val.toFixed(2); 
+      } else {
           secondaryBalance = bal; 
       }
+      
       mainFormat = (val) => val.toFixed(4);
-      secondaryFormat = (val) => val.toFixed(4);
+
   } else if (lang === 'ru') { 
       mainBalance = bal * rates.AZN_TO_RUB;
       secondaryBalance = bal * rates.AZN_TO_USD;
@@ -1391,7 +1397,7 @@ function update(){
   document.getElementById('currencySymbol2').textContent = mainSymbol;
   document.getElementById('currencySymbolProfile').textContent = mainSymbol;
   
-  // Köməkçi balans (USD/AZN)
+  // Köməkçi balans (USD/RUB/AZN)
   document.getElementById('secondaryBalance').textContent = secondaryFormat(secondaryBalance);
   document.getElementById('secondaryBalance2').textContent = secondaryFormat(secondaryBalance);
   document.getElementById('secondaryBalanceProfile').textContent = secondaryFormat(secondaryBalance);
@@ -1431,12 +1437,18 @@ function updateProfileStats() {
     const currencyInfo = CURRENCIES[currentLang];
     const totalEarnedInAZN = totalEarned; 
     
-    const totalEarnedInLang = (totalEarnedInAZN * (currentLang === 'tr' ? EXCHANGE_RATES.AZN_TO_TRY : 
-                                               currentLang === 'en' ? EXCHANGE_RATES.AZN_TO_USD :
-                                               currentLang === 'ru' ? EXCHANGE_RATES.AZN_TO_RUB : 1));
-                                               
-    let format = (val) => currentLang === 'en' ? val.toFixed(4) : val.toFixed(2);
-    if (currentLang === 'az') format = (val) => val.toFixed(2); 
+    // YENİLİK: Düzgün format və çevirmə tətbiq olunur
+    let totalEarnedInLang = totalEarnedInAZN;
+    let format = (val) => val.toFixed(2);
+    
+    if (currentLang === 'tr') {
+        totalEarnedInLang = totalEarnedInAZN * EXCHANGE_RATES.AZN_TO_TRY;
+    } else if (currentLang === 'en') {
+        totalEarnedInLang = totalEarnedInAZN * EXCHANGE_RATES.AZN_TO_USD;
+        format = (val) => val.toFixed(4); // USD üçün 4 rəqəm
+    } else if (currentLang === 'ru') {
+        totalEarnedInLang = totalEarnedInAZN * EXCHANGE_RATES.AZN_TO_RUB;
+    }
 
     document.getElementById('totalAdsCount').textContent = totalAds.toLocaleString('az-AZ'); 
     document.getElementById('completedTasksCount').textContent = completedTasks.toLocaleString('az-AZ');
@@ -1472,7 +1484,13 @@ function updateTaskButtons() {
         const localizedRewardText = getLocalizedTaskReward(currentLang, AZN_TASK_REWARDS[index]);
         const rewardEl = btn.parentElement.querySelector(`p[data-translate-key="${taskRewardKey}"]`);
         if (rewardEl) {
-            rewardEl.innerHTML = t[taskRewardKey](localizedRewardText);
+            // Tərcüməni tətbiq edərkən dinamik rəqəmi də daxil edirik
+            // Mövcud kodda bu hissə düzgün görünür, lakin təkrarlanmanın qarşısını alaq
+            let baseText = t[taskRewardKey] ? t[taskRewardKey]((r) => r) : '';
+            if (baseText) {
+                // Burada yüngül bir düzəliş edirəm ki, reward funksiyası düzgün işləsin
+                rewardEl.innerHTML = t[taskRewardKey](localizedRewardText);
+            }
         }
         
         if (localStorage.getItem(task.key)){
@@ -1559,9 +1577,16 @@ function applyTranslations(lang) {
              if (key === 'adReward') {
                 const formattedRewardText = `<b>${rewardInfo.formattedReward} ${rewardInfo.symbol}</b>`;
                 el.innerHTML = t[key](formattedRewardText);
-             } 
+             } else if (key.startsWith('taskReward')) {
+                // Tapşırıq mükafatları
+                const taskIndex = parseInt(key.replace('taskReward', '')) - 1;
+                if (taskIndex >= 0 && taskIndex < AZN_TASK_REWARDS.length) {
+                    const localizedRewardText = getLocalizedTaskReward(lang, AZN_TASK_REWARDS[taskIndex]);
+                    el.innerHTML = t[key](localizedRewardText);
+                }
+             }
         } else if (t[key]) {
-            if(key !== 'copy' && key !== 'share') {
+            if(key !== 'copy' && key !== 'share' && !key.startsWith('taskReward')) {
                el.innerHTML = t[key];
             }
         }
