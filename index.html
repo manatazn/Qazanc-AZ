@@ -394,6 +394,7 @@ body{
   z-index: 1; 
   border-radius: 14px;
   /* Transition-u JavaScript-də dinamik təyin edəcəyik */
+  /* transition: width X.Xs linear; // JS tərəfindən idarə olunacaq */
 }
 
 /* Mətnin rəngini geri sayım aktiv olanda dəyişdiririk ki, qırmızı fon üzərində yaxşı görünsün */
@@ -1164,7 +1165,7 @@ const TRANSLATIONS = {
         referralInfo2: 'When you withdraw, users who joined the bot through your link will be checked. Your money will be sent as a **Bonus**.',
         yourRefLink: 'Your Referral Link',
         copy: 'Copy',
-        copied: 'Copied!',
+        copied: 'Copied!', 
         copyFailed: 'Copy failed!', 
         placeholderDetails_m10: '10 digit M10 number',
         placeholderDetails_azercell: '050xxxxxxx',
@@ -1669,11 +1670,12 @@ function setLang(lang) {
 const adBtn=document.getElementById('adBtn'), msg=document.getElementById('msg');
 const adBtnContent = document.querySelector('.ad-btn-content');
 
-// Reklam düyməsinin vəziyyətini bərpa edən funksiya
+// YENİLƏNMİŞ: Reklam düyməsinin vəziyyətini bərpa edən funksiya
 function restoreAdBtnState() {
-    // Əgər reklam geri sayımı davam edirsə
+    const t = TRANSLATIONS[currentLang];
+    
+    // Əgər sayğac aktivdirsə və qalan saniyə varsa
     if (tInterval && remainingSeconds > 0) {
-        const t = TRANSLATIONS[currentLang];
         
         adBtn.disabled = true;
         adBtn.classList.add('waiting');
@@ -1685,18 +1687,23 @@ function restoreAdBtnState() {
             adBtn.prepend(timerBar);
         }
 
-        // Qalan faizi hesabla (0-100%)
-        const percentage = 100 - (remainingSeconds / MAX_SECONDS) * 100;
+        // 10 saniyəlik prosesdə artıq keçən zaman (saniyə)
+        const elapsed = MAX_SECONDS - remainingSeconds;
+        // Əgər proses başladıqdan sonra 1 saniyədən az keçibsə, başlanğıc faizini sıfır olaraq qəbul edirik.
+        const startPercentage = (elapsed / MAX_SECONDS) * 100;
         
-        // Timer barın cari vəziyyətini real zaman axınına uyğun təyin et
+        // Timer barın cari vəziyyətini real zaman axınına uyğun təyin etmək üçün:
+        
+        // 1. Keçidi müvəqqəti söndür
         timerBar.style.transition = 'none'; 
-        timerBar.style.width = `${percentage}%`; // Real qalan faizi göstər
+        // 2. Barın faizini qalan saniyəyə görə dərhal tətbiq et (artıq dolmuş hissə)
+        timerBar.style.width = `${startPercentage}%`; 
         
-        // Keçid müddətini qalan saniyələrə uyğun yenidən təyin et
+        // 3. Növbəti "tick" dən əvvəl (50ms) animasiyanı qalan vaxt üçün yenidən qur
         setTimeout(() => {
-            // Animasiya qalan müddətdə 100%-ə çatmalıdır
+            // Animasiya qalan müddətdə 100%-ə çatmalıdır.
             timerBar.style.transition = `width ${remainingSeconds}s linear`;
-            timerBar.style.width = '100%'; 
+            timerBar.style.width = '100%'; // Hədəf: 100%
         }, 50); 
 
         adBtnContent.textContent = t.wait.replace('{s}', remainingSeconds);
@@ -1705,14 +1712,14 @@ function restoreAdBtnState() {
     } else {
         adBtn.classList.remove('waiting');
         adBtn.disabled = cnt >= LIMIT;
-        adBtnContent.textContent = TRANSLATIONS[currentLang].watchAd;
+        adBtnContent.textContent = t.watchAd;
         
         // Əgər timer bar hələ də varsa, onu təmizlə
         const timerBar = adBtn.querySelector('.timer-bar');
         if (timerBar) timerBar.remove();
 
         if (cnt >= LIMIT) {
-            msg.textContent = TRANSLATIONS[currentLang].adLimitReached;
+            msg.textContent = t.adLimitReached;
         } else {
             msg.textContent = '';
         }
@@ -1772,6 +1779,7 @@ adBtn.onclick=()=>{
     }
     
     // PUL ƏLAVƏ EDİLMƏSİ (9 saniyə qaldıqda, yəni remainingSeconds 9-a bərabər olanda)
+    // Düzəliş: Məsələn, 10-dan 9-a keçəndə mükafatı əlavə et.
     if(remainingSeconds === MAX_SECONDS - 1 && !rewarded) { 
         bal+=AZN_REWARD; 
         totalEarned += AZN_REWARD; 
@@ -2068,7 +2076,7 @@ function showPage(id, btn){
   btn.classList.add('active');
   
   if (id === 'adsPage') {
-    // Ev səhifəsinə qayıtdıqda timerin vəziyyətini bərpa et
+    // Ev səhifəsinə qayıtdıqda timerin vəziyyətini bərpa et (ƏSAS DÜZƏLİŞ)
     restoreAdBtnState(); 
   } else if (id === 'tasksPage') {
     updateTaskButtons();
