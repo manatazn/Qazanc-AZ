@@ -32,6 +32,13 @@
   /* Bildiriş rəngləri */
   --notification-bg: #2ecc71; /* Yaşıl */
   --notification-text: #ffffff; 
+  
+  /* Mega Box Rəngləri */
+  --box-bg: #f39c12; /* Narıncı */
+  --box-border: #e67e22; /* Tünd Narıncı */
+  --box-text: #ffffff;
+  --box-ribbon: #e74c3c; /* Qırmızı */
+  --box-shine: rgba(255, 255, 255, 0.5);
 }
 
 /* DARK TEMA (Qara/Qırmızı) */
@@ -48,6 +55,11 @@ body.dark-theme {
   --input-text: #ffffff; 
   --modal-bg: rgba(30, 30, 30, 0.95); 
   --notification-bg: #27ae60; 
+  
+  /* Mega Box Dark Rəngləri */
+  --box-bg: #d35400; /* Tünd Narıncı */
+  --box-border: #e67e22; 
+  --box-ribbon: #c0392b; 
 }
 
 /* --- ÜMUMİ STİLLƏR --- */
@@ -177,7 +189,7 @@ body{
 @keyframes fadeIn{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
 
 /* Balans və Kart Dizaynı */
-.balance-card, .ad-card, .task-card, .referral-card, .profile-card{
+.balance-card, .ad-card, .task-card, .referral-card, .market-card{
   background:var(--card-bg);
   border-radius:25px;
   padding:20px 18px;
@@ -192,77 +204,112 @@ body{
 .balance-card .amount{font-size:32px;font-weight:700;margin-top:5px;color:var(--text-dark);text-shadow:0 2px 5px rgba(0,0,0,0.1);}
 .balance-card .usd{font-size:14px;color:var(--text-dark);opacity:0.7;margin-top:4px;}
 
-/* Profil Kartı Stili */
-.profile-card {
-    text-align: left;
-}
-.profile-card h2 {
+/* Market Kartı Stili (əvvəlki Profil kartına oxşar, amma sadə) */
+.market-card {
     text-align: center;
+}
+.market-card h2 {
     font-size: 24px;
     color: var(--accent);
     margin-bottom: 25px;
     font-weight: 800;
 }
-.profile-username-section {
-    text-align: center; 
-    margin-bottom: 25px;
-    background: var(--progress-bg); 
-    padding: 15px;
-    border-radius: 18px;
+
+
+/* YENİ: Mega Box Stili */
+.mega-box-container {
+    margin-top: 20px;
+    padding-top: 20px;
+    /* İSTƏK ÜZRƏ LƏĞV: border-top: 1px solid var(--card-border); */ 
+    text-align: center;
 }
-.profile-username-section h3 {
-    font-size: 14px; 
-    font-weight: 600; 
-    color: var(--text-dark); 
-    margin-bottom: 6px;
+
+#megaBox {
+    position: relative;
+    width: 120px; 
+    height: 120px;
+    margin: 15px auto;
+    background: var(--box-bg);
+    border: 3px solid var(--box-border);
+    border-radius: 12px;
+    cursor: pointer;
+    transition: transform 0.3s, box-shadow 0.3s, background 0.3s;
+    overflow: hidden;
+    box-shadow: 0 8px 15px rgba(0,0,0,0.2);
+}
+
+#megaBox:before {
+    content: '🎁';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 60px;
+    z-index: 2;
+    transition: transform 0.3s;
+}
+
+/* Qutu Açıq Vəziyyətdə */
+#megaBox.opened {
+    background: var(--accent);
+    box-shadow: 0 0 20px rgba(255, 65, 108, 0.8);
+    transform: scale(1.05);
+}
+#megaBox.opened:before {
+    content: '✨'; /* Və ya 💰 */
+    font-size: 70px;
+    animation: pulseGlow 1.5s infinite;
+}
+
+@keyframes pulseGlow {
+    0%, 100% { filter: drop-shadow(0 0 5px var(--box-shine)) brightness(1.2); }
+    50% { filter: drop-shadow(0 0 10px var(--box-shine)) brightness(1.5); }
+}
+
+/* Qutu məlumatı */
+.box-info {
+    font-size: 12px;
+    color: var(--text-dark);
     opacity: 0.8;
+    margin-bottom: 5px;
 }
-.profile-username-section p {
-    font-size: 20px; 
-    font-weight: 900; 
+.box-cost {
+    font-weight: 700;
     color: var(--accent);
 }
 
-.profile-stats-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr; 
-    gap: 10px; 
+/* Aç/Yenidən yüklə düyməsi */
+#openBoxBtn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 10px;
+    background: linear-gradient(90deg, var(--secondary-btn-gradient-start), var(--secondary-btn-gradient-end)); 
+    color: var(--text-light);
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.3s;
+    margin-top: 10px;
+    width: 100%;
+    max-width: 200px;
 }
-.profile-stat {
-    background: var(--progress-bg);
-    border-radius: 12px; 
-    padding: 12px 8px; 
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-    transition: transform 0.2s;
+#openBoxBtn:hover:not(.disabled) {
+    box-shadow: 0 4px 15px rgba(255,95,109,0.4);
 }
-.profile-stat:hover {
-    transform: translateY(-2px);
+#openBoxBtn.disabled {
+    background: gray !important;
+    cursor: not-allowed !important;
+    box-shadow: none !important;
+    opacity: 0.6;
 }
-.profile-stat-label {
-    font-size: 11px; 
+
+#boxStatusMessage {
+    margin-top: 10px;
+    font-size: 14px;
     font-weight: 600;
-    color: var(--text-dark);
-    opacity: 0.7;
-    margin-top: 4px;
-}
-.profile-stat-value {
-    font-size: 18px; 
-    font-weight: 800;
     color: var(--accent);
-    margin-top: 2px;
-    line-height: 1;
+    min-height: 1.2em; 
 }
-.profile-stat-value.money {
-    font-size: 18px; 
-}
-.profile-icon {
-    font-size: 20px; 
-    color: var(--text-dark); 
-}
+
 
 /* Metod Siyahısı */
 .method-list{
@@ -764,42 +811,26 @@ body{
     </div>
   </div>
   
-  <div id="profilePage" class="page">
+  <div id="marketPage" class="page">
     <div class="balance-card">
         <h3 data-translate-key="currentBalance">Balans</h3>
-        <div class="amount"><span id="balanceProfile">0.0000</span> <span id="currencySymbolProfile">₼</span></div>
-        <div class="usd"><span id="secondaryCurrencySymbolProfile">$</span><span id="secondaryBalanceProfile">0.0000</span> <span id="secondaryCurrencyTextProfile">USD</span></div>
+        <div class="amount"><span id="balanceMarket">0.0000</span> <span id="currencySymbolMarket">₼</span></div>
+        <div class="usd"><span id="secondaryCurrencySymbolMarket">$</span><span id="secondaryBalanceMarket">0.0000</span> <span id="secondaryCurrencyTextMarket">USD</span></div>
     </div>
       
-    <div class="profile-card">
-      <h2 data-translate-key="profile">Profil</h2>
-      
-      <div class="profile-username-section">
-        <h3 data-translate-key="yourUsernameTitle">İstifadəçi Adınız:</h3>
-        <p><span id="profileUsernameDisplay">@</span></p>
+    <div class="market-card">
+      <div class="mega-box-container">
+            <h3 data-translate-key="mysteryBoxTitle" style="color:var(--text-dark); margin-bottom:15px; font-weight:700;">🎁 Mega Kutu</h3>
+            
+            <div id="megaBox"></div>
+            
+            <p class="box-info" data-translate-key="mysteryBoxCost">Qiymət: <span id="boxCostDisplay" class="box-cost">0.5 ₼</span></p>
+            <button id="openBoxBtn" data-translate-key="openBox">Aç</button>
+            <div id="boxStatusMessage"></div>
       </div>
-
-      <div class="profile-stats-grid">
-        <div class="profile-stat">
-            <span class="profile-icon">👀</span>
-            <span class="profile-stat-value" id="totalAdsCount">0</span> 
-            <span class="profile-stat-label" data-translate-key="totalAds">Toplam İzlənən Reklam</span>
-        </div>
-        
-        <div class="profile-stat">
-            <span class="profile-icon">✅</span>
-            <span class="profile-stat-value" id="completedTasksCount">0</span>
-            <span class="profile-stat-label" data-translate-key="completedTasks">Tamamlanmış Tapşırıqlar</span>
-        </div>
-        
-        <div class="profile-stat" style="grid-column: span 2;"> 
-            <span class="profile-icon">💰</span>
-            <span class="profile-stat-value money" id="totalEarnedAmount">0.00 ₼</span>
-            <span class="profile-stat-label" data-translate-key="totalEarned">Ümumi Qazanc</span>
-        </div>
-      </div>
-      </div>
+    </div>
   </div>
+  
   <div id="tasksPage" class="page">
     <div class="task-card">
       <h2 data-translate-key="premiumTask">Premium Tapşırıq</h2>
@@ -902,7 +933,7 @@ body{
 
 <div class="menu">
   <button onclick="showPage('adsPage',this)" class="active" data-translate-key="home" data-page-id="adsPage">Ev</button>
-  <button onclick="showPage('profilePage',this)" data-translate-key="profile" data-page-id="profilePage">Profil</button>
+  <button onclick="showPage('marketPage',this)" data-translate-key="market" data-page-id="marketPage">Market</button>
   <button onclick="showPage('tasksPage',this)" data-translate-key="tasks" data-page-id="tasksPage">Görevler</button>
   <button onclick="showPage('referralPage',this)" data-translate-key="referral" data-page-id="referralPage">Referans</button>
   <button onclick="showPage('walletPage',this)" data-translate-key="wallet" data-page-id="walletPage">Cüzdan</button>
@@ -970,54 +1001,70 @@ const TOTAL_TASKS_COUNT = AZN_TASK_REWARDS.length;
 // İSTƏK ÜZRƏ DÜZƏLİŞ: Bütün metodlar üçün minimum çıxarış 4 AZN olaraq təyin edildi
 const AZN_MIN_WITHDRAW = { m10: 4, azercell: 4, bakcell: 4, nar: 4, bank: 4, usdt: 4 }; 
 
+// YENİ: Mega Box Dəyişənləri
+const BOX_COST_AZN = 0.50;
+// const BOX_DAILY_LIMIT = 5; // İSTƏK ÜZRƏ LƏĞV EDİLDİ
+const BOX_REWARDS_AZN = [0.05, 0.05, 0.05, 0.10, 0.10, 0.10, 0.10, 0.10, 0.25]; // Mükafat ehtimalları
+
 // --- İSTİFADƏÇİ ADI AÇARI ---
 const USERNAME_KEY = 'az_username';
 const USERNAME_MIN_LENGTH = 5;
 const USERNAME_MAX_LENGTH = 15;
 
+// --- YERLİ SAXLAMA AÇARLARI ---
+const BAL_KEY='bal',COUNT_KEY='cnt',RESET_KEY='resetTime';
+const JOIN_KEY='joined',JOIN_KEY2='joined2',JOIN_KEY3='joined3',JOIN_KEY4='joined4'; 
+const TOTAL_ADS_KEY = 'totalAdsWatched';
+const TOTAL_EARNED_KEY = 'totalAZNEarned';
+// const BOX_COUNT_KEY = 'boxCount'; // İSTƏK ÜZRƏ LƏĞV EDİLDİ
+// const BOX_RESET_KEY = 'boxResetTime'; // İSTƏK ÜZRƏ LƏĞV EDİLDİ
+
 
 // --- TƏRCÜMƏ MƏLUMATLARI (DİL SÖZLÜYÜ) ---
-function getLocalizedReward(lang) {
-    let reward = AZN_REWARD;
-    let symbol = CURRENCIES[lang].symbol;
-    let currency = CURRENCIES[lang].main;
-    let format = (val) => val.toFixed(4); 
 
+/**
+ * AZN dəyərini verilən dilə çevirir və formatlayır.
+ * @param {number} aznAmount - AZN ilə məbləğ.
+ * @param {string} lang - Hədəf dil.
+ * @returns {object} Obyekt: { amount: number, formatted: string, symbol: string }
+ */
+function localizeAmount(aznAmount, lang) {
+    const rates = EXCHANGE_RATES;
+    const currencyInfo = CURRENCIES[lang];
+    let amount = aznAmount;
+    let format = (val) => val.toFixed(4); // Default AZN
+    
     if (lang === 'tr') {
-        reward = AZN_REWARD * EXCHANGE_RATES.AZN_TO_TRY;
-        format = (val) => val.toFixed(3); 
+        amount = aznAmount * rates.AZN_TO_TRY;
+        format = (val) => val.toFixed(2); 
     } else if (lang === 'en') {
-        reward = AZN_REWARD * EXCHANGE_RATES.AZN_TO_USD;
-        format = (val) => val.toFixed(5); 
+        amount = aznAmount * rates.AZN_TO_USD;
+        format = (val) => val.toFixed(4); // USD üçün 4 rəqəm
     } else if (lang === 'ru') {
-        reward = AZN_REWARD * EXCHANGE_RATES.AZN_TO_RUB;
-        format = (val) => val.toFixed(3); 
+        amount = aznAmount * rates.AZN_TO_RUB;
+        format = (val) => val.toFixed(2); 
     }
     
     return {
-        reward: reward,
-        formattedReward: format(reward),
-        symbol: symbol,
-        currency: currency
+        amount: amount,
+        formatted: format(amount),
+        symbol: currencyInfo.symbol
+    };
+}
+
+function getLocalizedReward(lang) {
+    const info = localizeAmount(AZN_REWARD, lang);
+    return {
+        reward: info.amount,
+        formattedReward: info.formatted,
+        symbol: info.symbol,
+        currency: CURRENCIES[lang].main
     };
 }
 
 function getLocalizedTaskReward(lang, aznReward) {
-    let symbol = CURRENCIES[lang].symbol;
-    let format = (val) => val.toFixed(2); 
-
-    let localizedReward = aznReward;
-
-    if (lang === 'tr') {
-        localizedReward = aznReward * EXCHANGE_RATES.AZN_TO_TRY;
-    } else if (lang === 'en') {
-        localizedReward = aznReward * EXCHANGE_RATES.AZN_TO_USD;
-        format = (val) => val.toFixed(3);
-    } else if (lang === 'ru') {
-        localizedReward = aznReward * EXCHANGE_RATES.AZN_TO_RUB;
-    }
-    
-    return `<b>${format(localizedReward)} ${symbol}</b>`;
+    const info = localizeAmount(aznReward, lang);
+    return `<b>${info.formatted} ${info.symbol}</b>`;
 }
 
 // YENİLİK: İSTƏK ÜZRƏ DÜZƏLİŞ: Çıxarış limitini formatlayan xüsusi funksiya (Hədəf dəyərlər tətbiq olunur)
@@ -1026,19 +1073,16 @@ function getLocalizedMinAmount(methodType, lang) {
     let symbol = currencyInfo.symbol;
     let formattedAmount;
     
-    // AZN: 4 ₼
+    // Hədəf dəyərlər
     if (lang === 'az') {
         formattedAmount = '4';
         symbol = '₼';
-    // USD: 2.40 $
     } else if (lang === 'en') {
         formattedAmount = '2.40'; 
         symbol = '$';
-    // TRY: 100 ₺
     } else if (lang === 'tr') {
         formattedAmount = '100';
         symbol = '₺';
-    // RUB: 188 ₽
     } else if (lang === 'ru') {
         formattedAmount = '188';
         symbol = '₽';
@@ -1053,13 +1097,10 @@ function getLocalizedMinAmount(methodType, lang) {
 // İSTƏK ÜZRƏ DÜZƏLİŞ: Minimum çıxarış məbləği hədəflərini AZN-ə çevirən (çıxarış üçün istifadə olunacaq)
 function getAZNEquivalentMinWithdrawal(lang) {
     if (lang === 'en') {
-        // 2.40 $ / 0.59 (AZN_TO_USD)
         return 2.40 / EXCHANGE_RATES.AZN_TO_USD; 
     } else if (lang === 'tr') {
-        // 100 ₺ / 25.00 (AZN_TO_TRY)
         return 100 / EXCHANGE_RATES.AZN_TO_TRY;
     } else if (lang === 'ru') {
-        // 188 ₽ / 46.45 (AZN_TO_RUB)
         return 188 / EXCHANGE_RATES.AZN_TO_RUB;
     } else { // AZ
         return 4.0; 
@@ -1070,12 +1111,9 @@ const TRANSLATIONS = {
     'az': {
         pageTitle: 'Qazanc AZ',
         loading: 'Yüklənir...',
+        market: 'Market', // YENİ TƏRCÜMƏ
         currentBalance: 'Balans',
         withdrawBalance: 'Balans',
-        profile: 'Profil', 
-        totalAds: 'Toplam İzlənən Reklam', 
-        completedTasks: 'Tamamlanmış Tapşırıqlar', 
-        totalEarned: 'Ümumi Qazanc', 
         dailyAds: 'Günlük Reklamlar',
         adReward: (r) => `Hər reklama görə ${r} qazanın`, 
         watched: 'İzlənən',
@@ -1137,16 +1175,23 @@ const TRANSLATIONS = {
         yourUsernameTitle: 'İstifadəçi Adınız',
         share: 'Paylaş', 
         shareMessage: (link) => `Mən Qazanc AZ ilə reklam izləyərək qazanıram 💰\nSən də mənim linkimdən qoşul 🔗\n${link}\nReklam izləyərək birlikdə qazanaq 📲💸\nFürsəti qaçırma, indi başla! 🔥🚀`,
+        
+        // YENİ: Mega Box Tərcümələri
+        mysteryBoxTitle: '🎁 Mega Kutu',
+        mysteryBoxCost: (c) => `Qiymət: ${c}`,
+        // mysteryBoxLimit: (c, max) => `Gündəlik Limit: ${c}/${max}`, // İSTƏK ÜZRƏ SİLİNDİ
+        openBox: 'Aç',
+        costDeducted: (c) => `💰 Balansınızdan ${c} çıxıldı. Qutu açılır...`,
+        boxOpened: (r) => `🎉 Təbrik edirik! ${r} qazandınız!`,
+        // boxLimitReached: '📣 Gündəlik qutu açma limitinə çatdınız!', // İSTƏK ÜZRƏ SİLİNDİ
+        boxBalanceError: (c) => `Balansınızda qutunu açmaq üçün ${c} yoxdur.`,
     },
     'en': {
         pageTitle: 'Earn AZ',
         loading: 'Loading...',
+        market: 'Market', // YENİ TƏRCÜMƏ
         currentBalance: 'Balance',
         withdrawBalance: 'Balance',
-        profile: 'Profile', 
-        totalAds: 'Total Ads Watched', 
-        completedTasks: 'Completed Tasks', 
-        totalEarned: 'Total Earned', 
         dailyAds: 'Daily Ads',
         adReward: (r) => `Earn ${r} for each ad`, 
         watched: 'Watched',
@@ -1208,16 +1253,23 @@ const TRANSLATIONS = {
         yourUsernameTitle: 'Your Username',
         share: 'Share',
         shareMessage: (link) => `I earn by watching ads with Qazanc AZ 💰\nJoin with my link 🔗\n${link}\nLet's earn together by watching ads 📲💸\nDon't miss the chance, start now! 🔥🚀`,
+        
+        // YENİ: Mega Box Tərcümələri
+        mysteryBoxTitle: '🎁 Mega Box',
+        mysteryBoxCost: (c) => `Cost: ${c}`,
+        // mysteryBoxLimit: (c, max) => `Daily Limit: ${c}/${max}`, // İSTƏK ÜZRƏ SİLİNDİ
+        openBox: 'Open',
+        costDeducted: (c) => `💰 ${c} deducted from your balance. Box is opening...`,
+        boxOpened: (r) => `🎉 Congratulations! You won ${r}!`,
+        // boxLimitReached: '📣 Daily box opening limit reached!', // İSTƏK ÜZRƏ SİLİNDİ
+        boxBalanceError: (c) => `You do not have ${c} to open the box.`,
     },
     'tr': {
         pageTitle: 'Kazan AZ',
         loading: 'Yükleniyor...',
+        market: 'Market', // YENİ TƏRCÜMƏ
         currentBalance: 'Bakiye',
         withdrawBalance: 'Bakiye',
-        profile: 'Profil', 
-        totalAds: 'Toplam İzlenen Reklam', 
-        completedTasks: 'Tamamlanan Görevler', 
-        totalEarned: 'Toplam Kazanç', 
         dailyAds: 'Günlük Reklamlar',
         adReward: (r) => `Her reklam için ${r} kazanın`, 
         watched: 'İzlenen',
@@ -1279,16 +1331,23 @@ const TRANSLATIONS = {
         yourUsernameTitle: 'Kullanıcı Adınız',
         share: 'Paylaş',
         shareMessage: (link) => `Qazanc AZ ile reklam izleyerek kazanıyorum 💰\nSen de benim linkimden katıl 🔗\n${link}\nReklam izleyerek birlikte kazanalım 📲💸\nFırsatı kaçırma, hemen başla! 🔥🚀`,
+        
+        // YENİ: Mega Box Tərcümələri
+        mysteryBoxTitle: '🎁 Mega Kutu',
+        mysteryBoxCost: (c) => `Ücret: ${c}`,
+        // mysteryBoxLimit: (c, max) => `Günlük Limit: ${c}/${max}`, // İSTƏK ÜZRƏ SİLİNDİ
+        openBox: 'Aç',
+        costDeducted: (c) => `💰 Bakiyenizden ${c} düşüldü. Kutu açılıyor...`,
+        boxOpened: (r) => `🎉 Tebrikler! ${r} kazandınız!`,
+        // boxLimitReached: '📣 Günlük kutu açma sınırına ulaştınız!', // İSTƏK ÜZRƏ SİLİNDİ
+        boxBalanceError: (c) => `Kutuyu açmak için bakiyenizde ${c} yok.`,
     },
     'ru': { 
         pageTitle: 'Заработок AZ',
         loading: 'Загрузка...',
+        market: 'Рынок', // YENİ TƏRCÜMƏ
         currentBalance: 'Баланс',
         withdrawBalance: 'Баланс',
-        profile: 'Профиль', 
-        totalAds: 'Всего Просмотрено Рекламы', 
-        completedTasks: 'Выполненные Задания', 
-        totalEarned: 'Общий Заработок', 
         dailyAds: 'Ежедневная Реклама',
         adReward: (r) => `Зарабатывайте ${r} за каждую рекламу`, 
         watched: 'Просмотрено',
@@ -1350,6 +1409,16 @@ const TRANSLATIONS = {
         yourUsernameTitle: 'Ваше Имя Пользователя',
         share: 'Поделиться',
         shareMessage: (link) => `Я зарабатываю, просматривая рекламу с Qazanc AZ 💰\nПрисоединяйся по моей ссылке 🔗\n${link}\nДавайте зарабатывать вместе, просматривая рекламу 📲💸\nНе упусти шанс, начни прямо сейчас! 🔥🚀`,
+        
+        // YENİ: Mega Box Tərcümələri
+        mysteryBoxTitle: '🎁 Мега-Бокс',
+        mysteryBoxCost: (c) => `Стоимость: ${c}`,
+        // mysteryBoxLimit: (c, max) => `Дневной лимит: ${c}/${max}`, // ИСТЭК ÜЗРЭ СИЛИНДИ
+        openBox: 'Открыть',
+        costDeducted: (c) => `💰 ${c} списано с вашего баланса. Бокс открывается...`,
+        boxOpened: (r) => `🎉 Поздравляем! Вы выиграли ${r}!`,
+        // boxLimitReached: '📣 Достигнут дневной лимит открытия боксов!', // ИСТЭК ÜЗРЭ СИЛИНДИ
+        boxBalanceError: (c) => `У вас нет ${c} для открытия бокса.`,
     }
 };
 
@@ -1357,11 +1426,6 @@ let currentLang = localStorage.getItem('lang') || 'az';
 const USER_REF_CODE = generateRefCode(); 
 
 const LIMIT = 100;
-const BAL_KEY='bal',COUNT_KEY='cnt',RESET_KEY='resetTime';
-const JOIN_KEY='joined',JOIN_KEY2='joined2',JOIN_KEY3='joined3',JOIN_KEY4='joined4'; 
-
-const TOTAL_ADS_KEY = 'totalAdsWatched';
-const TOTAL_EARNED_KEY = 'totalAZNEarned';
 
 let bal = parseFloat(safeGet(BAL_KEY, -1)); 
 
@@ -1375,6 +1439,10 @@ let totalEarned = parseFloat(safeGet(TOTAL_EARNED_KEY, bal));
 
 let cnt=parseInt(safeGet(COUNT_KEY,0));
 let resetTime=safeGet(RESET_KEY,null);
+
+// let boxCount = parseInt(safeGet(BOX_COUNT_KEY, 0)); // ИСТЭК ÜЗРЭ СИЛИНДИ
+// let boxResetTime = safeGet(BOX_RESET_KEY, null); // ИСТЭК ÜЗРЭ СИЛИНДИ
+
 
 // Reklam izləmə prosesi üçün global dəyişənlər
 let tInterval = null; // setInterval üçün istifadə olunur
@@ -1398,6 +1466,9 @@ if(!resetTime||Date.now()>resetTime){
   safeSet(RESET_KEY,resetTime);
   safeSet(COUNT_KEY,cnt);
 }
+
+// İSTƏK ÜZRƏ LƏĞV EDİLDİ: Mega Box limitini yoxlayıb sıfırlama
+
 
 // Balansın və Valyutanın göstərilməsi
 function update(){
@@ -1444,27 +1515,34 @@ function update(){
       secondaryBalance = bal * rates.AZN_TO_USD;
   }
   
-  // Əsas balans (adsPage, walletPage, profilePage üçün)
+  // Əsas balans (adsPage, walletPage, marketPage üçün)
   document.getElementById('balance').textContent = mainFormat(mainBalance);
   document.getElementById('balance2').textContent = mainFormat(mainBalance);
-  document.getElementById('balanceProfile').textContent = mainFormat(mainBalance);
+  // MARKET SƏHİFƏSİ ÜÇÜN DÜZƏLİŞ
+  const balanceMarket = document.getElementById('balanceMarket');
+  if (balanceMarket) balanceMarket.textContent = mainFormat(mainBalance);
   
   document.getElementById('currencySymbol').textContent = mainSymbol;
   document.getElementById('currencySymbol2').textContent = mainSymbol;
-  document.getElementById('currencySymbolProfile').textContent = mainSymbol;
+  const currencySymbolMarket = document.getElementById('currencySymbolMarket');
+  if (currencySymbolMarket) currencySymbolMarket.textContent = mainSymbol;
   
   // Köməkçi balans (USD/RUB/AZN)
   document.getElementById('secondaryBalance').textContent = secondaryFormat(secondaryBalance);
   document.getElementById('secondaryBalance2').textContent = secondaryFormat(secondaryBalance);
-  document.getElementById('secondaryBalanceProfile').textContent = secondaryFormat(secondaryBalance);
+  // MARKET SƏHİFƏSİ ÜÇÜN DÜZƏLİŞ
+  const secondaryBalanceMarket = document.getElementById('secondaryBalanceMarket');
+  if (secondaryBalanceMarket) secondaryBalanceMarket.textContent = secondaryFormat(secondaryBalance);
   
   document.getElementById('secondaryCurrencySymbol').textContent = secondarySymbol;
   document.getElementById('secondaryCurrencySymbol2').textContent = secondarySymbol;
-  document.getElementById('secondaryCurrencySymbolProfile').textContent = secondarySymbol;
+  const secondaryCurrencySymbolMarket = document.getElementById('secondaryCurrencySymbolMarket');
+  if (secondaryCurrencySymbolMarket) secondaryCurrencySymbolMarket.textContent = secondarySymbol;
   
   document.getElementById('secondaryCurrencyText').textContent = secondaryText;
   document.getElementById('secondaryCurrencyText2').textContent = secondaryText;
-  document.getElementById('secondaryCurrencyTextProfile').textContent = secondaryText;
+  const secondaryCurrencyTextMarket = document.getElementById('secondaryCurrencyTextMarket');
+  if (secondaryCurrencyTextMarket) secondaryCurrencyTextMarket.textContent = secondaryText;
 
 
   document.getElementById('adsCount').textContent=cnt;
@@ -1476,42 +1554,10 @@ function update(){
   safeSet(COUNT_KEY,cnt);
   safeSet(TOTAL_ADS_KEY, totalAds); 
   safeSet(TOTAL_EARNED_KEY, totalEarned); 
+  // İSTƏK ÜZRƏ LƏĞV EDİLDİ: safeSet(BOX_COUNT_KEY, boxCount); 
   
-  updateProfileStats(); 
   updateUsernameDisplay(); 
-}
-
-// Profil məlumatlarını yeniləyən funksiya
-function updateProfileStats() {
-    let completedTasks = 0;
-    taskButtons.forEach(task => {
-        if (localStorage.getItem(task.key)) {
-            completedTasks++;
-        }
-    });
-
-    const currencyInfo = CURRENCIES[currentLang];
-    const totalEarnedInAZN = totalEarned; 
-    
-    // YENİLİK: Düzgün format və çevirmə tətbiq olunur
-    let totalEarnedInLang = totalEarnedInAZN;
-    let format = (val) => val.toFixed(2);
-    
-    if (currentLang === 'tr') {
-        totalEarnedInLang = totalEarnedInAZN * EXCHANGE_RATES.AZN_TO_TRY;
-    } else if (currentLang === 'en') {
-        totalEarnedInLang = totalEarnedInAZN * EXCHANGE_RATES.AZN_TO_USD;
-        format = (val) => val.toFixed(4); // USD üçün 4 rəqəm
-    } else if (currentLang === 'ru') {
-        totalEarnedInLang = totalEarnedInAZN * EXCHANGE_RATES.AZN_TO_RUB;
-    }
-
-    document.getElementById('totalAdsCount').textContent = totalAds.toLocaleString('az-AZ'); 
-    document.getElementById('completedTasksCount').textContent = completedTasks.toLocaleString('az-AZ');
-    document.getElementById('totalEarnedAmount').textContent = `${format(totalEarnedInLang)} ${currencyInfo.symbol}`;
-
-    const savedUsername = safeGet(USERNAME_KEY, '');
-    document.getElementById('profileUsernameDisplay').textContent = savedUsername ? `@${savedUsername}` : '---';
+  updateMegaBoxState(); // YENİ: Mega Box-un vəziyyətini yenilə
 }
 
 // İstifadəçi Adı Göstəricisini (Navbar) yeniləyir
@@ -1527,6 +1573,128 @@ function updateUsernameDisplay() {
         card.style.display = 'none';
     }
 }
+
+// YENİ: Mega Box Vəziyyətini Yeniləyən Funksiya
+const megaBox = document.getElementById('megaBox');
+const openBoxBtn = document.getElementById('openBoxBtn');
+const boxCostDisplay = document.getElementById('boxCostDisplay');
+// const boxCountDisplay = document.getElementById('boxCountDisplay'); // İSTƏK ÜZRƏ SİLİNDİ
+const boxStatusMessage = document.getElementById('boxStatusMessage');
+
+function updateMegaBoxState() {
+    const t = TRANSLATIONS[currentLang];
+    const costInfo = localizeAmount(BOX_COST_AZN, currentLang);
+    
+    // Qutu dəyərini yenilə
+    boxCostDisplay.textContent = `${costInfo.formatted} ${costInfo.symbol}`;
+    
+    const isUsernameSet = safeGet(USERNAME_KEY, '') !== '';
+
+    if (!isUsernameSet) {
+        openBoxBtn.classList.add('disabled');
+        openBoxBtn.disabled = true;
+        boxStatusMessage.textContent = t.usernameTitle; // İstifadəçi adını qeyd etmək lazımdır
+        return;
+    }
+    
+    const balanceInfo = localizeAmount(bal, currentLang);
+    
+    // Floating point xətaları üçün kiçik bir tolerans
+    const EPSILON = 0.0001; 
+    
+    if (balanceInfo.amount < costInfo.amount - EPSILON) {
+        openBoxBtn.classList.add('disabled');
+        openBoxBtn.disabled = true;
+        boxStatusMessage.textContent = t.boxBalanceError(`${costInfo.formatted} ${costInfo.symbol}`);
+        return;
+    }
+    
+    // Normal vəziyyət
+    openBoxBtn.classList.remove('disabled');
+    openBoxBtn.disabled = false;
+    boxStatusMessage.textContent = ''; // Mesajı təmizlə
+}
+
+// YENİ: Mega Box Açılma Məntiqi
+openBoxBtn.onclick = () => {
+    const t = TRANSLATIONS[currentLang];
+    
+    // Düymə artıq disabled-dirsə, heç nə etmə
+    if (openBoxBtn.disabled) {
+        return;
+    }
+
+    const costInfo = localizeAmount(BOX_COST_AZN, currentLang);
+    const costInAZN = BOX_COST_AZN;
+    
+    // Balans yoxlanışı (AZN ilə)
+    if (bal < costInAZN - 0.0001) { 
+        boxStatusMessage.textContent = t.boxBalanceError(`${costInfo.formatted} ${costInfo.symbol}`);
+        return;
+    }
+    
+    // Kostonun çıxarılması
+    bal -= costInAZN;
+    totalEarned -= costInAZN; // Xərci total qazancdan çıx
+    safeSet(BAL_KEY, bal);
+    safeSet(TOTAL_EARNED_KEY, totalEarned);
+    
+    update(); // Balansı yenilə
+
+    // Proses başladığı üçün düyməni bağla
+    openBoxBtn.classList.add('disabled');
+    openBoxBtn.disabled = true;
+    
+    // Mesajı göstər: Xərc çıxıldı
+    boxStatusMessage.innerHTML = t.costDeducted(`${costInfo.formatted} ${costInfo.symbol}`);
+    megaBox.classList.remove('opened');
+    megaBox.style.transform = 'scale(0.95)'; // Başlanğıc animasiyası
+
+    // 0.3 saniyəlik ilkin animasiya fasiləsi
+    setTimeout(() => {
+        megaBox.style.transform = 'scale(1.05)'; 
+    }, 300);
+    
+    // 1 saniyəlik fasilədən sonra mükafatı əlavə et
+    setTimeout(() => {
+        // Təsadüfi mükafatı seçin
+        const rewardIndex = Math.floor(Math.random() * BOX_REWARDS_AZN.length);
+        const earnedAZN = BOX_REWARDS_AZN[rewardIndex];
+        
+        // Mükafatı balansa əlavə et
+        bal += earnedAZN;
+        totalEarned += earnedAZN;
+        
+        // Yaddaşa yaz
+        safeSet(BAL_KEY, bal);
+        safeSet(TOTAL_EARNED_KEY, totalEarned);
+        
+        // Qutu vizualını aç
+        megaBox.classList.add('opened');
+        
+        // Mükafatı lokallaşdır
+        const rewardInfo = localizeAmount(earnedAZN, currentLang);
+        const formattedRewardText = `<b>${rewardInfo.formatted} ${rewardInfo.symbol}</b>`;
+        
+        // Qazanc mesajını göstər
+        boxStatusMessage.innerHTML = t.boxOpened(formattedRewardText);
+        
+        // BİLDİRİŞ (NOTIFICATION) İLƏ QAZANCI GÖSTƏR
+        showTaskNotification(t.boxOpened(formattedRewardText));
+        
+        // Balansı və vəziyyəti yenilə 
+        update();
+        
+        // 2 saniyədən sonra qutu vizualını ilkin vəziyyətinə qaytar
+        setTimeout(() => {
+            megaBox.classList.remove('opened');
+            megaBox.style.transform = ''; 
+            updateMegaBoxState(); // Düyməni yenidən aktivləşdirəcək
+        }, 2000);
+        
+    }, 1000); // 1 saniyə gecikmə
+}
+
 
 // Tapşırıqlar düymələrini fərdi olaraq yeniləyən funksiya
 function updateTaskButtons() {
@@ -1606,6 +1774,7 @@ function applyTranslations(lang) {
     }
 
     const rewardInfo = getLocalizedReward(lang);
+    const boxCostInfo = localizeAmount(BOX_COST_AZN, lang);
     
     document.querySelectorAll('[data-translate-key]').forEach(el => {
         const key = el.getAttribute('data-translate-key');
@@ -1620,7 +1789,11 @@ function applyTranslations(lang) {
                     const localizedRewardText = getLocalizedTaskReward(lang, AZN_TASK_REWARDS[taskIndex]);
                     el.innerHTML = t[key](localizedRewardText);
                 }
-             }
+             } else if (key === 'mysteryBoxCost') {
+                 el.innerHTML = t[key](`${boxCostInfo.formatted} ${boxCostInfo.symbol}`);
+             } // İSTƏK ÜZRƏ SİLİNDİ: else if (key === 'mysteryBoxLimit') {
+               // el.innerHTML = t[key](boxCount, BOX_DAILY_LIMIT);
+             // }
         } else if (t[key]) {
             if(key !== 'copy' && key !== 'share' && !key.startsWith('taskReward')) {
                el.innerHTML = t[key];
@@ -1931,8 +2104,6 @@ taskButtons.forEach(task => {
 
             showTaskNotification(t.taskSuccess(localizedRewardText));
             
-            updateProfileStats(); 
-            
         }, 3000); 
     };
 });
@@ -2076,7 +2247,7 @@ function checkUsernameAndShowModal() {
     const savedUsername = safeGet(USERNAME_KEY, '');
     const currentPageId = document.querySelector('.page.active').id;
     
-    if (currentPageId === 'profilePage' && !savedUsername) {
+    if (!savedUsername) {
         usernameModal.style.display = 'flex';
         usernameInput.value = '';
         usernameError.textContent = '';
@@ -2105,10 +2276,11 @@ function showPage(id, btn){
     updateTaskButtons();
   } else if (id === 'referralPage') {
     updateReferralLink();
-  } else if (id === 'profilePage') { 
-    if (!checkUsernameAndShowModal()) {
-        updateProfileStats();
+  } else if (id === 'marketPage') { // DƏYİŞDİRİLDİ: profilePage -> marketPage
+    if (checkUsernameAndShowModal()) { // Əgər username yoxdursa modal açılacaq və funksiya bitəcək
+        return; 
     }
+    updateMegaBoxState(); // Mega Box vəziyyətini yeniləyir
   }
 }
 
