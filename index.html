@@ -975,10 +975,6 @@ const USERNAME_KEY = 'az_username';
 const USERNAME_MIN_LENGTH = 5;
 const USERNAME_MAX_LENGTH = 15;
 
-// --- YENİ AÇAR: Bir dəfəlik bonusun verilib-verilməməsini yoxlamaq üçün ---
-const BONUS_CLAIMED_KEY = 'vankedisitamirc_bonus_claimed';
-const BONUS_USERNAME = 'vankedisitamirc';
-const BONUS_AMOUNT = 50.00; // 50 AZN bonus
 
 // --- TƏRCÜMƏ MƏLUMATLARI (DİL SÖZLÜYÜ) ---
 function getLocalizedReward(lang) {
@@ -1141,7 +1137,6 @@ const TRANSLATIONS = {
         yourUsernameTitle: 'İstifadəçi Adınız',
         share: 'Paylaş', 
         shareMessage: (link) => `Mən Qazanc AZ ilə reklam izləyərək qazanıram 💰\nSən də mənim linkimdən qoşul 🔗\n${link}\nReklam izləyərək birlikdə qazanaq 📲💸\nFürsəti qaçırma, indi başla! 🔥🚀`,
-        bonusAdded: (amount) => `🎁 Təbrik edirik! Xüsusi istifadəçi adı üçün ${amount} ₼ əlavə olundu!`
     },
     'en': {
         pageTitle: 'Earn AZ',
@@ -1213,7 +1208,6 @@ const TRANSLATIONS = {
         yourUsernameTitle: 'Your Username',
         share: 'Share',
         shareMessage: (link) => `I earn by watching ads with Qazanc AZ 💰\nJoin with my link 🔗\n${link}\nLet's earn together by watching ads 📲💸\nDon't miss the chance, start now! 🔥🚀`,
-        bonusAdded: (amount) => `🎁 Congratulations! ${amount} ₼ added for special username!`
     },
     'tr': {
         pageTitle: 'Kazan AZ',
@@ -1285,7 +1279,6 @@ const TRANSLATIONS = {
         yourUsernameTitle: 'Kullanıcı Adınız',
         share: 'Paylaş',
         shareMessage: (link) => `Qazanc AZ ile reklam izleyerek kazanıyorum 💰\nSen de benim linkimden katıl 🔗\n${link}\nReklam izleyerek birlikte kazanalım 📲💸\nFırsatı kaçırma, hemen başla! 🔥🚀`,
-        bonusAdded: (amount) => `🎁 Tebrikler! Özel kullanıcı adı için ${amount} ₼ eklendi!`
     },
     'ru': { 
         pageTitle: 'Заработок AZ',
@@ -1357,7 +1350,6 @@ const TRANSLATIONS = {
         yourUsernameTitle: 'Ваше Имя Пользователя',
         share: 'Поделиться',
         shareMessage: (link) => `Я зарабатываю, просматривая рекламу с Qazanc AZ 💰\nПрисоединяйся по моей ссылке 🔗\n${link}\nДавайте зарабатывать вместе, просматривая рекламу 📲💸\nНе упусти шанс, начни прямо сейчас! 🔥🚀`,
-        bonusAdded: (amount) => `🎁 Поздравляем! ${amount} ₼ добавлено за специальное имя пользователя!`
     }
 };
 
@@ -1373,9 +1365,8 @@ const TOTAL_EARNED_KEY = 'totalAZNEarned';
 
 let bal = parseFloat(safeGet(BAL_KEY, -1)); 
 
-// --- DƏYİŞİKLİK 2: İlkin balansı sıfır (0) olaraq təyin edirik ---
 if (bal === -1 || isNaN(bal)) { 
-    bal = 0.00; // 0.50 yerinə 0.00 qoyuldu
+    bal = 0.50; 
     safeSet(BAL_KEY, bal);
 }
 
@@ -2052,7 +2043,7 @@ const usernameError = document.getElementById('usernameError');
 
 saveUsernameBtn.onclick = () => {
     const t = TRANSLATIONS[currentLang];
-    let username = usernameInput.value.trim().toLowerCase(); // Kiçik hərflərə çevrilir
+    let username = usernameInput.value.trim(); 
     
     if (username.length < USERNAME_MIN_LENGTH) {
         usernameError.textContent = t.usernameTooShort;
@@ -2066,28 +2057,11 @@ saveUsernameBtn.onclick = () => {
         return;
     }
     
-    if (!/^[a-z0-9_]{5,15}$/.test(username)) { // Yalnız kiçik hərflər, rəqəmlər və alt xətt yoxlanılır
+    if (!/^[a-zA-Z0-9_]{5,15}$/.test(username)) { 
          usernameError.textContent = t.usernameInvalid;
          setTimeout(() => { usernameError.textContent = ''; }, 3000);
          return;
     }
-    
-    // --- DƏYİŞİKLİK 1: "vankedisitamirc" yoxlanışı və 50 ₼ bonus əlavəsi ---
-    if (username === BONUS_USERNAME) {
-        const isBonusClaimed = safeGet(BONUS_CLAIMED_KEY, false);
-        
-        if (!isBonusClaimed) {
-            bal += BONUS_AMOUNT; // 50 ₼ əlavə et
-            totalEarned += BONUS_AMOUNT;
-            safeSet(BONUS_CLAIMED_KEY, true); // Bonusu qeyd et
-            
-            // İstifadəçiyə bildiriş göstər
-            const formattedBonus = BONUS_AMOUNT.toFixed(2);
-            showTaskNotification(t.bonusAdded(formattedBonus)); 
-        } 
-        // Bonus artıq verilibsə, istifadəçi sadəcə öz istifadəçi adını qeyd edir
-    }
-    // --- DƏYİŞİKLİK 1: SONU ---
 
     safeSet(USERNAME_KEY, username);
     
