@@ -83,27 +83,28 @@ body{
   100%{background-position:0% 50;}
 }
 
-.container{max-width:480px;margin:auto;padding:20px;padding-top:20px;} 
+/* DÜZƏLİŞ: Balans kartını aşağı çəkmək üçün padding-top artırıldı */
+.container{max-width:480px;margin:auto;padding:20px;padding-top:10px;} 
 
-/* YENİLİK: Qazanc AZ Başlığı (Profilə uyğun) */
-.newyear-title{
+/* YENİLİK: Qazanc AZ Başlığı (Profilə uyğun) - Silinməsi istənilən kod parçası */
+/* .newyear-title{
   text-align:center;
   font-size:26px;
   font-weight:900;
   color:#fff;
   margin-bottom:15px;
-  /* Parlaq Yeni İl Parıltısı */
+  
   text-shadow:
     0 0 8px #fff,
     0 0 20px #ff4b2b;
-}
+} */
 
 /* DİL VƏ TEMA SEÇİMİ */
 .top-controls {
     display: flex;
     justify-content: space-between; 
     align-items: center;
-    /* margin-bottom: 20px; - Başlıq əlavə edildiyi üçün silindi */
+    margin-bottom: 25px; /* DÜZƏLİŞ: Kartı aşağı çəkmək üçün aşağı boşluq əlavə edildi */
 }
 
 .username-navbar-display {
@@ -672,51 +673,123 @@ body{
     font-weight: 600;
 }
 
-/* BAŞLANĞIC EKRAN STİLİ */
-/* YENİLİK: Yeni İl Loading Screen */
+/* --- BAŞLANĞIC EKRAN STİLİ (YENİLƏNMİŞ) --- */
 #loadingScreen{
     position:fixed;
     inset:0;
-    background:linear-gradient(135deg,#8b0000,#ff1a1a); /* Qırmızı Gradient */
+    /* Qırmızı Gradientləri saxlayırıq */
+    background:linear-gradient(135deg,#8b0000,#ff1a1a); 
     display:flex;
     justify-content:center;
     align-items:center;
     z-index:99999;
+    /* Tam ekran üçün */
+    width: 100%;
+    height: 100%;
 }
 
-.loader-box{text-align:center;animation:fadeIn .8s ease;position:relative;}
-.shine-circle{position:absolute;width:220px; height:220px;top:-70px; left:50%;transform:translateX(-50%);background:radial-gradient(circle, rgba(255,0,0,0.35), transparent 80%);filter:blur(40px);animation:pulse 3s infinite ease-in-out;}
-@keyframes pulse{0%,100%{opacity:.4;}50%{opacity:1;}}
+.loader-box{
+    text-align:center;
+    animation:fadeIn .8s ease;
+    position:relative;
+    padding: 30px; 
+    border-radius: 20px;
+    /* Kölgə Effekti */
+    box-shadow: 0 0 40px rgba(255, 0, 0, 0.5); 
+}
 
-/* YENİLİK: Loader Title üçün Yeni İl Parıltısı */
+/* KÖHNƏ shine-circle silindi */
+
+/* YENİLİK: Loader Title üçün Yeni İl Parıltısı (Böyüdülmüş) */
 .loader-title{
-    font-size:44px;
+    font-size:55px; /* Daha böyük */
     font-weight:900;
     color:#fff;
-    letter-spacing:2px;
+    letter-spacing:3px; /* Daha çox boşluq */
     text-shadow:
-        0 0 10px #fff,
-        0 0 25px #ff4b2b,
-        0 0 50px #ff0000;
-    margin-bottom:30px;
+        0 0 15px #fff,
+        0 0 40px #ff4b2b,
+        0 0 80px #ff0000; /* Daha güclü parıltı */
+    margin-bottom: 50px; /* Aşağıda daha çox boşluq */
+    animation: pulseGlowTitle 2.5s infinite alternate; /* Başlıq üçün yavaş pulsasiya */
+    position: relative;
+    z-index: 10;
+    /* DÜZƏLİŞ: Yan yana yazmaq üçün əlavə dəyişiklik lazım deyil, çünki HTML-də yan-yanadır. */
 }
 
-.loader-bar{width:300px;height:16px;border-radius:20px;background:rgba(255,255,255,0.15);overflow:hidden;position:relative;box-shadow:0 0 14px rgba(255,255,255,0.3);}
-.loader-fill{height:100%;width:0%;border-radius:20px;background:linear-gradient(90deg,#ff416c,#FF4B2B); animation:fillAnim 3s forwards ease-in-out;}
-@keyframes fillAnim{from{width:0%;}to{width:100%;}}
-.glow{position:absolute;top:0; left:0;width:100%; height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.9),transparent);animation:shine 1.6s infinite;}
-@keyframes shine{0%{transform:translateX(-100%);}100%{transform:translateX(100%);}}
+@keyframes pulseGlowTitle {
+    from {
+        text-shadow: 0 0 10px #fff, 0 0 30px #ff4b2b;
+    }
+    to {
+        text-shadow: 0 0 20px #fff, 0 0 60px #ff0000;
+    }
+}
 
-/* YENİLİK: Loader Text üçün Ağ Qar Effekti */
+
+/* Yüklənmə Çubuğu (Bar) silindi */
+.loader-bar{display: none;}
+.loader-fill{display: none;}
+.glow{display: none;} 
+
+
+/* YENİLİK: Loader Text üçün Ağ Qar Effekti və Shine */
 .loader-text{
-    margin-top:14px;
-    font-size:18px;
+    margin-top:15px; 
+    font-size:20px; /* Bir az böyük */
     font-weight:700;
     color:#fff;
-    letter-spacing:2px;
+    letter-spacing:1px;
     animation:blink 1.2s infinite;
+    position: relative; /* Shine effekti üçün zəmin */
+    overflow: hidden; 
+    display: inline-block; 
+    padding: 2px 5px; 
+    border-radius: 5px;
 }
-@keyframes blink{0%,100%{opacity:1;}50%{opacity:.5;}}
+
+.loader-text::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -150%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        90deg, 
+        transparent, 
+        rgba(255, 255, 255, 0.4), 
+        transparent
+    );
+    animation: shineText 1.5s infinite 0.5s; 
+}
+
+@keyframes shineText {
+    0% { transform: translateX(-150%); }
+    50% { transform: translateX(150%); }
+    100% { transform: translateX(-150%); }
+}
+
+/* --- MƏNZƏRƏ ÜÇÜN Emosiya STİLİ (ƏLAVƏ ANİMASİYA) --- */
+.new-year-icon {
+    font-size: 80px;
+    margin-bottom: 20px;
+    display: block;
+    animation: shakeIcon 4s ease-in-out infinite; 
+    position: relative;
+    z-index: 5;
+    text-shadow: 0 0 10px #fff, 0 0 20px #ff0000;
+}
+
+@keyframes shakeIcon {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    15% { transform: translateY(-5px) rotate(5deg); }
+    30% { transform: translateY(5px) rotate(-5deg); }
+    45% { transform: translateY(-3px) rotate(3deg); }
+    60% { transform: translateY(3px) rotate(-3deg); }
+    75% { transform: translateY(-1px) rotate(1deg); }
+}
+
 
 /* TAPŞIRIQ BİLDİRİŞİ ANİMASİYASI */
 #taskNotification {
@@ -836,12 +909,8 @@ body{
 
 <div id="loadingScreen">
   <div class="loader-box">
-    <div class="shine-circle"></div>
+    <span class="new-year-icon">☃️</span> 
     <div class="loader-title">Qazanc AZ</div>
-    <div class="loader-bar">
-      <div class="loader-fill"></div>
-      <div class="glow"></div>
-    </div>
     <div class="loader-text" data-translate-key="loading">Yüklənir...</div>
   </div>
 </div>
@@ -865,10 +934,6 @@ body{
     </div>
 </div>
 <div class="container">
-  
-  <div class="newyear-title">
-    🎄 Qazanc AZ 🎁
-  </div>
   
   <div class="top-controls">
     <div class="username-navbar-display" id="usernameNavbarDisplay" style="display:none;">
@@ -2676,4 +2741,4 @@ setTimeout(()=>{
 },3000);
 </script>
 </body>
-  </html>
+</html>
