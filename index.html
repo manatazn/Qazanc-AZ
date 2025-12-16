@@ -199,6 +199,7 @@ body{
   text-align:center;
   border:1px solid var(--card-border);
   transition: background-color 0.5s, box-shadow 0.5s;
+  position: relative; /* Mükafat mesajı üçün */
 }
 .balance-card h3{font-size:16px;color:var(--accent);margin-bottom:8px;letter-spacing:0.5px;}
 .balance-card .amount{font-size:32px;font-weight:700;margin-top:5px;color:var(--text-dark);text-shadow:0 2px 5px rgba(0,0,0,0.1);}
@@ -728,6 +729,38 @@ body{
     transform: scale(0.98);
 }
 
+/* YENİLİK: Reklam Mükafatı Mesajı Stili (Daha QALİTƏLİ GÖRÜNÜŞ) */
+#rewardMsgContainer {
+    position: absolute; 
+    top: 0; 
+    left: 0;
+    width: 100%;
+    transform: translateY(-100%); 
+    transition: transform 0.3s ease-out; /* Düşmə effekti */
+    z-index: 10;
+}
+#rewardMsg {
+    margin: 0 10px;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--notification-text); /* Yaşıl */
+    background: var(--notification-bg); /* Açıq yaşıl fon */
+    padding: 10px;
+    border-radius: 0 0 12px 12px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    opacity: 0; /* Başlanğıcda gizli */
+    transition: opacity 0.5s ease-out; 
+}
+
+/* Mükafat mesajı üçün animasiya sinifləri */
+.reward-show {
+    transform: translateY(0%) !important; 
+}
+.reward-fade-out {
+    opacity: 0 !important;
+}
+
 </style>
 </head>
 <body id="body">
@@ -796,6 +829,10 @@ body{
     </div>
 
     <div class="ad-card">
+      <div id="rewardMsgContainer">
+         <div id="rewardMsg"></div>
+      </div>
+      
       <h2 data-translate-key="dailyAds">Günlük Reklamlar</h2>
       <p data-translate-key="adReward">Hər reklama görə <b>0.001 ₼</b> qazanın</p>
       <div class="stats">
@@ -1003,7 +1040,6 @@ const AZN_MIN_WITHDRAW = { m10: 4, azercell: 4, bakcell: 4, nar: 4, bank: 4, usd
 
 // YENİ: Mega Box Dəyişənləri
 const BOX_COST_AZN = 0.50;
-// const BOX_DAILY_LIMIT = 5; // İSTƏK ÜZRƏ LƏĞV EDİLDİ
 const BOX_REWARDS_AZN = [0.05, 0.05, 0.05, 0.10, 0.10, 0.10, 0.10, 0.10, 0.25]; // Mükafat ehtimalları
 
 // --- İSTİFADƏÇİ ADI AÇARI ---
@@ -1016,8 +1052,9 @@ const BAL_KEY='bal',COUNT_KEY='cnt',RESET_KEY='resetTime';
 const JOIN_KEY='joined',JOIN_KEY2='joined2',JOIN_KEY3='joined3',JOIN_KEY4='joined4'; 
 const TOTAL_ADS_KEY = 'totalAdsWatched';
 const TOTAL_EARNED_KEY = 'totalAZNEarned';
-// const BOX_COUNT_KEY = 'boxCount'; // İSTƏK ÜZRƏ LƏĞV EDİLDİ
-// const BOX_RESET_KEY = 'boxResetTime'; // İSTƏK ÜZRƏ LƏĞV EDİLDİ
+// YENİLİK: Geri Sayım Vəziyyəti üçün açarlar
+const TIMER_START_TIME_KEY = 'timerStartTime'; 
+const TIMER_END_TIME_KEY = 'timerEndTime'; 
 
 
 // --- TƏRCÜMƏ MƏLUMATLARI (DİL SÖZLÜYÜ) ---
@@ -1123,6 +1160,7 @@ const TRANSLATIONS = {
         watchAd: 'Reklam İzle',
         adLimitReached: '📣 Gündəlik limitə çatdınız!',
         watching: 'İzlənir...',
+        // YENİLƏNMİŞ: Mükafat Mesajı
         rewardAdded: (r) => `✅ ${r} əlavə olundu!`, 
         wait: '⏳ {s}s gözləyin',
         premiumTask: 'Premium Tapşırıq',
@@ -1179,11 +1217,9 @@ const TRANSLATIONS = {
         // YENİ: Mega Box Tərcümələri
         mysteryBoxTitle: '🎁 Mega Kutu',
         mysteryBoxCost: (c) => `Qiymət: ${c}`,
-        // mysteryBoxLimit: (c, max) => `Gündəlik Limit: ${c}/${max}`, // İSTƏK ÜZRƏ SİLİNDİ
         openBox: 'Aç',
         costDeducted: (c) => `💰 Balansınızdan ${c} çıxıldı. Qutu açılır...`,
         boxOpened: (r) => `🎉 Təbrik edirik! ${r} qazandınız!`,
-        // boxLimitReached: '📣 Gündəlik qutu açma limitinə çatdınız!', // İSTƏK ÜZRƏ SİLİNDİ
         boxBalanceError: (c) => `Balansınızda qutunu açmaq üçün ${c} yoxdur.`,
     },
     'en': {
@@ -1201,6 +1237,7 @@ const TRANSLATIONS = {
         watchAd: 'Watch Ad',
         adLimitReached: '📣 Daily limit reached!',
         watching: 'Watching...',
+        // YENİLƏNMİŞ: Mükafat Mesajı
         rewardAdded: (r) => `✅ ${r} added!`, 
         wait: '⏳ {s}s wait',
         premiumTask: 'Premium Task',
@@ -1257,11 +1294,9 @@ const TRANSLATIONS = {
         // YENİ: Mega Box Tərcümələri
         mysteryBoxTitle: '🎁 Mega Box',
         mysteryBoxCost: (c) => `Cost: ${c}`,
-        // mysteryBoxLimit: (c, max) => `Daily Limit: ${c}/${max}`, // İSTƏK ÜZRƏ SİLİNDİ
         openBox: 'Open',
         costDeducted: (c) => `💰 ${c} deducted from your balance. Box is opening...`,
         boxOpened: (r) => `🎉 Congratulations! You won ${r}!`,
-        // boxLimitReached: '📣 Daily box opening limit reached!', // İSTƏK ÜZRƏ SİLİNDİ
         boxBalanceError: (c) => `You do not have ${c} to open the box.`,
     },
     'tr': {
@@ -1279,6 +1314,7 @@ const TRANSLATIONS = {
         watchAd: 'Reklam İzle',
         adLimitReached: '📣 Günlük sınıra ulaştınız!',
         watching: 'İzleniyor...',
+        // YENİLƏNMİŞ: Mükafat Mesajı
         rewardAdded: (r) => `✅ ${r} eklendi!`, 
         wait: '⏳ {s}sn bekleyin',
         premiumTask: 'Premium Görev',
@@ -1335,11 +1371,9 @@ const TRANSLATIONS = {
         // YENİ: Mega Box Tərcümələri
         mysteryBoxTitle: '🎁 Mega Kutu',
         mysteryBoxCost: (c) => `Ücret: ${c}`,
-        // mysteryBoxLimit: (c, max) => `Günlük Limit: ${c}/${max}`, // İSTƏK ÜZRƏ SİLİNDİ
         openBox: 'Aç',
         costDeducted: (c) => `💰 Bakiyenizden ${c} düşüldü. Kutu açılıyor...`,
         boxOpened: (r) => `🎉 Tebrikler! ${r} kazandınız!`,
-        // boxLimitReached: '📣 Günlük kutu açma sınırına ulaştınız!', // İSTƏK ÜZRƏ SİLİNDİ
         boxBalanceError: (c) => `Kutuyu açmak için bakiyenizde ${c} yok.`,
     },
     'ru': { 
@@ -1357,6 +1391,7 @@ const TRANSLATIONS = {
         watchAd: 'Смотреть Рекламу',
         adLimitReached: '📣 Достигнут дневной лимит!',
         watching: 'Просмотр...',
+        // YENİLƏNMİŞ: Mükafat Mesajı
         rewardAdded: (r) => `✅ ${r} добавлено!`, 
         wait: '⏳ {s}с ожидайте',
         premiumTask: 'Премиум Задание',
@@ -1413,11 +1448,9 @@ const TRANSLATIONS = {
         // YENİ: Mega Box Tərcümələri
         mysteryBoxTitle: '🎁 Мега-Бокс',
         mysteryBoxCost: (c) => `Стоимость: ${c}`,
-        // mysteryBoxLimit: (c, max) => `Дневной лимит: ${c}/${max}`, // ИСТЭК ÜЗРЭ СИЛИНДИ
         openBox: 'Открыть',
         costDeducted: (c) => `💰 ${c} списано с вашего баланса. Бокс открывается...`,
         boxOpened: (r) => `🎉 Поздравляем! Вы выиграли ${r}!`,
-        // boxLimitReached: '📣 Достигнут дневной лимит открытия боксов!', // ИСТЭК ÜЗРЭ СИЛИНДИ
         boxBalanceError: (c) => `У вас нет ${c} для открытия бокса.`,
     }
 };
@@ -1440,14 +1473,13 @@ let totalEarned = parseFloat(safeGet(TOTAL_EARNED_KEY, bal));
 let cnt=parseInt(safeGet(COUNT_KEY,0));
 let resetTime=safeGet(RESET_KEY,null);
 
-// let boxCount = parseInt(safeGet(BOX_COUNT_KEY, 0)); // ИСТЭК ÜЗРЭ СИЛИНДИ
-// let boxResetTime = safeGet(BOX_RESET_KEY, null); // ИСТЭК ÜЗРЭ СИЛИНДИ
-
 
 // Reklam izləmə prosesi üçün global dəyişənlər
 let tInterval = null; // setInterval üçün istifadə olunur
 let remainingSeconds = 0; // Qalan saniyə
 const MAX_SECONDS = 10;
+const AD_CARD = document.querySelector('.ad-card');
+
 
 function getNextResetTime(){
   const now=new Date();
@@ -1465,9 +1497,9 @@ if(!resetTime||Date.now()>resetTime){
   resetTime=getNextResetTime();
   safeSet(RESET_KEY,resetTime);
   safeSet(COUNT_KEY,cnt);
+  safeRemove(TIMER_START_TIME_KEY);
+  safeRemove(TIMER_END_TIME_KEY);
 }
-
-// İSTƏK ÜZRƏ LƏĞV EDİLDİ: Mega Box limitini yoxlayıb sıfırlama
 
 
 // Balansın və Valyutanın göstərilməsi
@@ -1554,7 +1586,6 @@ function update(){
   safeSet(COUNT_KEY,cnt);
   safeSet(TOTAL_ADS_KEY, totalAds); 
   safeSet(TOTAL_EARNED_KEY, totalEarned); 
-  // İSTƏK ÜZRƏ LƏĞV EDİLDİ: safeSet(BOX_COUNT_KEY, boxCount); 
   
   updateUsernameDisplay(); 
   updateMegaBoxState(); // YENİ: Mega Box-un vəziyyətini yenilə
@@ -1578,7 +1609,6 @@ function updateUsernameDisplay() {
 const megaBox = document.getElementById('megaBox');
 const openBoxBtn = document.getElementById('openBoxBtn');
 const boxCostDisplay = document.getElementById('boxCostDisplay');
-// const boxCountDisplay = document.getElementById('boxCountDisplay'); // İSTƏK ÜZRƏ SİLİNDİ
 const boxStatusMessage = document.getElementById('boxStatusMessage');
 
 function updateMegaBoxState() {
@@ -1791,11 +1821,9 @@ function applyTranslations(lang) {
                 }
              } else if (key === 'mysteryBoxCost') {
                  el.innerHTML = t[key](`${boxCostInfo.formatted} ${boxCostInfo.symbol}`);
-             } // İSTƏK ÜZRƏ SİLİNDİ: else if (key === 'mysteryBoxLimit') {
-               // el.innerHTML = t[key](boxCount, BOX_DAILY_LIMIT);
-             // }
+             }
         } else if (t[key]) {
-            if(key !== 'copy' && key !== 'share' && !key.startsWith('taskReward')) {
+            if(key !== 'copy' && key !== 'share' && !key.startsWith('taskReward') && key !== 'rewardAdded') { // "rewardAdded" mətnini düz tətbiq etməsin
                el.innerHTML = t[key];
             }
         }
@@ -1833,6 +1861,7 @@ function applyTranslations(lang) {
     }
     
     // ƏLAVƏ DÜZƏLİŞ: Əgər geri sayım gedirsə, onun mətnini yenilə
+    // Bu hissə indi əsasən restoreAdBtnState tərəfindən idarə olunmalıdır.
     if (tInterval && remainingSeconds > 0) {
          adBtnContent.textContent = t.wait.replace('{s}', remainingSeconds);
     } else {
@@ -1863,54 +1892,121 @@ function setLang(lang) {
 }
 
 // Reklam düyməsi Funksiyası
-const adBtn=document.getElementById('adBtn'), msg=document.getElementById('msg');
+const adBtn=document.getElementById('adBtn');
+const msg=document.getElementById('msg');
 const adBtnContent = document.querySelector('.ad-btn-content');
+const rewardMsgContainer = document.getElementById('rewardMsgContainer');
+const rewardMsg = document.getElementById('rewardMsg');
+
+
+// YENİLİK: Mükafat Mesajını göstərən funksiya
+function showRewardMessage(messageHTML) {
+    rewardMsg.innerHTML = messageHTML;
+    
+    // Animasiyanı sıfırla
+    rewardMsgContainer.classList.remove('reward-show');
+    rewardMsg.classList.remove('reward-fade-out');
+
+    // Mətn tam görünən kimi düşmə animasiyasını başlat
+    setTimeout(() => {
+        rewardMsgContainer.classList.add('reward-show');
+        rewardMsg.style.opacity = '1'; 
+    }, 50);
+
+    // 2 saniyə sonra yox olmağa başla
+    setTimeout(() => {
+        rewardMsg.style.opacity = '0';
+        
+        // 0.5 saniyə sonra yuxarıya çək
+        setTimeout(() => {
+            rewardMsgContainer.classList.remove('reward-show');
+            
+            // Əgər limit dolubsa, mesajı göstər
+            if (cnt >= LIMIT) {
+                msg.textContent = TRANSLATIONS[currentLang].adLimitReached;
+            } else {
+                msg.textContent = ''; // Normal mesajı təmizlə
+            }
+            
+        }, 500); 
+        
+    }, 2000); 
+}
+
 
 // YENİLƏNMİŞ: Reklam düyməsinin vəziyyətini bərpa edən funksiya
 function restoreAdBtnState() {
     const t = TRANSLATIONS[currentLang];
     
-    // Əgər sayğac aktivdirsə və qalan saniyə varsa
-    if (tInterval && remainingSeconds > 0) {
+    // Əgər timer artıq aktivdirsə (səhifə dəyişib qayıtdıqda) heç nə etmə
+    if (tInterval) {
+         // Yenidən render olunduqda texti yenilə
+         adBtnContent.textContent = t.wait.replace('{s}', remainingSeconds);
+         return; 
+    }
+    
+    // Saxlanmış timer vaxtlarını yoxla
+    const startTime = safeGet(TIMER_START_TIME_KEY, 0);
+    const endTime = safeGet(TIMER_END_TIME_KEY, 0);
+    const now = Date.now();
+    
+    if (startTime > 0 && endTime > now) {
         
-        adBtn.disabled = true;
-        adBtn.classList.add('waiting');
+        remainingSeconds = Math.ceil((endTime - now) / 1000);
+        
+        if (remainingSeconds > 0) {
+            
+            // Geri sayımı başlat
+            adBtn.disabled = true;
+            adBtn.classList.add('waiting');
 
-        let timerBar = adBtn.querySelector('.timer-bar');
-        if (!timerBar) {
-            timerBar = document.createElement('div');
-            timerBar.className = 'timer-bar';
-            adBtn.prepend(timerBar);
+            let timerBar = adBtn.querySelector('.timer-bar');
+            if (!timerBar) {
+                timerBar = document.createElement('div');
+                timerBar.className = 'timer-bar';
+                adBtn.prepend(timerBar);
+            }
+
+            // Keçən zaman (millisaniyə)
+            const elapsedMs = now - startTime;
+            const totalDurationMs = MAX_SECONDS * 1000;
+            const startPercentage = (elapsedMs / totalDurationMs) * 100;
+            
+            // 1. Keçidi müvəqqəti söndür
+            timerBar.style.transition = 'none'; 
+            // 2. Barın faizini dərhal tətbiq et (artıq dolmuş hissə)
+            timerBar.style.width = `${startPercentage}%`; 
+            
+            // 3. Animasiyanı qalan vaxt üçün yenidən qur
+            setTimeout(() => {
+                const remainingDuration = remainingSeconds * 1000;
+                timerBar.style.transition = `width ${remainingDuration}ms linear`;
+                timerBar.style.width = '100%'; // Hədəf: 100%
+            }, 50); 
+
+            // Timer intervalını sıfırdan qur
+            adBtnContent.textContent = t.wait.replace('{s}', remainingSeconds);
+            msg.textContent = '';
+            
+            // Geri Sayım Loopunu başlat
+            tInterval = setInterval(timerTick, 1000); 
+
+        } else {
+            // Əgər vaxt bitibsə, state-ləri sıfırla
+            safeRemove(TIMER_START_TIME_KEY);
+            safeRemove(TIMER_END_TIME_KEY);
+            restoreAdBtnState(); // Normal vəziyyətə qayıtma funksiyasını yenidən çağır
         }
-
-        // 10 saniyəlik prosesdə artıq keçən zaman (saniyə)
-        const elapsed = MAX_SECONDS - remainingSeconds;
-        // Əgər proses başladıqdan sonra 1 saniyədən az keçibsə, başlanğıc faizini sıfır olaraq qəbul edirik.
-        const startPercentage = (elapsed / MAX_SECONDS) * 100;
-        
-        // Timer barın cari vəziyyətini real zaman axınına uyğun təyin etmək üçün:
-        
-        // 1. Keçidi müvəqqəti söndür
-        timerBar.style.transition = 'none'; 
-        // 2. Barın faizini qalan saniyəyə görə dərhal tətbiq et (artıq dolmuş hissə)
-        timerBar.style.width = `${startPercentage}%`; 
-        
-        // 3. Növbəti "tick" dən əvvəl (50ms) animasiyanı qalan vaxt üçün yenidən qur
-        setTimeout(() => {
-            // Animasiya qalan müddətdə 100%-ə çatmalıdır.
-            timerBar.style.transition = `width ${remainingSeconds}s linear`;
-            timerBar.style.width = '100%'; // Hədəf: 100%
-        }, 50); 
-
-        adBtnContent.textContent = t.wait.replace('{s}', remainingSeconds);
-        msg.textContent = '';
         
     } else {
+        // Normal vəziyyət
         adBtn.classList.remove('waiting');
         adBtn.disabled = cnt >= LIMIT;
         adBtnContent.textContent = t.watchAd;
         
-        // Əgər timer bar hələ də varsa, onu təmizlə
+        safeRemove(TIMER_START_TIME_KEY);
+        safeRemove(TIMER_END_TIME_KEY);
+        
         const timerBar = adBtn.querySelector('.timer-bar');
         if (timerBar) timerBar.remove();
 
@@ -1922,10 +2018,72 @@ function restoreAdBtnState() {
     }
 }
 
+// YENİLİK: Timerin işləmə məntiqini ayrıca funksiyaya ayırırıq
+function timerTick() {
+    remainingSeconds--;
+    const t = TRANSLATIONS[currentLang];
+    const adBtnContent = document.querySelector('.ad-btn-content');
+    
+    // Mətn yenilənməsi
+    if (adBtnContent) {
+        adBtnContent.textContent = t.wait.replace('{s}', remainingSeconds > 0 ? remainingSeconds : '0'); 
+    }
+    
+    // Yaddaşda qalan vaxtı yenilə
+    if (remainingSeconds > 0) {
+        const endTime = safeGet(TIMER_END_TIME_KEY, Date.now() + (remainingSeconds + 1) * 1000);
+        safeSet(TIMER_END_TIME_KEY, endTime); 
+    }
+    
+    // 10 saniyə bitdikdə (remainingSeconds 0-a bərabər olduqda)
+    if(remainingSeconds<=0){
+      clearInterval(tInterval);
+      tInterval = null;
+      
+      // MÜKAFAT VERİLMƏSİ
+      bal+=AZN_REWARD; 
+      totalEarned += AZN_REWARD; 
+      cnt++; 
+      totalAds++; 
+      update(); 
+      
+      // Yaddaşda olan timer state-lərini sil
+      safeRemove(TIMER_START_TIME_KEY);
+      safeRemove(TIMER_END_TIME_KEY);
+
+      // MÜKAFAT MESAJI
+      const currentRewardInfo = getLocalizedReward(currentLang);
+      const formattedRewardText = `<b>${currentRewardInfo.formattedReward} ${currentRewardInfo.symbol}</b>`;
+      showRewardMessage(t.rewardAdded(formattedRewardText));
+
+      // KEÇİDİ VƏ VƏZİYYƏTİ SIFIRLAMA
+      const timerBar = adBtn.querySelector('.timer-bar');
+      if (timerBar) {
+          timerBar.style.transition = 'none'; 
+          timerBar.remove(); 
+      }
+      
+      // Düyməni ilkin vəziyyətinə qaytar
+      adBtn.disabled=false;
+      adBtn.classList.remove('waiting');
+      
+      // Yalnız burada, geri sayım bitdikdə, cari dildəki 'watchAd' mətni gəlir
+      if (adBtnContent) {
+          adBtnContent.textContent = t.watchAd; 
+      }
+      
+      // Limitə çatdısa, mesajı göstər
+      if (cnt >= LIMIT) {
+          msg.textContent = t.adLimitReached;
+      } else {
+          msg.textContent = '';
+      }
+    }
+}
+
 
 adBtn.onclick=()=>{
   const t = TRANSLATIONS[currentLang];
-  const rewardInfo = getLocalizedReward(currentLang);
   
   if(cnt>=LIMIT){ msg.textContent=t.adLimitReached; return; }
   
@@ -1937,6 +2095,11 @@ adBtn.onclick=()=>{
   
   remainingSeconds = MAX_SECONDS; 
   
+  // Timerin vaxt məlumatlarını yadda saxla
+  const now = Date.now();
+  safeSet(TIMER_START_TIME_KEY, now);
+  safeSet(TIMER_END_TIME_KEY, now + MAX_SECONDS * 1000);
+
   // Timer barı yarat və düymənin içinə əlavə et
   let timerBar = adBtn.querySelector('.timer-bar');
   if (!timerBar) {
@@ -1957,80 +2120,13 @@ adBtn.onclick=()=>{
   
   // Mətn dərhal saniyə sayğacına dəyişdirilir
   adBtnContent.textContent = t.wait.replace('{s}', remainingSeconds); 
-  msg.textContent = '';
-  
+  msg.textContent = ''; // Keçmiş mesajları təmizlə
+
   // Reklamı göstər (mümkünsə)
   try{if(typeof show_10024800==='function'){show_10024800();}}catch(e){} 
   
-  let rewarded = false; 
-  
-  tInterval=setInterval(()=>{
-    remainingSeconds--;
-    
-    // Mətn yenilənməsi saniyələrə uyğun davam edir
-    const currentT = TRANSLATIONS[currentLang];
-    // Əmin olmaq üçün `adBtnContent` elementinin səhifədə olduğunu yoxlayırıq (səhifə keçidində yox ola bilər)
-    if (adBtnContent) {
-        adBtnContent.textContent = currentT.wait.replace('{s}', remainingSeconds > 0 ? remainingSeconds : '0'); 
-    }
-    
-    // PUL ƏLAVƏ EDİLMƏSİ (9 saniyə qaldıqda, yəni remainingSeconds 9-a bərabər olanda)
-    // Düzəliş: Məsələn, 10-dan 9-a keçəndə mükafatı əlavə et.
-    if(remainingSeconds === MAX_SECONDS - 1 && !rewarded) { 
-        bal+=AZN_REWARD; 
-        totalEarned += AZN_REWARD; 
-        cnt++; 
-        totalAds++; 
-        update(); 
-        rewarded = true; 
-        
-        // Mükafat mesajını yaradırıq 
-        const rewardMsgElement = document.createElement('div');
-        const currentRewardInfo = getLocalizedReward(currentLang);
-        const formattedRewardText = `<b>${currentRewardInfo.formattedReward} ${currentRewardInfo.symbol}</b>`;
-        rewardMsgElement.innerHTML = currentT.rewardAdded(formattedRewardText);
-        rewardMsgElement.style.marginTop = '10px';
-        rewardMsgElement.style.fontWeight = 'bold';
-        rewardMsgElement.id = 'rewardMsg';
-        msg.appendChild(rewardMsgElement); 
-        
-        // MÜKAFAT MESAJININ GİZLƏDİLMƏSİ (2 saniyə sonra)
-        setTimeout(() => {
-            const currentRewardMsg = document.getElementById('rewardMsg');
-            if (currentRewardMsg) {
-                 currentRewardMsg.remove();
-            }
-        }, 2000); 
-    }
-    
-    // 10 saniyə bitdikdə
-    if(remainingSeconds<=0){
-      clearInterval(tInterval);
-      tInterval = null;
-      
-      // Keçidi sıfırla ki, növbəti dəfə sıfırdan başlasın
-      if (timerBar) {
-          timerBar.style.transition = 'none'; 
-          timerBar.remove(); 
-      }
-      
-      // Düyməni ilkin vəziyyətinə qaytar
-      adBtn.disabled=false;
-      adBtn.classList.remove('waiting');
-      
-      // Yalnız burada, geri sayım bitdikdə, cari dildəki 'watchAd' mətni gəlir
-      if (adBtnContent) {
-          adBtnContent.textContent = currentT.watchAd; 
-      }
-      
-      // Əgər limit dolubsa, mesajı göstər
-      if (cnt >= LIMIT) {
-        msg.textContent = currentT.adLimitReached;
-      } else {
-        msg.textContent = ''; 
-      }
-    }
-  },1000);
+  // Geri sayımı başlat
+  tInterval=setInterval(timerTick,1000);
 };
 
 // YENİLİK: Bildirişi göstərən funksiya
