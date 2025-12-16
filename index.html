@@ -9,23 +9,23 @@
 <style>
 /* --- RƏNG DƏYİŞƏNLƏRİ (VARS) --- */
 :root {
-  /* LIGHT TEMA (Ağ/Qırmızı) - Default */
-  --bg-start: #ffffff; 
-  --bg-end: #f0f0f0;   
-  --card-bg: rgba(255, 255, 255, 0.85); 
+  /* YENİ İL MODU - LIGHT TEMA (Qırmızı/Ağ) */
+  --bg-start: #8b0000; /* Tünd Qırmızı */
+  --bg-end: #ff1a1a;   /* Parlaq Qırmızı */
+  --card-bg: rgba(255, 255, 255, 0.92); /* Yarı Şəffaf Ağ */
   --card-border: rgba(0, 0, 0, 0.1);
   --text-light: #ffffff;
   --text-dark: #1B1B1B;
-  --accent: #FF0000; 
+  --accent: #ff0000; /* Əsas Qırmızı */
   --menu-bg: rgba(255, 255, 255, 0.15);
   --progress-bg: rgba(0, 0, 0, 0.08);
   --input-text: #1B1B1B; 
   --modal-bg: rgba(255, 255, 255, 0.95); 
 
   /* Qırmızı Gradientlər */
-  --btn-gradient-start: #FF416C; 
-  --btn-gradient-end: #FF4B2B;   
-  --btn-shadow: rgba(255, 65, 108, 0.4); 
+  --btn-gradient-start: #ff416c; /* Əsas gradientin startı */
+  --btn-gradient-end: #ff4b2b;   /* Əsas gradientin sonu */
+  --btn-shadow: rgba(255, 0, 0, 0.5); /* YENİLİK: Qırmızı Kölgə */
   --secondary-btn-gradient-start: #ffc371; 
   --secondary-btn-gradient-end: #ff5f6d; 
   
@@ -41,7 +41,7 @@
   --box-shine: rgba(255, 255, 255, 0.5);
 }
 
-/* DARK TEMA (Qara/Qırmızı) */
+/* DARK TEMA (Qara/Qırmızı) - TOXUNULMUR */
 body.dark-theme {
   --bg-start: #1b1b1b; 
   --bg-end: #252525;   
@@ -66,6 +66,7 @@ body.dark-theme {
 *{box-sizing:border-box;margin:0;padding:0;}
 body{
   font-family:'Inter',sans-serif;
+  /* YENİLİK: Qırmızı Yeni İl Gradienti */
   background:linear-gradient(135deg,var(--bg-start),var(--bg-end));
   background-size:400% 400%;
   animation:bgMove 12s ease infinite;
@@ -84,12 +85,25 @@ body{
 
 .container{max-width:480px;margin:auto;padding:20px;padding-top:20px;} 
 
+/* YENİLİK: Qazanc AZ Başlığı (Profilə uyğun) */
+.newyear-title{
+  text-align:center;
+  font-size:26px;
+  font-weight:900;
+  color:#fff;
+  margin-bottom:15px;
+  /* Parlaq Yeni İl Parıltısı */
+  text-shadow:
+    0 0 8px #fff,
+    0 0 20px #ff4b2b;
+}
+
 /* DİL VƏ TEMA SEÇİMİ */
 .top-controls {
     display: flex;
     justify-content: space-between; 
     align-items: center;
-    margin-bottom: 20px;
+    /* margin-bottom: 20px; - Başlıq əlavə edildiyi üçün silindi */
 }
 
 .username-navbar-display {
@@ -194,7 +208,8 @@ body{
   border-radius:25px;
   padding:20px 18px;
   margin-bottom:20px;
-  box-shadow:0 12px 40px rgba(0,0,0,0.25);
+  /* YENİLİK: Daha parlaq qırmızı kölgə */
+  box-shadow:0 10px 30px rgba(255,0,0,0.35);
   backdrop-filter:blur(14px);
   text-align:center;
   border:1px solid var(--card-border);
@@ -411,6 +426,18 @@ body{
     z-index: 1; 
 }
 .ad-btn:hover:not(.waiting){transform:scale(1.03);box-shadow:0 0 20px var(--btn-shadow);}
+
+/* YENİLİK: Reklam Düyməsinə Qar Emosu Əlavə Et */
+.ad-btn::after{
+  content:"❄️";
+  position:absolute;
+  right:10px;
+  top:6px;
+  opacity:0.4;
+  font-size: 20px;
+  line-height: 1; 
+}
+
 
 /* Bar gedəndə düymənin stili */
 .ad-btn.waiting {
@@ -646,26 +673,49 @@ body{
 }
 
 /* BAŞLANĞIC EKRAN STİLİ */
+/* YENİLİK: Yeni İl Loading Screen */
 #loadingScreen{
     position:fixed;
-    top:0; left:0;width:100%; height:100%;
-    background:linear-gradient(135deg, var(--bg-start), #ffc8c8); 
+    inset:0;
+    background:linear-gradient(135deg,#8b0000,#ff1a1a); /* Qırmızı Gradient */
     display:flex;
     justify-content:center;
     align-items:center;
     z-index:99999;
-    transition:opacity .7s ease;
 }
+
 .loader-box{text-align:center;animation:fadeIn .8s ease;position:relative;}
 .shine-circle{position:absolute;width:220px; height:220px;top:-70px; left:50%;transform:translateX(-50%);background:radial-gradient(circle, rgba(255,0,0,0.35), transparent 80%);filter:blur(40px);animation:pulse 3s infinite ease-in-out;}
 @keyframes pulse{0%,100%{opacity:.4;}50%{opacity:1;}}
-.loader-title{font-size:40px;font-weight:900;color:#FF4B2B; letter-spacing:2px;text-shadow:0 0 12px #ff416c, 0 0 35px rgba(255,75,43,0.9);margin-bottom:32px;}
-.loader-bar{width:300px;height:16px;border-radius:20px;background:rgba(255,0,0,0.15);overflow:hidden;position:relative;box-shadow:0 0 14px rgba(255,0,0,0.3);}
+
+/* YENİLİK: Loader Title üçün Yeni İl Parıltısı */
+.loader-title{
+    font-size:44px;
+    font-weight:900;
+    color:#fff;
+    letter-spacing:2px;
+    text-shadow:
+        0 0 10px #fff,
+        0 0 25px #ff4b2b,
+        0 0 50px #ff0000;
+    margin-bottom:30px;
+}
+
+.loader-bar{width:300px;height:16px;border-radius:20px;background:rgba(255,255,255,0.15);overflow:hidden;position:relative;box-shadow:0 0 14px rgba(255,255,255,0.3);}
 .loader-fill{height:100%;width:0%;border-radius:20px;background:linear-gradient(90deg,#ff416c,#FF4B2B); animation:fillAnim 3s forwards ease-in-out;}
 @keyframes fillAnim{from{width:0%;}to{width:100%;}}
 .glow{position:absolute;top:0; left:0;width:100%; height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.9),transparent);animation:shine 1.6s infinite;}
 @keyframes shine{0%{transform:translateX(-100%);}100%{transform:translateX(100%);}}
-.loader-text{margin-top:14px;font-size:17px;color:#FF4B2B;letter-spacing:1px;animation:blink 1.4s infinite;}
+
+/* YENİLİK: Loader Text üçün Ağ Qar Effekti */
+.loader-text{
+    margin-top:14px;
+    font-size:18px;
+    font-weight:700;
+    color:#fff;
+    letter-spacing:2px;
+    animation:blink 1.2s infinite;
+}
 @keyframes blink{0%,100%{opacity:1;}50%{opacity:.5;}}
 
 /* TAPŞIRIQ BİLDİRİŞİ ANİMASİYASI */
@@ -771,9 +821,19 @@ body{
     transform: scale(0.98);
 }
 
+/* YENİLİK: Qar Yağması üçün CSS */
+#snow{
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  z-index:9999;
+}
+
 </style>
 </head>
 <body id="body">
+<canvas id="snow"></canvas>
+
 <div id="loadingScreen">
   <div class="loader-box">
     <div class="shine-circle"></div>
@@ -805,6 +865,10 @@ body{
     </div>
 </div>
 <div class="container">
+  
+  <div class="newyear-title">
+    🎄 Qazanc AZ 🎁
+  </div>
   
   <div class="top-controls">
     <div class="username-navbar-display" id="usernameNavbarDisplay" style="display:none;">
@@ -981,6 +1045,44 @@ body{
   <button onclick="showPage('walletPage',this)" data-translate-key="wallet" data-page-id="walletPage">Cüzdan</button>
 </div>
 <script>
+// YENİLİK: Qar Yağması üçün JavaScript
+const canvas = document.getElementById("snow");
+const ctx = canvas.getContext("2d");
+
+function resizeSnow(){
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+resizeSnow();
+window.addEventListener("resize", resizeSnow);
+
+let snow = [];
+for(let i=0;i<140;i++){
+  snow.push({
+    x:Math.random()*canvas.width,
+    y:Math.random()*canvas.height,
+    r:Math.random()*3+1,
+    s:Math.random()*1+0.5
+  });
+}
+
+function drawSnow(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  ctx.fillStyle="rgba(255,255,255,0.85)";
+  ctx.beginPath();
+  snow.forEach(f=>{
+    ctx.moveTo(f.x,f.y);
+    ctx.arc(f.x,f.y,f.r,0,Math.PI*2);
+  });
+  ctx.fill();
+  snow.forEach(f=>{
+    f.y+=f.s;
+    if(f.y>canvas.height){f.y=0;f.x=Math.random()*canvas.width;}
+  });
+}
+setInterval(drawSnow,30);
+
+
 // --- YERLİ SAXLAMA KÖMƏKÇİLƏRİ ---
 function safeGet(k,d=0){try{return JSON.parse(localStorage.getItem(k))??d;}catch{return d;}}
 function safeSet(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}
@@ -1480,7 +1582,7 @@ let resetTime=safeGet(RESET_KEY,null);
 let tInterval = null; // setInterval üçün istifadə olunur
 let remainingSeconds = 0; // Qalan saniyə
 const MAX_SECONDS = 10;
-let rewardMsgTimeout = null; // YENİ: Mükafat mesajı üçün timeout ID
+let rewardMsgTimeout = null; // YENİ: Mükafat mesajı üçün vaxt açarı
 
 function getNextResetTime(){
   const now=new Date();
@@ -2574,4 +2676,4 @@ setTimeout(()=>{
 },3000);
 </script>
 </body>
-</html>
+  </html>
