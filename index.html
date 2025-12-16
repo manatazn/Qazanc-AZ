@@ -700,29 +700,27 @@ body{
 
 /* KÖHNƏ shine-circle silindi */
 
-/* YENİLİK: Loader Title üçün Yeni İl Parıltısı (Böyüdülmüş) */
+/* YENİLİK: Loader Title üçün Yeni İl Parıltısı (KİÇİLDİLDİ VƏ SADƏLƏŞDİRİLDİ) */
 .loader-title{
-    font-size:55px; /* Daha böyük */
-    font-weight:900;
+    font-size:30px; /* Əvvəl 55px idi */
+    font-weight:800; /* Biraz yüngülləşdirildi */
     color:#fff;
-    letter-spacing:3px; /* Daha çox boşluq */
+    letter-spacing:1px; /* Əvvəl 3px idi */
     text-shadow:
-        0 0 15px #fff,
-        0 0 40px #ff4b2b,
-        0 0 80px #ff0000; /* Daha güclü parıltı */
-    margin-bottom: 50px; /* Aşağıda daha çox boşluq */
-    animation: pulseGlowTitle 2.5s infinite alternate; /* Başlıq üçün yavaş pulsasiya */
+        0 0 8px #fff,
+        0 0 20px #ff4b2b; /* Parıltı azaldıldı */
+    margin-bottom: 20px; /* Əvvəl 50px idi */
+    animation: pulseGlowTitle 2.0s infinite alternate; /* Animasiya sürəti dəyişdirildi */
     position: relative;
     z-index: 10;
-    /* DÜZƏLİŞ: Yan yana yazmaq üçün əlavə dəyişiklik lazım deyil, çünki HTML-də yan-yanadır. */
 }
 
 @keyframes pulseGlowTitle {
     from {
-        text-shadow: 0 0 10px #fff, 0 0 30px #ff4b2b;
+        text-shadow: 0 0 6px #fff, 0 0 15px #ff4b2b;
     }
     to {
-        text-shadow: 0 0 20px #fff, 0 0 60px #ff0000;
+        text-shadow: 0 0 12px #fff, 0 0 30px #ff0000;
     }
 }
 
@@ -735,13 +733,13 @@ body{
 
 /* YENİLİK: Loader Text üçün Ağ Qar Effekti və Shine */
 .loader-text{
-    margin-top:15px; 
-    font-size:20px; /* Bir az böyük */
+    margin-top:10px; /* Biraz kiçildildi */
+    font-size:18px; /* Bir az kiçik */
     font-weight:700;
     color:#fff;
     letter-spacing:1px;
     animation:blink 1.2s infinite;
-    position: relative; /* Shine effekti üçün zəmin */
+    position: relative; 
     overflow: hidden; 
     display: inline-block; 
     padding: 2px 5px; 
@@ -770,24 +768,24 @@ body{
     100% { transform: translateX(-150%); }
 }
 
-/* --- MƏNZƏRƏ ÜÇÜN Emosiya STİLİ (ƏLAVƏ ANİMASİYA) --- */
+/* --- MƏNZƏRƏ ÜÇÜN Emosiya STİLİ (KİÇİLDİLDİ) --- */
 .new-year-icon {
-    font-size: 80px;
-    margin-bottom: 20px;
+    font-size: 40px; /* Əvvəl 80px idi */
+    margin-bottom: 15px; /* Əvvəl 20px idi */
     display: block;
-    animation: shakeIcon 4s ease-in-out infinite; 
+    animation: shakeIcon 3s ease-in-out infinite; /* Animasiya sürətləndirildi */
     position: relative;
     z-index: 5;
-    text-shadow: 0 0 10px #fff, 0 0 20px #ff0000;
+    text-shadow: 0 0 8px #fff, 0 0 15px #ff0000; /* Kölgə azaldıldı */
 }
 
 @keyframes shakeIcon {
     0%, 100% { transform: translateY(0) rotate(0deg); }
-    15% { transform: translateY(-5px) rotate(5deg); }
-    30% { transform: translateY(5px) rotate(-5deg); }
-    45% { transform: translateY(-3px) rotate(3deg); }
-    60% { transform: translateY(3px) rotate(-3deg); }
-    75% { transform: translateY(-1px) rotate(1deg); }
+    15% { transform: translateY(-3px) rotate(3deg); } /* Kiçik hərəkət */
+    30% { transform: translateY(3px) rotate(-3deg); }
+    45% { transform: translateY(-1px) rotate(1deg); }
+    60% { transform: translateY(1px) rotate(-1deg); }
+    75% { transform: translateY(0) rotate(0deg); }
 }
 
 
