@@ -545,12 +545,34 @@ body{
     background:linear-gradient(90deg,var(--btn-gradient-start),var(--btn-gradient-end));
     color:var(--text-light);
     font-weight:600; 
-    font-size: 11px; 
-    white-space: nowrap; 
-    overflow: hidden; 
-    text-overflow: ellipsis; 
+    
+    /* YENİLƏNMİŞ STİL: İki sətirli mətn üçün */
+    font-size: 10px; /* Mətni kiçik saxlayırıq */
+    white-space: normal; /* Mətnin sətirə sığmasını təmin et */
+    line-height: 1.2;
+    display: flex;
+    flex-direction: column; /* Şaquli mərkəzləmə */
+    align-items: center;
+    justify-content: center;
+    height: 55px; /* Düymənin hündürlüyünü təyin et (emojiyə uyğun) */
+    text-overflow: clip; /* Gizlətmirik */
+    overflow: hidden;
+    
     transition:0.3s;
 }
+
+/* YENİ: Emoji Stili */
+.menu-icon {
+    font-size: 18px; /* Emoji ölçüsü */
+    margin-bottom: 2px; /* Emoji və ad arasındakı boşluq */
+    line-height: 1; /* Sətir hündürlüyü */
+}
+
+/* YENİ: Mətn Stili */
+.menu-text {
+    font-weight: 700; /* Mətnin daha qalın olması */
+}
+
 .menu button.active{
     background:linear-gradient(90deg,var(--secondary-btn-gradient-start),var(--secondary-btn-gradient-end));
     box-shadow:0 0 18px rgba(255,95,109,0.6);
@@ -1101,11 +1123,21 @@ body{
 </div>
 
 <div class="menu">
-  <button onclick="showPage('adsPage',this)" class="active" data-translate-key="home" data-page-id="adsPage">Ev</button>
-  <button onclick="showPage('marketPage',this)" data-translate-key="market" data-page-id="marketPage">Market</button>
-  <button onclick="showPage('tasksPage',this)" data-translate-key="tasks" data-page-id="tasksPage">Görevler</button>
-  <button onclick="showPage('referralPage',this)" data-translate-key="referral" data-page-id="referralPage">Referans</button>
-  <button onclick="showPage('walletPage',this)" data-translate-key="wallet" data-page-id="walletPage">Cüzdan</button>
+  <button onclick="showPage('adsPage',this)" class="active" data-page-id="adsPage" data-icon="🏠" data-translate-key="home">
+    <span class="menu-icon">🏠</span><span class="menu-text">Ev</span>
+  </button>
+  <button onclick="showPage('marketPage',this)" data-page-id="marketPage" data-icon="🛒" data-translate-key="market">
+    <span class="menu-icon">🛒</span><span class="menu-text">Market</span>
+  </button>
+  <button onclick="showPage('tasksPage',this)" data-page-id="tasksPage" data-icon="📝" data-translate-key="tasks">
+    <span class="menu-icon">📝</span><span class="menu-text">Görevler</span>
+  </button>
+  <button onclick="showPage('referralPage',this)" data-page-id="referralPage" data-icon="👥" data-translate-key="referral">
+    <span class="menu-icon">👥</span><span class="menu-text">Referans</span>
+  </button>
+  <button onclick="showPage('walletPage',this)" data-page-id="walletPage" data-icon="💼" data-translate-key="wallet">
+    <span class="menu-icon">💼</span><span class="menu-text">Cüzdan</span>
+  </button>
 </div>
 <script>
 // YENİLİK: Qar Yağması üçün JavaScript
@@ -2016,10 +2048,13 @@ function applyTranslations(lang) {
     
     update(); 
 
+    // YENİLİK: Naviqasiya düymələrinin mətnini yenilə
     document.querySelectorAll('.menu button').forEach(button => {
         const key = button.getAttribute('data-translate-key');
+        const icon = button.getAttribute('data-icon');
         if (key && t[key]) {
-            button.textContent = t[key];
+            // Emoji və mətn elementlərini yeniləyirik
+            button.innerHTML = `<span class="menu-icon">${icon}</span><span class="menu-text">${t[key]}</span>`;
         }
     });
     
